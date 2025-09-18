@@ -9,11 +9,7 @@ class Logbook extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'registration_number',
-        'week',
-        'activities',
-    ];
+    protected $guarded = [];
 
     // Relationship: Each logbook belongs to a student (via registration_number)
     public function student()

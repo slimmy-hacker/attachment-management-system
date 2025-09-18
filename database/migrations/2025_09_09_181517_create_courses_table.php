@@ -10,21 +10,11 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); 
-            $table->string('department_code'); 
-            $table->string('school_code'); 
+            $table->string('name');
+            $table->string('department_code');
+            $table->string('school_code');
             $table->timestamps();
 
-            
-            $table->foreign('department_code')
-                  ->references('code')
-                  ->on('departments')
-                  ->onDelete('cascade');
-
-            $table->foreign('school_code')
-                  ->references('code')
-                  ->on('schools')
-                  ->onDelete('cascade');
         });
     }
 

@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    
+
     public function showAttachmentForm()
     {
         return view('student.attachment-form');
     }
 
-    public function submitAttachmentForm(Request $request)
+    public function storeAttachmentForm(Request $request)
     {
         $validated = $request->validate([
             'student_name' => 'required|string|max:255',
@@ -32,16 +32,17 @@ class StudentController extends Controller
             'supervisor_email' => 'required|email',
         ]);
 
-        
+
         return redirect()->back()->with('success', 'Attachment form submitted successfully!');
     }
 
     public function reports()
 {
-    return view('student.reports'); 
+    return view('student.reports');
 }
   public function logbook()
    {
+
     return view ('student.logbook');
    }
 }

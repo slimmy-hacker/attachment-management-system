@@ -1,12 +1,11 @@
-@php
-    $portal = $portal ?? 'student';
-@endphp
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -16,8 +15,7 @@
         <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">
             Login
         </h2>
-
-        <form method="POST" action="{{ route('login.portal.store', ['portal' => $portal]) }}">
+        <form method="POST" action="{{ route('login.store') }}">
             @csrf
 
             <div class="mb-4">
@@ -47,7 +45,7 @@
 
             <p class="text-center text-sm text-gray-600 mt-4">
                 Don’t have an account?
-                <a href="{{ route('register.portal', ['portal' => $portal]) }}" class="text-blue-600 hover:underline">Register here</a>
+                <a href="#" class="text-blue-600 hover:underline">Register here</a>
             </p>
         </form>
     </div>

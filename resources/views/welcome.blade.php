@@ -78,10 +78,8 @@
     <p>A digital platform for students, supervisors, and industries to collaborate during attachment.</p>
 
     <div class="portals">
-         <a href="{{ route('login', ['portal' => 'student']) }}" class="portal">Student Portal</a>
-            <a href="{{ route('login', ['portal' => 'supervisor']) }}" class="portal">Supervisor Portal</a>
-            <a href="{{ route('login', ['portal' => 'industry']) }}" class="portal">Industry Portal</a>
-             <a href="{{ route('login', ['portal' => 'admin']) }}" class="portal">Admin Panel</a>
+         <a href="{{ route('login') }}" class="portal">Login</a>
+
     </div>
 
 </section>

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
+
     public function up(): void
 {
     Schema::create('users', function (Blueprint $table) {
@@ -15,12 +15,10 @@ return new class extends Migration
         $table->string('email')->unique();
         $table->timestamp('email_verified_at')->nullable();
         $table->string('password');
-        $table->enum('role', ['student', 'supervisor', 'industry', 'admin'])->default('student');
-
-$table->string('staff_number')->nullable()->unique();
-
+        $table->string('role');
         $table->rememberToken();
         $table->timestamps();
+        $table->softDeletes();
     });
 
 
@@ -40,7 +38,7 @@ $table->string('staff_number')->nullable()->unique();
         });
     }
 
-    
+
     public function down(): void
     {
         Schema::dropIfExists('users');

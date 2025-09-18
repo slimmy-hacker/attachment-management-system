@@ -12,18 +12,21 @@ return new class extends Migration
    public function up()
 {
    Schema::create('logbooks', function (Blueprint $table) {
-    $table->id();
-    
-    // Link to student_profiles table (so we can use registration_number indirectly)
-    $table->foreignId('student_profile_id')
-          ->constrained('student_profiles')
-          ->cascadeOnDelete();
 
-    $table->integer('week_number');
-    $table->text('tasks_performed');
-    $table->text('skills_learned')->nullable();
-    $table->text('challenges')->nullable();
-    $table->timestamps();
+
+       $table->id();
+       $table->integer('student_id');
+       $table->integer('attachment_id');
+       $table->integer('week_id');
+       $table->date('start_date');
+       $table->date('end_date');
+       $table->string('task_title');
+       $table->string('tasks');
+       $table->string('skills_learned');
+       $table->string('challenges')->nullable();
+       $table->string('indurstrial_supervisor_id');
+       $table->timestamps();
+       $table->softDeletes();
 });
 
 }

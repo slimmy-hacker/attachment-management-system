@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>External Attachment Information Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 p-6">
+
+@extends('layouts.my_app')
+@section('title')
+    Student LogBook
+@endsection
+@section('content')
     <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow">
         <h1 class="text-2xl font-bold text-center mb-4">DEDAN KIMATHI UNIVERSITY OF TECHNOLOGY </h1>
         <h2 class="text-xl font-semibold text-center mb-8 underline text-blue-700">EXTERNAL ATTACHMENT INFORMATION FORM</h2>
 
         <form action="#" method="POST" class="space-y-6">
-            
+            @csrf
             <fieldset class="border border-gray-300 p-4 rounded">
                 <legend class="font-semibold text-lg">Student Details</legend>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -30,7 +28,7 @@
             <label for="organization" class="block text-sm font-medium mb-1">Name of Organisation</label>
             <input type="text" id="organization" name="organization" class="p-2 border rounded w-full" placeholder="Name of Organisation">
         </div>
-        
+
         <div>
             <label for="date_commenced" class="block text-sm font-medium mb-1">Date Commenced</label>
             <input type="date" id="date_commenced" name="date_commenced" class="p-2 border rounded w-full">
@@ -77,5 +75,4 @@
     </button>
         </form>
     </div>
-</body>
-</html>
+@endsection
