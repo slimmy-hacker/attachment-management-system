@@ -10,14 +10,18 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+    {Schema::dropIfExists('company_branches');
+        Schema::dropIfExists('companies');
+
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');       // Company Name
-            $table->string('alias');      // Company Alias
-            $table->string('branch');     // Company Branch
-            $table->string('address');    // Address
-            $table->string('contact');    // Contact
+            $table->string('name')->unique();       // Company Name
+            $table->string('alias')->unique();      // Company Alias
+            $table->string('parent_company')->nullable();     // Company Branch
+            $table->string('address');
+            $table->string('email')->unique();
+            // Address
+            $table->string('contact')->unique();    // Contact
             $table->string('county');     // County (dropdown)
             $table->string('subcounty')->nullable();
             $table->string('ward')->nullable(); // Subcounty

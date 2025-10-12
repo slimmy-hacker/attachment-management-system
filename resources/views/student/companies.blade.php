@@ -53,16 +53,27 @@
                                     Name
                                 </th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                    Staff Number
+                                    Alias
                                 </th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                    Attachment
+                                   Email
+                                </th>
+
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Contact
                                 </th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                    Department
+                                   County
                                 </th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                    Students
+                                    Sub County
+                                </th>
+
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Latitude
+                                </th>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Longitude
                                 </th>
                                 <th scope="col" class="p-4">
                                     <button type="button" id="open-modal-btn" class="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
@@ -104,6 +115,15 @@
                     <div class="p-6 space-y-6">
                         <form id="scheduleForm" enctype="multipart/form-data">
                             @csrf()
+                            <!-- Company Branch -->
+                            <div>
+                                <label for="parent_company" class="block font-semibold">
+                                    Parent Company
+                                </label>
+                                <input type="text" name="parent_company" id="parent_company" value="{{ old('parent_company') }}"
+                                       class="w-full border rounded p-2">
+                                @error('parent_company') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
+                            </div>
                             <div>
                                 <label for="name" class="block font-semibold">
                                     Company Name <span class="text-red-600">*</span>
@@ -126,16 +146,23 @@
                                     @error('alias') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
                                 </div>
 
-                                <!-- Company Branch -->
-                                <div>
-                                    <label for="branch" class="block font-semibold">
-                                        Company Branch <span class="text-red-600">*</span>
-                                    </label>
-                                    <input type="text" name="branch" id="branch" value="{{ old('branch') }}"
-                                           class="w-full border rounded p-2" required>
-                                    @error('branch') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
-                                </div>
 
+                                <div>
+                                    <label for="contact" class="block font-semibold">
+                                        Contact <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="text" name="contact" id="contact" value="{{ old('contact') }}"
+                                           class="w-full border rounded p-2" required>
+                                    @error('contact') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
+                                </div>
+                                <div>
+                                    <label for="email" class="block font-semibold">
+                                        Email <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="text" name="email" id="email" value="{{ old('email') }}"
+                                           class="w-full border rounded p-2" required>
+                                    @error('email') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
+                                </div>
                                 <!-- Address -->
                                 <div>
                                     <label for="address" class="block font-semibold">
@@ -146,15 +173,6 @@
                                     @error('address') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
                                 </div>
 
-                                <!-- Contact -->
-                                <div>
-                                    <label for="contact" class="block font-semibold">
-                                        Contact <span class="text-red-600">*</span>
-                                    </label>
-                                    <input type="text" name="contact" id="contact" value="{{ old('contact') }}"
-                                           class="w-full border rounded p-2" required>
-                                    @error('contact') <p class="text-red-600 text-sm">{{ $message }}</p> @enderror
-                                </div>
 
                                 <!-- County -->
                                 <div>
@@ -258,15 +276,19 @@
                             processing: true,
                             serverSide: true,
                             ordering: false,
-                            ajax: "{{ route('student.companies.store') }}",
+                            ajax: "{{ route('student.companies') }}",
                             columns: [
-                                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                                {data: 'name', name: 'name'},
-                                {data: 'staff_no', name: 'staff_no'},
-                                {data: 'attachment', name: 'attachment'},
-                                {data: 'department', name: 'department'},
-                                {data: 'students', name: 'students'},
-                                {data: 'action', name: 'action', orderable: false, searchable: false},
+                                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                                { data: 'name', name: 'name' },
+                                { data: 'alias', name: 'alias' },
+                                { data: 'email', name: 'email' },
+
+                                { data: 'contact', name: 'contact' },
+                                { data: 'county', name: 'county' },
+                                { data: 'subcounty', name: 'subcounty' },
+                                { data: 'latitude', name: 'latitude' },
+                                { data: 'longitude', name: 'longitude' },
+                                { data: 'action', name: 'action', orderable: false, searchable: false }
                             ]
                         });
 
