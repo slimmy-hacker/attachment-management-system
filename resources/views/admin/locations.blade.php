@@ -88,7 +88,7 @@ $(document).ready(function () {
             { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
             { data: 'name', name: 'name' },
             { data: 'code', name: 'code' },
-            { data: 'parent_name', name: 'parent.name' },
+            { data: 'parent_name', name: 'locations.name' },
             { data: 'level_name', name: 'level_name' },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ]

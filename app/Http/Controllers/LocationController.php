@@ -15,7 +15,8 @@ class LocationController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Location::orderBy('level', 'asc');
+            $data = Location::orderBy('level', 'asc')
+                            -> orderBy('name', 'asc');
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -35,7 +36,6 @@ class LocationController extends Controller
                 ->filterColumn('level_name', function ($query, $keyword) {
                     $map = [
                         'county'     => 1,
-                        'subcounty'  => 2,
                         'sub county' => 2,
                         'ward'       => 3,
                     ];
@@ -71,8 +71,13 @@ class LocationController extends Controller
         ]);
 
         try {
-            Excel::import(new LocationsImport, $request->file('file'));
-
+            $import = new LocationsImport;
+            Excel::import($import, $request->file('file'));
+            if ($import->failures()->isNotEmpty()) {
+                return response()->json([
+                    'errors_import' => $import->failures()
+                ]);
+            }
             return response()->json([
                 'status' => 'success',
                 'message' => 'Locations uploaded successfully!',

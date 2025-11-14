@@ -8,36 +8,31 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\Importable;
 use Illuminate\Support\Facades\Validator;
 
-class LocationsImport implements ToModel, WithHeadingRow, SkipsOnFailure
+class LocationsImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithValidation
+
 {
 use Importable, SkipsFailures;
 
+    public function rules(): array
+    {
+        return [
+            '*.name'        => 'required|string',
+            '*.code'        => 'required|unique:locations,code',
+            '*.parent_code' => 'nullable',
+            '*.level'       => 'required',
+        ];
+    }
+
+
     public function model(array $row)
     {
-        // Validate the row structure
-        $validator = Validator::make($row, [
-            'name'        => 'required|string',
-            'code'        => 'required|string|unique:locations,code',
-            'parent_code' => 'nullable|string',
-            'level'       => 'required|integer'
-        ]);
-
-        if ($validator->fails()) {
-            // Collect errors
-            $this->onFailure($validator->errors()->all());
-            return null;
-        }
-
-        // Wrap database writes in a transaction
         return DB::transaction(function () use ($row) {
-
             return Location::updateOrCreate(
-                [
-                    'code' => $row['code']   // Unique key
-                ],
+                ['code' => $row['code']],
                 [
                     'name'        => $row['name'],
                     'parent_code' => $row['parent_code'] ?? null,
@@ -46,5 +41,6 @@ use Importable, SkipsFailures;
             );
         });
     }
+
 
 }
