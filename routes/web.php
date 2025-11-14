@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\IndurstrialSupervisorController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\AttarchmentSelectedController;
 
 
 use App\Http\Controllers\OpportunityController;
@@ -32,6 +33,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/companies', [CompanyController::class, 'storeCompany'])->name('companies.store');
 
     Route::get('get-company-industrial-supervisors/{id}', [IndurstrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
+
+
+    Route::get('/select-attarchment', [AttarchmentSelectedController::class, 'index'])->name('attachment.select');
+    Route::post('/attachment/select', [AttarchmentSelectedController::class, 'store'])->name('attachment.store');
+    Route::post('/attachment/change', [AttarchmentSelectedController::class, 'change'])->name('attachment.change');
+
+    Route::middleware(['ensure.period.selected'])->group(function () {
+        Route::get('/dashboard', [AttarchmentSelectedController::class, 'dashboard'])->name('dashboard');
+    });
+
 });
 
 Route::middleware(['auth'])->get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');

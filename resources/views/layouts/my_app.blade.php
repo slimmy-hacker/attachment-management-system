@@ -54,15 +54,35 @@
 
     <div id="main-content" class="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
         <main class="flex-1 p-6 bg-gray-100 overflow-auto">
+            <div class="flex flex-col bg-gray-50" style="min-height: calc(100vh - 15rem);">
             @yield('content')
+            </div>
         </main>
         @include('layouts.partials.footer')
+        @if(session('notification'))
+            <script>
+                $(document).ready(function() {
+                    const notification = @json(session('notification'));
 
+                    if (notification && notification.message) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: notification.icon,
+                            title: notification.message,
+                            message: notification.message,
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                });
+            </script>
+        @endif
 
     </div>
 
 </div>
-
 
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <script src="https://themewagon.github.io/windster/app.bundle.js"></script>
