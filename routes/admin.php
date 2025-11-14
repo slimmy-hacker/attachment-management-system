@@ -4,9 +4,10 @@ use App\Http\Controllers\Admin\AttarchmentScheduleController;
 use App\Http\Controllers\AttachmentSchoolSupervisorController;
 use App\Http\Controllers\AttachmentStudentController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LecturerController;
-
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('portal', function () {
@@ -17,6 +18,10 @@ Route::get('attarchment-schedules/index', [AttarchmentScheduleController::class,
 
 
 Route::post('attarchment-schedules/store', [AttarchmentScheduleController::class, 'store'])->name('admin.attachment_schedule.store');
+   Route::get('/locations', [LocationController::class, 'index'])->name('locations');
+
+    Route::post('/locations/upload', [LocationController::class, 'upload'])->name('admin.locations.upload');
+Route::get('/locations', [LocationController::class, 'index'])->name('admin.locations.index');
 
 Route::get('attarchment-schedules-supervisors/index', [AttachmentSchoolSupervisorController::class, 'index'])->name('admin.attachment_schedules.supervisors.index');
 
