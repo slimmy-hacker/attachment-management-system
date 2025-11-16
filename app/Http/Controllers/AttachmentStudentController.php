@@ -14,12 +14,17 @@ class AttachmentStudentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = AttachmentStudent::with(['attachment', 'student','department'])->latest()->get();
+            $data = AttachmentStudent::with(['attachment', 'student','department', 'student.user',])->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn() // adds DT_RowIndex
-                ->addColumn('name', fn ($row) =>  '-')
-                ->addColumn('attachment', fn ($row) => $row->schedule->slug ?? '-')
+                ->addColumn('name', function ($row) {
+                    return $row->student && $row->student->user
+                        ? $row->student->user->name
+                        : '-';
+                })
+                ->addColumn('reg_no', fn ($row) =>  $row->student->reg_no ?? '-')
+                ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
                 ->addColumn('department', fn ($row) => $row->department->slug ?? '-')
                 ->addColumn('school_supervisor', fn ($row) => $row->department->slug ?? 0)
                 ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')

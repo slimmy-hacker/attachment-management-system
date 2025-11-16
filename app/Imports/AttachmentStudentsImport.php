@@ -27,7 +27,7 @@ use Importable, SkipsFailures;
     {
         return [
             '*.reg_no'            => ['required', 'exists:students,reg_no'],
-            //'*.attachment_slug'   => ['required', 'exists:attachment_schedules,slug'],
+            '*.attachment_slug'   => ['required', 'exists:attachment_schedules,slug'],
         ];
     }
 
@@ -36,7 +36,7 @@ use Importable, SkipsFailures;
     public function model(array $row)
     {
         try {
-            $reg = strtolower($row['reg_no'] ?? '');
+            $reg = strtoupper($row['reg_no'] ?? '');
             $slug = strtolower($row['attachment_slug'] ?? '');
 
             $student = Student::where('reg_no', $reg)->first();
