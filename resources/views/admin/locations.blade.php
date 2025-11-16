@@ -21,10 +21,10 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="p-4">#</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">County</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Sub County</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Ward</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Town</th>
+                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
+                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Parent code</th>
+                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Level</th>
                             <th class="p-4">
                                 <button id="open-modal-btn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2">
                                     <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -86,10 +86,10 @@ $(document).ready(function () {
         ajax: "{{ route('admin.locations.index') }}",
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            { data: 'county', name: 'county' },
-            { data: 'sub_county', name: 'sub_county' },
-            { data: 'ward', name: 'ward' },
-            { data: 'town', name: 'town' },
+            { data: 'code', name: 'code' },
+            { data: 'parent_code', name: 'parent_code' },
+            { data: 'name', name: 'name' },
+            { data: 'level', name: 'level' },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ]
     });

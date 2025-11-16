@@ -1,17 +1,38 @@
 <?php
 
 namespace App\Http\Controllers;
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Models\Department;
 use App\Models\School;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    public function index()
-    {
-        $departments = Department::with('school')->get();
-        return view('admin.departments', compact('departments'));
+   public function index(Request $request)
+{
+    if ($request->ajax()) {
+
+        $query = \App\Models\Department::with('school')->select('departments.*');
+
+        return datatables()->of($query)
+            ->addIndexColumn()
+            ->addColumn('school_code', function ($row) {
+                return $row->school->code ?? '-';
+            })
+            ->addColumn('school_name', function ($row) {
+                return $row->school->name ?? '-';
+            })
+            ->addColumn('action', function($row){
+                return '<button class="text-blue-600">Edit</button>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
+
+    return view('admin.departments');
+}
+
 
     public function create()
     {
@@ -34,4 +55,18 @@ class DepartmentController extends Controller
         return redirect()->route('admin.departments')
                          ->with('success', 'Department uploaded successfully');
     }
+    public function upload(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv'
+    ]);
+
+    Excel::import(new DepartmentsImport, $request->file('file'));
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Departments uploaded successfully'
+    ]);
+}
+
 }
