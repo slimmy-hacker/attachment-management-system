@@ -24,7 +24,10 @@ class StudentController extends Controller
 public function index(Request $request){
 
     if ($request->ajax()) {
-        $data = Student::with(['user'])->latest()->get();
+        $data = Student::with('user')
+            ->whereHas('user')
+            ->orderBy(User::select('name')->whereColumn('users.id', 'students.user_id'))
+            ->get();
 
         return DataTables::of($data)
             ->addIndexColumn() // adds DT_RowIndex

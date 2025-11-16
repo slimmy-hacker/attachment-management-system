@@ -173,27 +173,49 @@
                 let formData = new FormData(this);
 
                 $.ajax({
-                    url: "{{ route('admin.attachment_student.upload') }}", // adjust route name
+                    url: "{{ route('admin.attachment_student.upload') }}",
                     type: "POST",
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function (response) {
                         if (response.status === "success") {
+
+                            let stats = response.stats;
+
+                            // Build failure list HTML table
+                            let failureHtml = "";
+                            if (stats.fail_count > 0) {
+                                failureHtml += "<table class='table table-bordered'><tr><th>Row</th><th>Error</th></tr>";
+
+                                stats.failed_records.forEach(function (item) {
+                                    failureHtml += `<tr>
+                            <td>${JSON.stringify(item.row)}</td>
+                            <td>${item.reason}</td>
+                        </tr>`;
+                                });
+
+                                failureHtml += "</table>";
+                            }
+
+                            let htmlMsg = `
+                    <strong>Upload Completed!</strong><br>
+                    <strong>Successful:</strong> ${stats.success_count}<br>
+                    <strong>Failed:</strong> ${stats.fail_count}<br><br>
+                    ${failureHtml}
+                `;
+
                             Swal.fire({
-                                toast: true,
-                                position: 'top-end',
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true
+                                icon: stats.fail_count > 0 ? "warning" : "success",
+                                title: "Import Report",
+                                html: htmlMsg,
+                                width: 600,
                             });
 
-                            // optionally reset form and close modal
                             $("#scheduleForm")[0].reset();
-                           modal.hide();
+                            modal.hide();
                             table.ajax.reload(null, false);
+
                         } else {
                             Swal.fire({
                                 toast: true,
@@ -208,6 +230,7 @@
                     },
                     error: function (xhr) {
                         let res = xhr.responseJSON;
+
                         if (res && res.errors) {
                             let messages = Object.values(res.errors).flat().join("\n");
                             Swal.fire({
@@ -233,6 +256,7 @@
                     }
                 });
             });
+
 
         });
     </script>

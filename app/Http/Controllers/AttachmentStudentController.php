@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\AttachmentStudentsImport;
 use App\Models\AttachmentStudent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttachmentStudentController extends Controller
 {
@@ -33,51 +35,28 @@ class AttachmentStudentController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,txt,xlsx,xls|max:2048',
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ]);
 
-        $file = $request->file('file');
+        try {
+            $import = new AttachmentStudentsImport();
+            Excel::import($import, $request->file('file'));
 
-        // Read file rows
-        $rows = array_map('str_getcsv', file($file->getRealPath()));
-        $header = array_shift($rows); // remove header row
-
-        $errors = [];
-        $inserted = 0;
-
-        foreach ($rows as $index => $row) {
-            $rowData = array_combine($header, $row);
-
-            /*  $validator = Validator::make($rowData, [
-                  'staff_no' => 'required|string',
-                  'attachment_slug' => 'required|exists:attachment_schedules,slug',
-                  'department_slug' => 'required|exists:departments,slug',
-              ]);*/
-            $validator = Validator::make($rowData, [
-                'reg_no' => 'required|string',
-                'attachment_slug' => 'required',
-                'department_slug' => 'required',
+            return response()->json([
+                'status' => 'success',
+                'message' => 'File processed',
+                'stats' => [
+                    'success_count' => $import->successCount,
+                    'fail_count' => count($import->failedRecords),
+                    'failed_records' => $import->failedRecords
+                ]
             ]);
-
-            if ($validator->fails()) {
-                $errors[$index + 2] = $validator->errors()->all(); // +2 because of header
-                continue;
-            }
-
-
-            AttachmentStudent::updateOrCreate(
-                $rowData,
-                []
-            );
-
-            $inserted++;
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error uploading file: ' . $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'File uploaded successfully',
-            'inserted' => $inserted,
-            'errors' => $errors,
-        ]);
     }
+
 }

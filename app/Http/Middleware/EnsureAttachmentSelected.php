@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureAttarchmentSelected
+class EnsureAttachmentSelected
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class EnsureAttarchmentSelected
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!session()->has('attarchment_id')) {
+        if (!session()->has('attachment_id')) {
             return redirect()->route('period.select');
         }
 

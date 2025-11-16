@@ -13,19 +13,22 @@ return new class extends Migration
     {
         Schema::create('attachment_students', function (Blueprint $table) {
             $table->id();
-            $table->string('reg_no');
-            $table->string('attachment_slug');
-            $table->string('department_slug');
-            $table->string('company_branch_slug')->nullable();
-            $table->string('school_supervisor_staff_no')->nullable();
+            $table->string('student_id');
+            $table->string('attachment_id');
+            $table->string('company_id')->nullable();
+            $table->string('lecturer_id')->nullable();
             $table->string('industrial_supervisor_id')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('status')->nullable();
-
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['student_id', 'attachment_id']);
+
         });
+
+
     }
 
     /**

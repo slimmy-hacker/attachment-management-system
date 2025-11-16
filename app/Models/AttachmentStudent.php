@@ -8,7 +8,7 @@ class AttachmentStudent extends Model
 {
     protected $guarded = [];
 
-    public function Attachment() {
+    public function attachment() {
         return $this->belongsTo(AttachmentSchedule::class, 'attachment_slug');
     }
 

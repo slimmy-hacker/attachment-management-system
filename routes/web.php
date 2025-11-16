@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\IndurstrialSupervisorController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\AttarchmentSelectedController;
+use App\Http\Controllers\AttachmentSelectedController;
 
 
 use App\Http\Controllers\OpportunityController;
@@ -35,12 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::get('get-company-industrial-supervisors/{id}', [IndurstrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
 
 
-    Route::get('/select-attarchment', [AttarchmentSelectedController::class, 'index'])->name('attachment.select');
-    Route::post('/attachment/select', [AttarchmentSelectedController::class, 'store'])->name('attachment.store');
-    Route::post('/attachment/change', [AttarchmentSelectedController::class, 'change'])->name('attachment.change');
+    Route::get('/select-attarchment', [AttachmentSelectedController::class, 'index'])->name('attachment_selected.select');
+    Route::post('/attachment/select', [AttachmentSelectedController::class, 'store'])->name('attachment_selected.store');
+    Route::post('/attachment/change', [AttachmentSelectedController::class, 'change'])->name('attachment_selected.change');
 
     Route::middleware(['ensure.period.selected'])->group(function () {
-        Route::get('/dashboard', [AttarchmentSelectedController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard', [AttachmentSelectedController::class, 'dashboard'])->name('dashboard');
     });
 
 });

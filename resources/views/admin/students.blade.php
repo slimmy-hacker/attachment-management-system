@@ -30,7 +30,7 @@
                                 </li>
                             </ol>
                         </nav>
-                        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">All Attached Students</h1>
+                        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">All Students</h1>
                     </div>
 
                 </div>
@@ -42,44 +42,35 @@
                             <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
                                 <thead class="bg-gray-100">
                                 <tr>
-                                    <!-- Small # column -->
                                     <th scope="col" class="p-2 w-12">
                                         <div class="flex items-center justify-center text-xs font-medium text-gray-500 uppercase">
                                             #
                                         </div>
                                     </th>
-
-                                    <!-- Name -->
-                                    <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
                                         Name
                                     </th>
 
-                                    <!-- Email column with wrap -->
-                                    <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                        <div class="whitespace-normal break-words">
-                                            Email
-                                        </div>
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
+                                        Email
                                     </th>
 
-                                    <!-- Reg No -->
-                                    <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
                                         Reg No
                                     </th>
 
-                                    <!-- Department -->
-                                    <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
                                         Department
                                     </th>
 
-                                    <!-- Program -->
-                                    <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">
                                         Program
                                     </th>
 
-                                    <!-- Upload button small column -->
-                                    <th scope="col" class="p-4 w-32">
-                                        <button type="button" id="open-modal-btn" class="w-full text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center">
-                                            <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <th class="p-4 w-32 whitespace-nowrap">
+                                        <button type="button" id="open-modal-btn"
+                                                class="w-full text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2">
+                                            <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                                             </svg>
                                             Upload
@@ -91,6 +82,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>

@@ -12,9 +12,9 @@
             <p class="text-sm text-gray-500">Choose a period to continue</p>
         </div>
 
-        {{-- Page Body --}}
+
         <div>
-            @if($periods->isEmpty())
+            @if($attachments->isEmpty())
                 <div class="flex-1 flex p-6items-center justify-center">
                     <div class="bg-white rounded-2xl shadow-md p-10 text-center max-w-md w-full">
                         <h2 class="text-lg font-semibold text-gray-700 mb-3">No Available Periods</h2>
@@ -23,28 +23,28 @@
                 </div>
             @else
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
-                    @foreach($periods as $period)
-                        <form action="{{ route('attachment.store') }}" method="POST" class="group">
+                    @foreach($attachments as $attachment)
+                        <form action="{{ route('attachment_selected.store') }}" method="POST" class="group">
                             @csrf
-                            <input type="hidden" name="period_id" value="{{ $period->id }}">
+                            <input type="hidden" name="attachment_id" value="{{ $attachment->id }}">
                             <button type="submit"
                                     class="block w-full text-left bg-white p-6 rounded-2xl shadow-sm border border-transparent hover:border-blue-400 hover:shadow-md transition-all duration-200 focus:ring-2 focus:ring-blue-500">
                                 <div class="flex flex-col">
                                     <h3 class="text-xl font-semibold text-gray-800 group-hover:text-blue-600">
-                                        {{ $period->name }}
+                                        {{ $attachment->name }}
                                     </h3>
                                     <p class="text-sm text-gray-500 mt-1">
-                                        {{ \Carbon\Carbon::parse($period->start_date)->format('M d, Y') }}
+                                        {{ \Carbon\Carbon::parse($attachment->start_date)->format('M d, Y') }}
                                         —
-                                        {{ \Carbon\Carbon::parse($period->end_date)->format('M d, Y') }}
+                                        {{ \Carbon\Carbon::parse($attachment->end_date)->format('M d, Y') }}
                                     </p>
 
                                     @php
 
 
                                         $today = \Carbon\Carbon::today();
-                                        $start = \Carbon\Carbon::parse($period->start_date);
-                                        $end = \Carbon\Carbon::parse($period->end_date);
+                                        $start = \Carbon\Carbon::parse($attachment->start_date);
+                                        $end = \Carbon\Carbon::parse($attachment->end_date);
 
                                         if ($today->lt($start)) {
                                             $computedState = 'upcoming';
