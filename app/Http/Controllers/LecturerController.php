@@ -12,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 class LecturerController extends Controller
 {
     /**
-     * Display a list of students assigned to the logged-in supervisor.
+     * Display a list of students assigned to the logged-in lecturer.
      */
     public function index(Request $request){
 
@@ -36,18 +36,29 @@ class LecturerController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,xlsx,xls|max:2048',
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ]);
 
-        $file = $request->file('file');
+        try {
+            $import = new LecturersImport();
+            Excel::import($import, $request->file('file'));
 
-        Excel::import(new LecturersImport(), $file);
+            return response()->json([
+                'status'        => 'success',
+                'message'        => 'Upload completed',
+                'success_count'  => $import->successCount,
+                'fail_count'     => count($import->failedRecords),
+                'failed_records' => $import->failedRecords
+            ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Staffs imported successfully',
-        ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
+
     public function studentsAssigned()
 {
     $supervisor = auth()->user();
@@ -55,7 +66,7 @@ class LecturerController extends Controller
     // fetch students from users table
     $students = $supervisor->assignedStudents()->get();
 
-    return view('supervisor.students-assigned', compact('students'));
+    return view('lecturer.students-assigned', compact('students'));
 }
 
 
@@ -66,7 +77,7 @@ class LecturerController extends Controller
     {
         $student = Student::with('company')->findOrFail($id);
 
-        return view('supervisor.student.show', compact('student'));
+        return view('lecturer.student.show', compact('student'));
     }
 
     /**
@@ -76,7 +87,7 @@ class LecturerController extends Controller
     {
         $student = Student::with('reports')->findOrFail($id);
 
-        return view('supervisor.student.reports', compact('student'));
+        return view('lecturer.student.reports', compact('student'));
     }
 
     /**
@@ -86,30 +97,30 @@ class LecturerController extends Controller
     {
         $student = Student::findOrFail($id);
 
-        return view('supervisor.student.feedback', compact('student'));
+        return view('lecturer.student.feedback', compact('student'));
     }
 
     /**
-     * Show supervisor's own reports page (general, not student-specific).
+     * Show lecturer's own reports page (general, not student-specific).
      */
     public function reports()
     {
-        return view('supervisor.reports');
+        return view('lecturer.reports');
     }
 
     /**
-     * Show supervisor's logbook page.
+     * Show lecturer's logbook page.
      */
     public function logbook()
     {
-        return view('supervisor.logbook');
+        return view('lecturer.logbook');
     }
 
     /**
-     * Show supervisor's evaluate page.
+     * Show lecturer's evaluate page.
      */
     public function evaluate()
     {
-        return view('supervisor.evaluate');
+        return view('lecturer.evaluate');
     }
 }

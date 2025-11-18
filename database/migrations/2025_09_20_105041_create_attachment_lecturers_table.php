@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attachment_school_supervisors', function (Blueprint $table) {
+        Schema::create('attachment_lecturers', function (Blueprint $table) {
 
             $table->id();
-            $table->string('staff_no');
-            $table->string('attachment_slug');
-            $table->string('department_slug');
+            $table->integer('lecturer_id');
+            $table->integer('attachment_id');
+            $table->integer('department_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['lecturer_id','attachment_id', 'department_id']);
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attachment_school_supervisors');
+        Schema::dropIfExists('attachment_lecturers');
     }
 };

@@ -63,7 +63,7 @@ else{
             @endif
 
             {{-- Supervisor Fields --}}
-            @if($portal === 'supervisor')
+            @if($portal === 'lecturer')
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Staff Number</label>
                     <input type="text" name="staff_number" value="{{ old('staff_number') }}" required

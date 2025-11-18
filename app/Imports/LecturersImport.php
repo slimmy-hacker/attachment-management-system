@@ -15,51 +15,74 @@ use Illuminate\Support\Facades\Validator;
 
 class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
 {
-use Importable, SkipsFailures;
+    use Importable, SkipsFailures;
+    public $successCount = 0;
+    public $failedRecords = [];
+    public function model(array $row)
+    {
+        try {
+            // Validate the row
+            $validator = Validator::make($row, [
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users,email',
+                'phone_number' => 'nullable|string',
+                'staff_number' => 'required|string',
+                'department' => 'required|string',
+                'office_location' => 'nullable|string',
+            ]);
 
-public function model(array $row)
-{
-// Validate the row
-$validator = Validator::make($row, [
-'name' => 'required|string',
-'email' => 'required|email|unique:users,email',
-'phone_number' => 'nullable|string',
-'staff_number' => 'required|string',
-'department' => 'required|string',
-'office_location' => 'nullable|string',
-]);
+            if ($validator->fails()) {
 
-if ($validator->fails()) {
-// Skip this row, errors are collected in SkipsFailures
-$this->onFailure($validator->errors()->all());
-return null;
-}
+                // Collect all validation error messages
+                $this->failedRecords[] = [
+                    'reason' => implode(" | ", $validator->errors()->all())
+                ];
 
-// Use DB transaction to ensure consistency
-return DB::transaction(function () use ($row) {
-$staff_no = Str::upper($row['staff_number']);
+                return null;
+            }
 
-$user = User::updateOrCreate(
-                ['email' => $row['email']],
-                [
-                'name' => $row['name'],
-                'phone_number' => $row['phone_number'],
-                'password' => Hash::make($staff_no),
-                    'role' => 'school_supervisor',
-                ]
-            );
+            // DB transaction for safe saving
+            return DB::transaction(function () use ($row) {
 
-        Lecturer::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-            'staff_number' => $staff_no,
-            'department' => $row['department'],
-            'office_location' => $row['office_location'],
-            'office_phone' => $row['phone_number'],
-        ]
-        );
+                $staff_no = Str::upper(trim($row['staff_number']));
+                $email = Str::lower(trim($row['email']));
 
-return $user;
-});
-}
+                // Create or update the user
+                $user = User::updateOrCreate(
+                    ['email' => $email],
+                    [
+                        'name' => $row['name'],
+                        'phone_number' => $row['phone_number'],
+                        'password' => Hash::make($staff_no),
+                        'role' => 'lecturer',
+                    ]
+                );
+
+                // Create or update lecturer
+                Lecturer::updateOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'staff_number' => $staff_no,
+                        'department' => $row['department'],
+                        'office_location' => $row['office_location'] ?? null,
+                        'office_phone' => $row['phone_number'] ?? null,
+                    ]
+                );
+
+                // Count successful rows
+                $this->successCount++;
+
+                return $user;
+            });
+
+        } catch (\Exception $e) {
+
+            // Handle DB errors like Unique constraint: users.email
+            $this->failedRecords[] = [
+                'reason' => $e->getMessage()
+            ];
+
+            return null;
+        }
+    }
 }

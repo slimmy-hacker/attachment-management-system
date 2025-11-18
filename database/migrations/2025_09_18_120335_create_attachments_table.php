@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attachment_schedules', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
             $table->date('start_date');
             $table->date('end_date');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attachment_schedules');
+        Schema::dropIfExists('attachments');
     }
 };

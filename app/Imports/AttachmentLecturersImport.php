@@ -1,8 +1,10 @@
 <?php
 namespace App\Imports;
 use App\Models\Attachment;
+use App\Models\AttachmentLecturer;
 use App\Models\AttachmentStudent;
-use App\Models\Student;
+use App\Models\Department;
+use App\Models\Lecturer;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -10,7 +12,7 @@ use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\Importable;
 
-class AttachmentStudentsImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithValidation
+class AttachmentLecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithValidation
 
 {
 use Importable, SkipsFailures;
@@ -21,8 +23,9 @@ use Importable, SkipsFailures;
     public function rules(): array
     {
         return [
-            '*.reg_no'            => ['required'],
+            '*.staff_no'            => ['required'],
             '*.attachment_slug'   => ['required'],
+            '*.department_code'   => ['nullable'],
         ];
     }
 
@@ -31,26 +34,28 @@ use Importable, SkipsFailures;
     public function model(array $row)
     {
         try {
-            $reg  = strtoupper(trim($row['reg_no'] ?? ''));
+            $staff_no  = strtoupper(trim($row['staff_no'] ?? ''));
             $slug = strtolower(trim($row['attachment_slug'] ?? ''));
-            $student = Student::where('reg_no', $reg)->first();
+            $department_code = strtolower(trim($row['department_code'] ?? ''));
+            $lecturer = Lecturer::where('staff_number', $staff_no)->first();
             $attachment = Attachment::where('slug', $slug)->first();
 
             $errors = [];
 
-            if (!$student) {
-                $errors[] = "Student with reg_no '{$row['reg_no']}' not found";
+            if (!$lecturer) {
+                $errors[] = "Lecturer with staff_no '{$row['staff_no']}' not found";
             }
 
             if (!$attachment) {
                 $errors[] = "Attachment with slug '{$row['attachment_slug']}' not found";
             }
-            if($student && $attachment) {
-                $attachment_student = AttachmentStudent::where('student_id', $student->id)
-                    ->where('attachment_id', $attachment->id)
-                    ->first();
-                if ($attachment_student) {
-                    $errors[] = "Student with reg_no '{$row['reg_no']}' for attachment '{$row['attachment_slug']}' had already been uploaded";
+            //::where('code', $department_code)->first();
+            if($lecturer && $attachment) {
+                $attachment_lecturer = AttachmentLecturer::where('lecturer_id', $lecturer->id)
+                                                        ->where('attachment_id', $attachment->id)
+                                                        ->first();
+                if ($attachment_lecturer) {
+                    $errors[] = "Lecturer with staff_no '{$row['staff_no']}' for attachment '{$row['attachment_slug']}' had already been uploaded";
                 }
             }
 
@@ -63,8 +68,8 @@ use Importable, SkipsFailures;
             }
 
 
-            AttachmentStudent::create([
-                'student_id' => $student->id,
+            AttachmentLecturer::create([
+                'lecturer_id' => $lecturer->id,
                 'attachment_id' => $attachment->id,
             ]);
 

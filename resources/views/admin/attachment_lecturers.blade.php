@@ -1,6 +1,6 @@
 @extends('layouts.my_app')
 @section('title')
-    Attarchment Schedules
+   Attachment Lecturers
 @endsection
 @section('content')
 
@@ -19,7 +19,7 @@
                                 <li>
                                     <div class="flex items-center">
                                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                                        <a href="#" class="text-gray-700 hover:text-gray-900 ml-1 md:ml-2 text-sm font-medium">Attarchment Schedules</a>
+                                        <a href="#" class="text-gray-700 hover:text-gray-900 ml-1 md:ml-2 text-sm font-medium">Attachment Lecturers</a>
                                     </div>
                                 </li>
                                 <li>
@@ -30,7 +30,7 @@
                                 </li>
                             </ol>
                         </nav>
-                        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">All Attachment schedules</h1>
+                        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">All Attachment Lecturers</h1>
                     </div>
 
                 </div>
@@ -42,8 +42,8 @@
                             <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
                                 <thead class="bg-gray-100">
                                 <tr>
-                                    <th scope="col" class="p-4">
-                                        <div class="flex items-center">
+                                    <th scope="col" class="p-2 w-12">
+                                        <div class="flex items-center justify-center text-xs font-medium text-gray-500 uppercase">
                                             #
                                         </div>
                                     </th>
@@ -51,18 +51,21 @@
                                         Name
                                     </th>
                                     <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                       Slug
+                                      Staff Number
                                     </th>
                                     <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                       Start Date
+                                      Attachment
                                     </th>
                                     <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                       End Date
+                                      Department
+                                    </th>
+                                    <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                      Students
                                     </th>
                                     <th scope="col" class="p-4">
                                         <button type="button" id="open-modal-btn" class="w-1/2 text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center sm:w-auto">
                                             <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                            Add Schedule
+                                            Upload
                                         </button>
                                     </th>
                                 </tr>
@@ -77,14 +80,14 @@
 
 
             <!-- Add User Modal -->
-            <div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" data-modal-backdrop="static" id="add-schedule-modal">
+            <div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" id="add-schedule-modal">
                 <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="bg-white rounded-lg shadow relative">
                         <!-- Modal header -->
                         <div class="flex items-start justify-between p-5 border-b rounded-t">
                             <h3 class="text-xl font-semibold">
-                                Add New Attachment Schedule
+                                Upload
                             </h3>
                             <button type="button" class="close-modal-btn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -97,42 +100,26 @@
 
                         <!-- Modal body -->
                         <div class="p-6 space-y-6">
-                            <form id="scheduleForm">
+                            <form id="scheduleForm" enctype="multipart/form-data">
                                 @csrf()
                                 <div class="grid grid-cols-6 gap-6">
                                     <div class="col-span-6 sm:col-span-6">
-                                        <label for="name" class="text-sm font-medium text-gray-900 block mb-2">Schedule Name</label>
-                                        <input type="text" name="name" id="name"
+                                        <label for="name" class="text-sm font-medium text-gray-900 block mb-2">Supervisors Excel <span class="text-red-500">*</span></label>
+
+                                            <input type="file" name="file" accept=".csv,.xlsx,.xls"
                                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
                                    focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                                placeholder="e.g. 2025 Attachment Intake"
                                                required>
                                     </div>
-
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="start_date" class="text-sm font-medium text-gray-900 block mb-2">Start Date</label>
-                                        <input type="date" name="start_date" id="start_date"
-                                               class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
-                                   focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                               required>
-                                    </div>
-
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="end_date" class="text-sm font-medium text-gray-900 block mb-2">End Date</label>
-                                        <input type="date" name="end_date" id="end_date"
-                                               class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
-                                   focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                               required>
-                                    </div>
                                 </div>
-
 
                         <!-- Modal footer -->
                         <div class="items-center p-6 border-t border-gray-200 rounded-b">
-                            <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium
+                            <button id="uploadBtn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium
                                rounded-lg text-sm px-5 py-2.5 text-center"
                                     type="submit">
-                                Save Schedule
+                                Upload
                             </button>
                         </div>
                         </form>
@@ -143,12 +130,11 @@
 
 
 
-
-
 @endsection
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+
             const modal = new Modal($('#add-schedule-modal')[0], {
                 backdrop: 'static',
                 closable: false
@@ -161,49 +147,78 @@
                 modal.hide();
             });
 
-
             var table = $("#attarchment_schedules_table").DataTable({
                 processing: true,
                 serverSide: true,
                 ordering: false,
-                ajax: "{{ route('admin.attachment_schedules.index') }}",
+                ajax: "{{ route('admin.attachment_schedules.supervisors.index') }}",
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     {data: 'name', name: 'name'},
-                    {data: 'slug', name: 'slug'},
-                    {data: 'start_date', name: 'start_date'},
-                    {data: 'end_date', name: 'end_date'},
+                    {data: 'staff_no', name: 'staff_no'},
+                    {data: 'attachment', name: 'attachment'},
+                    {data: 'department', name: 'department'},
+                    {data: 'students', name: 'students'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
 
             $("#scheduleForm").on("submit", function (e) {
                 e.preventDefault();
+                let btn = $("#uploadBtn");
 
+                // Disable and show loading text
+                btn.prop("disabled", true)
+                    .html('Uploading <span class="loading-dots"></span>');
                 let formData = new FormData(this);
 
                 $.ajax({
-                    url: "{{ route('admin.attachment_schedule.store') }}", // adjust route name
+                    url: "{{ route('admin.attachment_schedules.supervisors.upload') }}",
                     type: "POST",
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function (response) {
                         if (response.status === "success") {
+
+                            let stats = response.stats;
+
+                            // Build failure list HTML table
+                            let failureHtml = "";
+
+                            if (stats.fail_count > 0) {
+                                failureHtml += "<ul class='list-group'>";
+
+                                stats.failed_records.forEach(function (item) {
+                                    failureHtml += `
+                                            <li class="list-group-item text-danger">
+                                                ${item.reason}
+                                            </li>
+                                        `;
+                                });
+
+                                failureHtml += "</ul>";
+                            }
+
+
+                            let htmlMsg = `
+                    <strong>Upload Completed!</strong><br>
+                    <strong>Successful:</strong> ${stats.success_count}<br>
+                    <strong>Failed:</strong> ${stats.fail_count}<br><br>
+                    ${failureHtml}
+                `;
+
                             Swal.fire({
-                                toast: true,
-                                position: 'top-end',
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true
+                                icon: stats.fail_count > 0 ? "warning" : "success",
+                                title: "Import Report",
+                                html: htmlMsg,
+                                width: 600,
                             });
 
-                            // optionally reset form and close modal
                             $("#scheduleForm")[0].reset();
                             modal.hide();
                             table.ajax.reload(null, false);
+
                         } else {
                             Swal.fire({
                                 toast: true,
@@ -218,6 +233,7 @@
                     },
                     error: function (xhr) {
                         let res = xhr.responseJSON;
+
                         if (res && res.errors) {
                             let messages = Object.values(res.errors).flat().join("\n");
                             Swal.fire({
@@ -240,9 +256,14 @@
                                 timerProgressBar: true
                             });
                         }
+                    },
+                    complete: function () {
+                        // ALWAYS re-enable button after request completes
+                        $("#uploadBtn").prop("disabled", false).html("Upload");
                     }
                 });
             });
+
 
         });
     </script>

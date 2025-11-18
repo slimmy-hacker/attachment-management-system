@@ -9,10 +9,10 @@
 
         <div class="grid grid-cols-1 gap-4">
             <a href="{{ route('register.portal', 'student') }}" class="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">🎓 Student</a>
-            <a href="{{ route('register.portal', 'supervisor') }}" class="bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">👨‍🏫 Supervisor</a>
+            <a href="{{ route('register.portal', 'lecturer') }}" class="bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">👨‍🏫 Supervisor</a>
             <a href="{{ route('register.portal', 'industrial_supervisor') }}" class="bg-yellow-600 text-white py-2 rounded-lg hover:bg-yellow-700">🏭 Industry</a>
             <a href="{{ route('register.portal', 'company') }}" class="bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">🏢 Company</a>
-           
+
         </div>
 
         <p class="text-gray-600 text-sm mt-6">

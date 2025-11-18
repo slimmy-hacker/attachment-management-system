@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LecturerController;
 
 Route::get('portal', function () {
-    return view('supervisor.portal');
-})->name('supervisor.portal');
+    return view('lecturer.portal');
+})->name('lecturer.portal');
 
-Route::name('supervisor.')->group(function () {
+Route::name('lecturer.')->group(function () {
    Route::get('/students-assigned', [LecturerController::class, 'studentsAssigned'])
         ->name('students-assigned');
 

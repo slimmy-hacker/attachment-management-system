@@ -202,9 +202,9 @@
                                     </label>
                                     <select name="county" id="county" class="w-full border rounded p-2 select2" required>
                                         <option value="">-- Select County --</option>
-                                        @foreach($counties as $code => $county)
-                                            <option value="{{ $code }}" {{ old('county') == $code ? 'selected' : '' }}>
-                                                {{ $code }} - {{ $county }}
+                                        @foreach($counties as $county)
+                                            <option value="{{ $county->code }}" data-code="{{$county->code}}" {{ old('county') == $county->code ? 'selected' : '' }}>
+                                               {{ $county->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -220,9 +220,9 @@
                                         <option value="">-- Select Sub-County --</option>
                                         @foreach($sub_counties as $sub_county)
                                             <option value="{{ $sub_county['code'] }}"
-                                                    data-county="{{ $sub_county['county_code'] }}"
+                                                    data-county="{{ $sub_county['parent_code'] }}"
                                                 {{ old('subcounty') == $sub_county['code'] ? 'selected' : '' }}>
-                                                {{ $sub_county['code'] }} - {{ $sub_county['name'] }}
+                                                 {{ $sub_county['name'] }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -234,7 +234,6 @@
                                     <div>
                                         <label for="street" class="block font-semibold required">
                                             street
-                                            <span class="text-red-600">*</span>
                                         </label>
                                         <input type="text" name="street" id="street" value="{{ old('street') }}"
                                                class="w-full border rounded p-2" required>
@@ -436,31 +435,37 @@
                         let subCounties = @json($sub_counties);
                         let $county = $("#county");
                         let $subcounty = $("#subcounty");
+                        let selected_source = 'county';
                         // Fill subcounty dropdown when county changes
                         $county.on('change', function () {
                             let countyCode = $(this).val();
                             let $subcounty = $('#subcounty');
+                            let selected_subcounty = $subcounty.val();
 
                             $subcounty.empty().append('<option value="">-- Select Subcounty --</option>');
 
                             if (countyCode) {
-                                let filtered = subCounties.filter(sc => sc.county_code === countyCode);
+                                let filtered = subCounties.filter(sc => sc.parent_code === countyCode);
                                 $.each(filtered, function (i, sc) {
                                     $subcounty.append(
-                                        `<option value="${sc.code}">${sc.code} - ${sc.name}</option>`
+                                        `<option value="${sc.code}">${sc.name}</option>`
                                     );
                                 });
+                            }
+                            if (selected_source === 'sub_county' && selected_subcounty) {
+                                $subcounty.val(selected_subcounty).trigger('change');
                             }
                         });
 
                         $subcounty.on("change", function () {
                             let selectedCounty = $(this).find("option:selected").data("county");
                             if (selectedCounty && !$county.val()) {
+                                selected_source = 'sub_county';
                                 $county.val(selectedCounty).trigger("change");
                             }
                         });
 
-                        // Preselect county if subcounty already has value
+
 
 
                     });
