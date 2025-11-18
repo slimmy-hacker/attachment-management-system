@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\IndurstrialSupervisorController;
 use App\Http\Controllers\CompanyController;
+<<<<<<< HEAD
 use App\Http\Controllers\AttachmentSelectedController;
 use App\Http\Controllers\AttarchmentSelectedController;
 
+=======
+use App\Http\Controllers\AttarchmentSelectedController;
+>>>>>>> eeabcf49eea11f93c231154f3b5393a922c9a347
 
 
 use App\Http\Controllers\OpportunityController;
@@ -37,14 +41,20 @@ Route::middleware('auth')->group(function () {
     Route::get('get-company-industrial-supervisors/{id}', [IndurstrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> eeabcf49eea11f93c231154f3b5393a922c9a347
     Route::get('/select-attarchment', [AttarchmentSelectedController::class, 'index'])->name('attachment.select');
     Route::post('/attachment/select', [AttarchmentSelectedController::class, 'store'])->name('attachment.store');
     Route::post('/attachment/change', [AttarchmentSelectedController::class, 'change'])->name('attachment.change');
 
     Route::middleware(['ensure.period.selected'])->group(function () {
         Route::get('/dashboard', [AttarchmentSelectedController::class, 'dashboard'])->name('dashboard');
+<<<<<<< HEAD
 
+=======
+>>>>>>> eeabcf49eea11f93c231154f3b5393a922c9a347
     });
 
 });
