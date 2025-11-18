@@ -24,9 +24,9 @@ class AdministrativeUnitController extends Controller
                 })
                 ->addColumn('level_name', function ($row) {
                     $names = [
-                        
-                        1=> 'department',
-                        2 => 'course',
+                        1 =>'School',
+                        2=> 'Department',
+                        3 => 'course',
                     ];
 
                     return $names[$row->level] ?? 'Unknown';
@@ -34,9 +34,9 @@ class AdministrativeUnitController extends Controller
 
                 ->filterColumn('level_name', function ($query, $keyword) {
                     $map = [
-                        
-                        'department' => 1,
-                        'course'       => 2,
+                        1 =>'School',
+                        2=> 'Department',
+                        3 => 'course',
                     ];
 
                     $keyword = strtolower($keyword);

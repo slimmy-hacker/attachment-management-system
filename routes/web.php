@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\IndurstrialSupervisorController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\AttarchmentSelectedController;
+use App\Http\Controllers\AttachmentSelectedController;
 
 
 use App\Http\Controllers\OpportunityController;

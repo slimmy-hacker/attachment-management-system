@@ -19,19 +19,11 @@
             <div class="shadow overflow-hidden">
                 <table class="table-fixed min-w-full divide-y divide-gray-200" id="locations_table">
                     <thead class="bg-gray-100">
-<<<<<<< HEAD
-  
-                            <th class="p-4 w-12">#</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                            <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
-              
-=======
                         <tr>
                             <th class="p-4 w-12">#</th>
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Parent</th>
->>>>>>> eeabcf49eea11f93c231154f3b5393a922c9a347
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Level</th>
                             <th class="p-4">
                                 <button id="open-modal-btn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2">
@@ -93,27 +85,11 @@ $(document).ready(function () {
         ordering: false,
         ajax: "{{ route('admin.locations.index') }}",
         columns: [
-<<<<<<< HEAD
-
-
-            { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-            { data: 'code', name: 'code' },
-            { data: 'parent_code', name: 'parent_code' },
-            { data: 'name', name: 'name' },
-            { data: 'level', name: 'level' },
-
-
-=======
->>>>>>> eeabcf49eea11f93c231154f3b5393a922c9a347
             { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
             { data: 'name', name: 'name' },
             { data: 'code', name: 'code' },
             { data: 'parent_name', name: 'locations.name' },
             { data: 'level_name', name: 'level_name' },
-<<<<<<< HEAD
-
-=======
->>>>>>> eeabcf49eea11f93c231154f3b5393a922c9a347
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ]
     });
