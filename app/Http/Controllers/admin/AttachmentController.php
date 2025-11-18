@@ -8,15 +8,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use App\Models\User;
-use App\Models\AttachmentSchedule;
+use App\Models\Attachment;
 
-class AttarchmentScheduleController extends Controller
+class AttachmentController extends Controller
 {
     //
     public function index(Request $request){
         if ($request->ajax()) {
 
-            $data = AttachmentSchedule::query();
+            $data = Attachment::query();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -30,14 +30,14 @@ class AttarchmentScheduleController extends Controller
                 ->make(true);
         }
 
-        return view('admin.attarchment_schedules');
+        return view('admin.attachments');
     }
 
     public function store(Request $request)
     {
         // ✅ Validate request
         $validated = $request->validate([
-            'name'       => 'required|string|max:255|unique:attachment_schedules,name',
+            'name'       => 'required|string|max:255|unique:attachments,name',
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
         ]);
@@ -45,7 +45,7 @@ class AttarchmentScheduleController extends Controller
         $slug = Str::slug($validated['name'], '-');
 
         // Check uniqueness of slug
-        if (AttachmentSchedule::where('slug', $slug)->exists()) {
+        if (Attachment::where('slug', $slug)->exists()) {
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Slug already exists. Try another name.'
@@ -57,7 +57,7 @@ class AttarchmentScheduleController extends Controller
         $endWeekId   = $weekGen->weekId($validated['end_date']);
 
         // ✅ Save record
-        $record = AttachmentSchedule::create([
+        $record = Attachment::create([
             'name'          => $validated['name'],
             'slug'          => $slug,
             'start_date'    => $validated['start_date'],

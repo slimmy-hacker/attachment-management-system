@@ -21,28 +21,28 @@
             <!-- Full Name -->
             <div class="mb-4">
                 <label class="block text-gray-700">Full Name</label>
-                <input type="text" name="name" required 
+                <input type="text" name="name" required
                        class="w-full p-2 border rounded">
             </div>
 
             <!-- Department -->
             <div class="mb-4">
                 <label class="block text-gray-700">Department</label>
-                <input type="text" name="department" required 
+                <input type="text" name="department" required
                        class="w-full p-2 border rounded">
             </div>
 
             <!-- Email Address -->
             <div class="mb-4">
                 <label class="block text-gray-700">Email Address</label>
-                <input type="email" name="email" required 
+                <input type="email" name="email" required
                        class="w-full p-2 border rounded">
             </div>
 
             <!-- Phone -->
             <div class="mb-4">
                 <label class="block text-gray-700">Telephone</label>
-                <input type="tel" name="phone" required 
+                <input type="tel" name="phone" required
                        placeholder="+2547XXXXXXXX"
                        class="w-full p-2 border rounded">
             </div>
@@ -50,19 +50,19 @@
             <!-- Password -->
             <div class="mb-4">
                 <label class="block text-gray-700">Password</label>
-                <input type="password" name="password" required 
+                <input type="password" name="password" required
                        class="w-full p-2 border rounded">
             </div>
 
             <!-- Confirm Password -->
             <div class="mb-6">
                 <label class="block text-gray-700">Confirm Password</label>
-                <input type="password" name="password_confirmation" required 
+                <input type="password" name="password_confirmation" required
                        class="w-full p-2 border rounded">
             </div>
 
             <!-- Submit -->
-            <button type="submit" 
+            <button type="submit"
                     class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
                 Register
             </button>
@@ -70,8 +70,8 @@
 
         <!-- Login link -->
         <p class="mt-6 text-center text-gray-600">
-            Already have an account? 
-            <a href="{{ route('login.portal', 'supervisor') }}" 
+            Already have an account?
+            <a href="{{ route('login.portal', 'lecturer') }}"
                class="text-blue-600 hover:underline">
                 Login Here
             </a>

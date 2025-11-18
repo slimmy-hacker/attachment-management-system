@@ -35,17 +35,19 @@ Route::middleware('auth')->group(function () {
     Route::get('get-company-industrial-supervisors/{id}', [IndurstrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
 
 
-    Route::get('/select-attarchment', [AttachmentSelectedController::class, 'index'])->name('attachment_selected.select');
+    Route::get('/select-attachment', [AttachmentSelectedController::class, 'index'])->name('attachment_selected.select');
     Route::post('/attachment/select', [AttachmentSelectedController::class, 'store'])->name('attachment_selected.store');
     Route::post('/attachment/change', [AttachmentSelectedController::class, 'change'])->name('attachment_selected.change');
 
-    Route::middleware(['ensure.period.selected'])->group(function () {
-        Route::get('/dashboard', [AttachmentSelectedController::class, 'dashboard'])->name('dashboard');
-    });
+    Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
+    Route::get('/opportunities/{opportunity}/apply', [OpportunityController::class, 'showApplyForm'])->name('opportunities.apply');
+    Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply');
+    Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply.submit');
+    Route::get('/opportunities/{opportunity}/applications', [OpportunityController::class, 'showApplications']) ->name('opportunities.applications');
+
 
 });
 
-Route::middleware(['auth'])->get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
 
 Route::middleware(['portal:student'])
     ->prefix('students')
@@ -62,26 +64,17 @@ Route::middleware(['portal:admin'])
         })->name('register.select.portal');
 
         Route::get('/register/{portal}', [RegisteredUserController::class, 'showPortalForm'])
-            ->where('portal', 'student|supervisor|industry|company')
+            ->where('portal', 'student|lecturer|industry|company')
             ->name('register.portal');
 
         Route::post('/student/register', [RegisteredUserController::class, 'storeStudent'])
                         ->name('register.portal.student');
 
         Route::post('/register/{portal}', [RegisteredUserController::class, 'storePortal'])
-            ->where('portal', 'student|supervisor|industry|company')
+            ->where('portal', 'student|lecturer|industry|company')
             ->name('register.portal.store');
 
 
-        // --- Test route ---
-        Route::get('/test-tailwind', function () {
-            return view('test-tailwind');
-        });
-        Route::get('/login/{portal}', [AuthenticatedSessionController::class, 'create'])
-    ->name('portal.login');
+
     });
 
-    Route::get('/opportunities/{opportunity}/apply', [OpportunityController::class, 'showApplyForm'])->name('opportunities.apply');
-Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply');
-Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply.submit');
-Route::get('/opportunities/{opportunity}/applications', [OpportunityController::class, 'showApplications']) ->name('opportunities.applications');

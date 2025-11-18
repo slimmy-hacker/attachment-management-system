@@ -45,8 +45,8 @@ public function store(Request $request)
         switch ($user->portal) {
             case 'student':
                 return redirect()->route('student.portal');
-            case 'supervisor':
-                return redirect()->route('school_supervisor.portal');
+            case 'lecturer':
+                return redirect()->route('lecturer.portal');
             case 'industrial_supervisor':
                 return redirect()->route('industry.portal');
             case 'company':

@@ -12,7 +12,7 @@ return new class extends Migration
    public function up()
 {
     Schema::table('users', function (Blueprint $table) {
-        $table->string('portal')->nullable(); // store student, company, supervisor, admin
+        $table->string('portal')->nullable(); // store student, company, lecturer, admin
     });
 }
 

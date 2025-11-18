@@ -38,9 +38,10 @@ return null;
 // Use DB transaction to ensure consistency
 return DB::transaction(function () use ($row) {
 $reg_no = Str::upper($row['reg_no']);
+$email= Str::lower($row['email']);
 
 $user = User::updateOrCreate(
-                ['email' => $row['email']],
+                ['email' => $email],
                 [
                 'name' => $row['name'],
                 'phone_number' => $row['phone_number'],

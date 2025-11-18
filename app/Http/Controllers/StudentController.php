@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Report;
-use App\Models\AttachmentSchoolSupervisor;
+use App\Models\AttachmentLecturer;
 use App\Models\AttachmentStudent;
 use App\Models\User;
 use Illuminate\Http\Request;

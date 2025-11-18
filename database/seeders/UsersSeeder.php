@@ -31,7 +31,7 @@ class UsersSeeder extends Seeder
                 'name' => 'School Supervisor',
                 'email' => 'schoolsupervisor@example.com',
                 'password' => Hash::make('1212'),
-                'role' => 'school_supervisor',
+                'role' => 'lecturer',
             ],
             [
                 'name' => 'Industrial Supervisor',

@@ -18,7 +18,7 @@
             <div class="flex-1 flex p-6items-center justify-center">
                 <div class="bg-white rounded-2xl shadow-md p-10 text-center max-w-md w-full">
                     <h2 class="text-lg font-semibold text-gray-700 mb-3">No Available Periods</h2>
-                    <p class="text-gray-500">There are currently no attachment periods. Please check back later.</p>
+                    <p class="text-gray-500">You are currently not assigned any attachment. Please check back later.</p>
                 </div>
             </div>
         @else
@@ -28,6 +28,7 @@
                         @csrf
                         <input type="hidden" name="attachment_id" value="{{ $attachment->attachment->id }}">
                         <input type="hidden" name="attachment_student_id" value="{{ $attachment->id }}">
+                        <input type="hidden" name="attachment_name" value="{{ $attachment->attachment->name }}">
                         <button type="submit"
                                 class="block w-full text-left bg-white p-6 rounded-2xl shadow-sm border border-transparent hover:border-blue-400 hover:shadow-md transition-all duration-200 focus:ring-2 focus:ring-blue-500">
                             <div class="flex flex-col">

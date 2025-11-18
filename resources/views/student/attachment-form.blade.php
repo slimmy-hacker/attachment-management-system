@@ -129,7 +129,7 @@
                 });
             }
 
-// When a supervisor is selected, update phone & email
+// When a lecturer is selected, update phone & email
             $('#industrial_supervisor').on('change', function () {
                 const selected = $(this).find(':selected');
                 $('#supervisor_phone').val(selected.data('phone') || '');

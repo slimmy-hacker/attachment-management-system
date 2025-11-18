@@ -20,7 +20,7 @@
 
             <div class="mb-4">
                 <label class="block text-gray-600">Email Address</label>
-                <input type="email" name="email" class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300" required autofocus>
+                <input type="email" name="email" class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"  value="{{ old('email') }}" required autofocus>
                 @error('email')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror

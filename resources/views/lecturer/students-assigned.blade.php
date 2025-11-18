@@ -37,8 +37,8 @@
                         <td>{{ $student->course ?? 'N/A' }}</td>
                         <td>{{ $student->company->name ?? 'Not Assigned' }}</td>
                         <td>
-                            <a href="{{ route('supervisor.reports') }}" class="btn btn-info btn-sm">View Reports</a>
-                            <a href="{{ route('supervisor.evaluate') }}" class="btn btn-primary btn-sm">Feedback</a>
+                            <a href="{{ route('lecturer.reports') }}" class="btn btn-info btn-sm">View Reports</a>
+                            <a href="{{ route('lecturer.evaluate') }}" class="btn btn-primary btn-sm">Feedback</a>
                         </td>
                     </tr>
                 @endforeach
