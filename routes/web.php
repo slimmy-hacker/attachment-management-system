@@ -35,13 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('get-company-industrial-supervisors/{id}', [IndurstrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
 
 
-    Route::get('/select-attarchment', [AttarchmentSelectedController::class, 'index'])->name('attachment.select');
-    Route::post('/attachment/select', [AttarchmentSelectedController::class, 'store'])->name('attachment.store');
-    Route::post('/attachment/change', [AttarchmentSelectedController::class, 'change'])->name('attachment.change');
 
-    Route::middleware(['ensure.period.selected'])->group(function () {
-        Route::get('/dashboard', [AttarchmentSelectedController::class, 'dashboard'])->name('dashboard');
-    });
     Route::get('/select-attachment', [AttachmentSelectedController::class, 'index'])->name('attachment_selected.select');
     Route::post('/attachment/select', [AttachmentSelectedController::class, 'store'])->name('attachment_selected.store');
     Route::post('/attachment/change', [AttachmentSelectedController::class, 'change'])->name('attachment_selected.change');

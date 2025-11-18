@@ -22,6 +22,7 @@ class AttachmentSelectedController extends Controller
                 $student = Student::where('user_id', Auth::id())->first();
               $attachment_students =  AttachmentStudent::with('attachment')
                                                         ->where('student_id', $student->id)
+                                                        ->orderBy('attachment.start_date', 'desc')
                                                         ->get();
                 return view('attachment_selected.students', compact('attachment_students'));
                 break;
@@ -96,8 +97,7 @@ class AttachmentSelectedController extends Controller
 
             // Proceed normally if validation passes
 
-
-            return redirect()->route('dashboard')->with([
+            return redirect()->back()->withInput()->with([
                 'notification' => [
                     'icon' => 'success',
                     'title' => 'Success',
