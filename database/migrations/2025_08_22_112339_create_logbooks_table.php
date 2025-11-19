@@ -15,8 +15,8 @@ return new class extends Migration
 
 
        $table->id();
-       $table->integer('student_id');
-       $table->integer('attachment_id');
+       $table->integer('attachment_student_id');
+      $table->integer('logbook_week_id');
        $table->integer('week_id');
        $table->date('start_date');
        $table->date('end_date');
@@ -24,7 +24,6 @@ return new class extends Migration
        $table->string('tasks');
        $table->string('skills_learned');
        $table->string('challenges')->nullable();
-       $table->string('indurstrial_supervisor_id');
        $table->timestamps();
        $table->softDeletes();
 });

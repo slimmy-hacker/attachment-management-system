@@ -10,7 +10,8 @@
                     <img src="https://themewagon.github.io/windster/images/logo.svg" class="h-6 mr-2" alt="Dekut Logo">
                     <span class="self-center whitespace-nowrap">Dekut External Attachment Management System</span>
                 </a>
-                <p>{{session('attachment_name')}}</p>
+
+                <p> <a href="{{route('attachment_selected.select')}}"> {{session('attachment_name')}} </a></p>
 {{--                <form action="#" method="GET" class="hidden lg:block lg:pl-32">--}}
 {{--                    <label for="topbar-search" class="sr-only">Search</label>--}}
 {{--                    <div class="mt-1 relative lg:w-64">--}}
@@ -36,12 +37,7 @@
     @endauth
 </span>
 
-                <div class="hidden lg:flex items-center">
-                    <span class="text-base font-normal text-gray-500 mr-5">Open source </span>
-                    <div class="-mb-1">
-                        <a class="github-button" href="#" data-color-scheme="no-preference: dark; light: light; dark: light;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star themesberg/windster-tailwind-css-dashboard on GitHub">Star</a>
-                    </div>
-                </div>
+
 
             </div>
         </div>

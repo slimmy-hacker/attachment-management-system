@@ -6,6 +6,7 @@ use App\Http\Controllers\CalenderController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\OpportunityController;
+use App\Http\Controllers\AttachmentDetailsController;
 
 
 Route::get('/portal', function () {
@@ -13,15 +14,13 @@ Route::get('/portal', function () {
 })->name('student.portal');
 Route::middleware(['ensure.attachment.selected'])->group(function () {
     Route::name('student.')->group(function () {
-        Route::get('/attachment-form', [StudentController::class, 'showAttachmentForm'])
+        Route::get('/attachment-form', [AttachmentDetailsController::class, 'edit'])
             ->name('attachment-form');
 
-        Route::post('/attachment-form', [StudentController::class, 'storeAttachmentForm'])
+        Route::post('/attachment-form', [AttachmentDetailsController::class, 'update'])
             ->name('attachment-form.store');
         Route::post('/register/student', [RegisteredUserController::class, 'student'])
             ->name('register.student');
-        Route::get('/student/attachment-form', [StudentController::class, 'showAttachmentForm'])->name('attachment.form');
-        Route::post('/student/attachment-form', [StudentController::class, 'submitAttachmentForm'])->name('attachment.form.submit');
         Route::get('/student/reports', [StudentController::class, 'reports'])->name('reports');
         Route::get('/student/logbook', [StudentController::class, 'logbook'])->name('logbook');
         Route::get('/student/results', [StudentController::class, 'results'])->name('results');

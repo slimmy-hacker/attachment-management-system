@@ -1,7 +1,7 @@
 @extends('layouts.my_app')
 
 @section('title')
-   Upload administrative units
+    administrative units
 @endsection
 
 @section('content')
@@ -88,7 +88,7 @@ $(document).ready(function () {
             { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
             { data: 'name', name: 'name' },
             { data: 'code', name: 'code' },
-            { data: 'parent_name', name: 'administrative units.name' },
+            { data: 'parent_name', name: 'administrative_units.name' },
             { data: 'level_name', name: 'level_name' },
             { data: 'action', name: 'action', orderable: false, searchable: false },
         ]

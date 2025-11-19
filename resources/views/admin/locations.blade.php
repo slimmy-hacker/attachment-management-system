@@ -1,7 +1,7 @@
 @extends('layouts.my_app')
 
 @section('title')
-   Upload Locations
+   Locations
 @endsection
 
 @section('content')
