@@ -13,4 +13,8 @@ class AdministrativeUnit extends Model
         return $this->belongsTo(AdministrativeUnit ::class, 'parent_code', 'code');
 
     }
+    public function children()
+    {
+        return $this->hasMany(AdministrativeUnit::class, 'parent_id');
+    }
 }

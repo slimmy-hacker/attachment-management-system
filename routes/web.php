@@ -17,7 +17,7 @@ Route::get('/', function () {
     if (Auth::check() && Auth::user()->role) {
         return redirect()->route(Auth::user()->role . '.portal');
     }
-    return view('welcome');
+    return redirect()->route('login');
 })->name('welcome');
 
 

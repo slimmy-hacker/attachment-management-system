@@ -1,6 +1,6 @@
 
                     <li>
-                        <a href="{{ route('student.portal') }}" class="text-base text-white font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 hover:text-gray-900 group">
+                        <a href="{{ route('admin.portal') }}" class="text-base text-white font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 hover:text-gray-900 group">
                             <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
                             <span class="ml-3">Dashboard</span>
                         </a>
@@ -67,10 +67,5 @@
                             <span class="ml-3 flex-1 whitespace-nowrap">Admin unit</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('cal.index') }}" class="text-base text-white font-normal rounded-lg hover:bg-gray-100 hover:text-gray-900  flex items-center p-2 group ">
-                            <svg class="w-6 h-6 text-gray-500 flex-shrink-0 group-hover:text-gray-900 transition duration-75" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                            <span class="ml-3 flex-1 whitespace-nowrap">Others</span>
-                        </a>
-                    </li>
+
 

@@ -200,10 +200,10 @@
                                     <label for="county" class="block font-semibold">
                                         County <span class="text-red-600">*</span>
                                     </label>
-                                    <select name="county" id="county" class="w-full border rounded p-2 select2" required>
+                                    <select name="county_id" id="county" class="w-full border rounded p-2 select2" required>
                                         <option value="">-- Select County --</option>
                                         @foreach($counties as $county)
-                                            <option value="{{ $county->code }}" data-code="{{$county->code}}" {{ old('county') == $county->code ? 'selected' : '' }}>
+                                            <option value="{{ $county->id }}" data-code="{{$county->code}}" {{ old('county') == $county->code ? 'selected' : '' }}>
                                                {{ $county->name }}
                                             </option>
                                         @endforeach
@@ -216,12 +216,12 @@
                                     <label for="county" class="block font-semibold">
                                        Sub County <span class="text-red-600">*</span>
                                     </label>
-                                    <select name="subcounty" id="subcounty" class="w-full border rounded p-2 select2" required>
+                                    <select name="sub_county_id" id="subcounty" class="w-full border rounded p-2 select2" required>
                                         <option value="">-- Select Sub-County --</option>
                                         @foreach($sub_counties as $sub_county)
-                                            <option value="{{ $sub_county['code'] }}"
-                                                    data-county="{{ $sub_county['parent_code'] }}"
-                                                {{ old('subcounty') == $sub_county['code'] ? 'selected' : '' }}>
+                                            <option value="{{ $sub_county['id'] }}"
+                                                    data-county_code="{{ $sub_county['parent_code'] }}"
+                                                {{ old('subcounty') == $sub_county['id'] ? 'selected' : '' }}>
                                                  {{ $sub_county['name'] }}
                                             </option>
                                         @endforeach
@@ -438,32 +438,49 @@
                         let selected_source = 'county';
                         // Fill subcounty dropdown when county changes
                         $county.on('change', function () {
-                            let countyCode = $(this).val();
+                            // Get the selected option
+                            let selectedOption = $(this).find('option:selected');
+
+                            // Get the value of data-code
+                            let countyCode = selectedOption.data('code');
                             let $subcounty = $('#subcounty');
                             let selected_subcounty = $subcounty.val();
-
                             $subcounty.empty().append('<option value="">-- Select Subcounty --</option>');
 
                             if (countyCode) {
-                                let filtered = subCounties.filter(sc => sc.parent_code === countyCode);
+                                let filtered = subCounties.filter(sc => sc.parent_code == countyCode);
                                 $.each(filtered, function (i, sc) {
                                     $subcounty.append(
-                                        `<option value="${sc.code}">${sc.name}</option>`
+                                        `<option value="${sc.id}">${sc.name}</option>`
                                     );
                                 });
                             }
                             if (selected_source === 'sub_county' && selected_subcounty) {
                                 $subcounty.val(selected_subcounty).trigger('change');
+                                selected_source = 'county';
                             }
                         });
 
                         $subcounty.on("change", function () {
-                            let selectedCounty = $(this).find("option:selected").data("county");
-                            if (selectedCounty && !$county.val()) {
-                                selected_source = 'sub_county';
-                                $county.val(selectedCounty).trigger("change");
+                            // Get the county_code from the selected subcounty
+                            let selectedCountyCode = $(this).find("option:selected").data("county_code");
+
+                            // Only proceed if a county code exists and the county dropdown is empty
+                            if (selectedCountyCode && !$county.val()) {
+                                // Find the county option whose data-code matches
+                                let $matchingCounty = $county.find('option').filter(function() {
+                                    return $(this).data('code') == selectedCountyCode;
+                                });
+
+
+                                if ($matchingCounty.length) {
+                                    selected_source = 'sub_county';
+                                    $county.val($matchingCounty.val()).trigger("change");
+                                }
                             }
                         });
+
+
 
 
 

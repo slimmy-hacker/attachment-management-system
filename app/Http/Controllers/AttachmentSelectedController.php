@@ -20,10 +20,13 @@ class AttachmentSelectedController extends Controller
         switch (Auth::user()->role) {
             case 'student':
                 $student = Student::where('user_id', Auth::id())->first();
-              $attachment_students =  AttachmentStudent::with('attachment')
-                  ->where('student_id', $student->id)
-                  ->select('attachment_students.*')
-                  ->get();
+                $attachment_students = AttachmentStudent::with('attachment')
+                    ->join('attachments', 'attachments.id', '=', 'attachment_students.attachment_id')
+                    ->where('attachment_students.student_id', $student->id)
+                    ->orderBy('attachments.start_date', 'DESC')
+                    ->select('attachment_students.*')
+                    ->get();
+
                 return view('attachment_selected.students', compact('attachment_students'));
                 break;
 
@@ -39,10 +42,10 @@ class AttachmentSelectedController extends Controller
 
                 $supervisor = IndustrialSupervisor::where('user_id', Auth::id())->first();
 
-                $attachment_slugs = AttachmentStudent::where('industrial_supervisor_id', $supervisor->id)
-                    ->distinct('attachment_slug')
-                    ->pluck('attachment_slug');
-                $attachments = Attachment::whereIn('attachment_slug', $attachment_slugs)
+                $attachment_ids = AttachmentStudent::where('industrial_supervisor_id', $supervisor->id)
+                    ->distinct('attachment_id')
+                    ->pluck('attachment_id');
+                $attachments = Attachment::whereIn('attachment_id', $attachment_ids)
                     ->get();
 
                 break;
@@ -52,10 +55,10 @@ class AttachmentSelectedController extends Controller
                 $company = Company::where('user_id', Auth::id())->first();
 
 
-                $studentIds = AttachmentStudent::where('company_id', $company->id)
-                    ->distinct('attachment_slug')
-                    ->pluck('attachment_slug');
-                $attachments = Attachment::whereIn('id', $studentIds)
+                $attachment_ids = AttachmentStudent::where('company_id', $company->id)
+                    ->distinct('attachment_id')
+                    ->pluck('attachment_id');
+                $attachments = Attachment::whereIn('id', $attachment_ids)
                     ->distinct()
                     ->get();
                 break;

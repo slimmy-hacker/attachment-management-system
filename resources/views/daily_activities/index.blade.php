@@ -91,8 +91,7 @@
                 closable: false
             });
 
-            // Pass backend events into JS
-            let events = @json($events);
+            /
 
 
 
@@ -101,7 +100,7 @@
                 initialView: 'dayGridMonth',
                 editable: true,
                 selectable: true,
-                events: events,
+                events: @json($events),
             });
 
             calendar.render();
@@ -200,6 +199,7 @@
                             let event = calendar.getEventById(response.data.id);
 
                             if (event) {
+
                                 event.remove();
                             }
                             calendar.addEvent(response.data);

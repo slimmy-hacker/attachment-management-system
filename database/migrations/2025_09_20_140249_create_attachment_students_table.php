@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('attachment_students', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');   // ✔ correct
-            $table->unsignedBigInteger('attachment_id'); // ✔ correct
-
-            $table->string('company_id')->nullable();
-            $table->string('lecturer_id')->nullable();
-            $table->string('industrial_supervisor_id')->nullable();
+            $table->unsignedBigInteger('attachment_id');
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->unsignedBigInteger('lecturer_id')->nullable();
+            $table->unsignedBigInteger('industrial_supervisor_id')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->text('report')->nullable();

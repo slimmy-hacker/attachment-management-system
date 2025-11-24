@@ -12,10 +12,28 @@ class AttachmentStudent extends Model
         return $this->belongsTo(Attachment::class, 'attachment_id');
     }
 
-    public function department() {
-        return $this->belongsTo(Department::class, 'department_id');
+    public function lecturer()
+    {
+        return $this->belongsTo(Lecturer::class, 'lecturer_id');
     }
     public function student() {
         return $this->belongsTo(Student::class, 'student_id');
     }
+
+    public function program()
+    {
+        return $this->hasOneThrough(
+            AdministrativeUnit::class,     // Final: department
+            Student::class,                // Intermediate: student
+            'id',                          // Local key on students
+            'id',                          // Local key on admin units
+            'student_id',                  // FK on attachment_students
+            'program_id'                   // FK on students table → program
+        )->with('parent');
+    }
+    public function getDepartmentAttribute()
+    {
+        return $this->student?->program?->parent;
+    }
+
 }

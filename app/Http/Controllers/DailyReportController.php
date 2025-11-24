@@ -107,6 +107,7 @@ class DailyReportController extends Controller
 
 // Prepare the response data
             $data = [
+                [
                 'id'             => $daily_report->id,
                 'title'          => $daily_report->task_title,
                 'start'          => $daily_report->start_date,
@@ -114,6 +115,19 @@ class DailyReportController extends Controller
                 'tasks'          => $daily_report->tasks,
                 'skills_learned' => $daily_report->skills_learned,
                 'challenges'     => $daily_report->challenges,
+                    ],
+                [
+                            'id' => $weekly_report->week_id,
+                            'title' => $weekly_report->status,
+                            'start' => $weekly_report->week_start_date,
+                            'end' => Carbon::parse($weekly_report->week_end_date)->addDay()->toDateString(),
+                            'status' => $weekly_report->status,
+                            'weekly_report' => $weekly_report->weekly_report,
+                            'industrial_supervisor_comment' => $weekly_report->industrial_supervisor_comment,
+                            'lecturer_comment' => $weekly_report->lecturer_comment,
+                            'type'=>'weekly',
+                            'color' => '#28a745',
+                ]
             ];
 
 

@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name')->unique();       // Company Name
             $table->string('alias')->unique();      // Company Alias
             $table->string('parent_company')->nullable();     // Company Branch
             $table->string('address');
             $table->string('email')->unique();
             $table->string('contact')->unique();
-            $table->string('county');     // County (dropdown)
-            $table->string('subcounty')->nullable();
-            $table->string('ward')->nullable(); // Subcounty
+            $table->unsignedBigInteger('county_id');     // County (dropdown)
+            $table->unsignedBigInteger('sub_county_id')->nullable();
+            $table->unsignedBigInteger('ward_id')->nullable(); // Subcounty
             $table->string('street');
             $table->string('building');
             $table->decimal('latitude', 10, 7)->nullable();   // Latitude

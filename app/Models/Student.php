@@ -14,10 +14,7 @@ class Student extends Model
 
     protected $guarded = [];
 
-    public function placements()
-    {
-        return $this->hasMany(Placement::class, 'student_id');
-    }
+
     public function supervisor()
 {
     return $this->belongsTo(User::class, 'supervisor_id');
@@ -26,5 +23,23 @@ class Student extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function program()
+    {
+        return $this->belongsTo(AdministrativeUnit::class, 'program_id');
+    }
+
+    public function department()
+    {
+        return $this->hasOneThrough(
+            AdministrativeUnit::class, // Final target (department)
+            AdministrativeUnit::class, // Intermediate (program)
+            'id',                      // Local key on program table
+            'id',                      // Local key on department table
+            'program_id',              // FK on students table → program
+            'parent_id'                // FK on programs table → department
+        );
+    }
+
 
 }

@@ -18,78 +18,13 @@ use Yajra\DataTables\Facades\DataTables;
 class CompanyController extends Controller
 {
 
-    private function getCounties(): array
-    {
-        return [
-            '001' => 'Mombasa',
-            '002' => 'Kwale',
-            '003' => 'Kilifi',
-            '004' => 'Tana River',
-            '005' => 'Lamu',
-            '006' => 'Taita-Taveta',
-            '007' => 'Garissa',
-            '008' => 'Wajir',
-            '009' => 'Mandera',
-            '010' => 'Marsabit',
-            '011' => 'Isiolo',
-            '012' => 'Meru',
-            '013' => 'Tharaka-Nithi',
-            '014' => 'Embu',
-            '015' => 'Kitui',
-            '016' => 'Machakos',
-            '017' => 'Makueni',
-            '018' => 'Nyandarua',
-            '019' => 'Nyeri',
-            '020' => 'Kirinyaga',
-            '021' => "Murang'a",
-            '022' => 'Kiambu',
-            '023' => 'Turkana',
-            '024' => 'West Pokot',
-            '025' => 'Samburu',
-            '026' => 'Trans Nzoia',
-            '027' => 'Uasin Gishu',
-            '028' => 'Elgeyo-Marakwet',
-            '029' => 'Nandi',
-            '030' => 'Baringo',
-            '031' => 'Laikipia',
-            '032' => 'Nakuru',
-            '033' => 'Narok',
-            '034' => 'Kajiado',
-            '035' => 'Kericho',
-            '036' => 'Bomet',
-            '037' => 'Kakamega',
-            '038' => 'Vihiga',
-            '039' => 'Bungoma',
-            '040' => 'Busia',
-            '041' => 'Siaya',
-            '042' => 'Kisumu',
-            '043' => 'Homa Bay',
-            '044' => 'Migori',
-            '045' => 'Kisii',
-            '046' => 'Nyamira',
-            '047' => 'Nairobi',
-        ];
-    }
 
-    private function getSubCounties(): array
-    {
-        return [
-            ['code' => '0011', 'name' => 'Changamwe',   'county_code' => '001'],
-            ['code' => '0012', 'name' => 'Jomvu',       'county_code' => '001'],
-            ['code' => '0013', 'name' => 'Kisauni',     'county_code' => '001'],
-            ['code' => '0021', 'name' => 'Msambweni',   'county_code' => '002'],
-            ['code' => '0022', 'name' => 'Matuga',      'county_code' => '002'],
-            ['code' => '0031', 'name' => 'Kilifi North','county_code' => '003'],
-            // ...
-            ['code' => '999', 'name' => 'Diaspora', 'county_code' => '999'], // Special
-        ];
-    }
 
     public function companies(Request $request)
     {
-        if ($request->ajax()) {
-            $data = Company::with(['county', 'subcounty'])->latest();
 
+        if ($request->ajax()) {
+            $data = Company::with(['county', 'subcounty'])->orderBy('name', 'ASC')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->editColumn('county', fn($row) => $row->county->name ?? '-')
@@ -104,7 +39,7 @@ class CompanyController extends Controller
                 ->make(true);
         }
 
-        $counties = $this->getCounties();
+
         $counties = Location::where('level','1')
                              ->select('id','name','code')
                             ->get();
@@ -126,8 +61,8 @@ class CompanyController extends Controller
             'contact' => 'required|string|max:50|unique:companies,contact',
             'parent_company'    => 'nullable|string|max:255',
             'address'   => 'required|string|max:255',
-            'county'    => ['required'],
-            'subcounty'    => ['nullable'],
+            'county_id'    => 'required|exists:locations,id',
+            'sub_county_id'    => 'required|exists:locations,id',
             'latitude'    => 'nullable|string|max:255',
             'longitude'   => 'nullable|string',
             'street'    => 'nullable|string|max:255',

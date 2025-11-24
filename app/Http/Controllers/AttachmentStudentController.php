@@ -14,7 +14,7 @@ class AttachmentStudentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = AttachmentStudent::with(['attachment', 'student','department', 'student.user',])->latest()->get();
+            $data = AttachmentStudent::with(['attachment', 'student', 'student.user'])->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn() // adds DT_RowIndex
@@ -25,8 +25,8 @@ class AttachmentStudentController extends Controller
                 })
                 ->addColumn('reg_no', fn ($row) =>  $row->student->reg_no ?? '-')
                 ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
-                ->addColumn('department', fn ($row) => $row->department->slug ?? '-')
-                ->addColumn('lecturer', fn ($row) => $row->department->slug ?? 0)
+                ->addColumn('department', fn ($row) => $row->department->name ?? '-')
+                ->addColumn('lecturer', fn ($row) => $row->lecturer->user->name ?? '-')
                 ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
                 ->addColumn('action', function ($row) {
                     return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
