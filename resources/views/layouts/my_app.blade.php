@@ -31,54 +31,25 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://themewagon.github.io/docs/images/og-image.jpg">
     <meta property="og:image:type" content="image/png">
-
     @include('layouts.partials.scripts')
-
-
 </head>
 <body class="bg-gray-50">
 
-<noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-THQTXJ7"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-
-
-@include('layouts.partials.header')
-
+    @include('layouts.partials.header')
 <div class="flex overflow-hidden bg-white pt-16">
 
     @include('layouts.partials.sidebar')
     <div class="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"></div>
 
 
-    <div id="main-content" class="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
-        <main class="flex-1 p-6 bg-gray-100 overflow-auto">
-            <div class="flex flex-col bg-gray-50" style="min-height: calc(100vh - 15rem);">
+    <div id="main-content" class="h-full w-full bg-gray-100 relative overflow-y-auto lg:ml-64">
+        <main class="flex-1 bg-gray-100 overflow-auto px-2">
+            <div class="flex flex-col bg-gray-50 " style="min-height: calc(100vh - 12rem);">
             @yield('content')
             </div>
         </main>
         @include('layouts.partials.footer')
-        @if(session('notification'))
-            <script>
-                $(document).ready(function() {
-                    const notification = @json(session('notification'));
 
-                    if (notification && notification.message) {
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: notification.icon,
-                            title: notification.message,
-                            message: notification.message,
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
-                    }
-                });
-            </script>
-        @endif
 
     </div>
 

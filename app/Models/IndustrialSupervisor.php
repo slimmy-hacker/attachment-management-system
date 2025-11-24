@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class IndurstrialSupervisor extends Model
+class IndustrialSupervisor extends Model
 {
     protected $table = 'industrial_supervisors';
     protected $guarded = [];

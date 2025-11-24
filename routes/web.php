@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['portal:student'])
     ->prefix('students')
-    ->group(base_path('routes/student.php'));
+    ->group(base_path('routes/Student.php'));
 
 
 Route::middleware(['portal:admin'])

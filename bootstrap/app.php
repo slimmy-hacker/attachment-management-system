@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             Route::prefix('students')
                ->middleware(['web','portal:student'])
-                ->group(base_path('routes/student.php'));
+                ->group(base_path('routes/Student.php'));
 
             Route::prefix('admin')
                 ->middleware(['web','portal:admin'])

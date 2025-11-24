@@ -17,7 +17,7 @@ class CreateStudentsTable extends Migration
             $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('reg_no')->unique();
             $table->string('year_of_study')->nullable();
-            $table->string('programme_slug');
+            $table->integer('program_id');
             $table->string('phone_number')->unique()->nullable();
             $table->timestamps();
         });

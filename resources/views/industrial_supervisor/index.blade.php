@@ -173,7 +173,7 @@
 
         calendar.render();
         // Open modal when a date is clicked
-        // calendar.on('dateClick', function(info) {
+        // daily_activities.on('dateClick', function(info) {
         //     modal.show();
         //     $('#start_date').val(info.dateStr);
         //     $('#end_date').val(info.dateStr);
@@ -249,7 +249,7 @@
                         $form[0].reset();
                         modal.hide();
 
-                        // 🔹 Add new event to calendar dynamically
+                        // 🔹 Add new event to daily_activities dynamically
                         calendar.addEvent({
                             id: response.data.id,
                             title: response.data.title,

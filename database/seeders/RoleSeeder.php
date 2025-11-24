@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
                 'slug' => 'student',
             ],
             [
-                'name' => 'School Supervisor',
+                'name' => 'Lecturer',
                 'slug' => 'lecturer',
             ],
             [

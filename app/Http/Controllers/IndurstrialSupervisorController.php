@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Company;
-use App\Models\IndurstrialSupervisor;
+use App\Models\IndustrialSupervisor;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ class IndurstrialSupervisorController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = IndurstrialSupervisor::with(['user',])->latest();
+            $data = IndustrialSupervisor::with(['user',])->latest();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -65,12 +65,12 @@ class IndurstrialSupervisorController extends Controller
                 [
                     'name' => $validated['name'],
                     'phone_number' => $validated['phone_number'],
-                    'password' => Hash::make(1212),
+                    'password' => Hash::make(config('app.default_password')),
                     'role' => 'industrial_supervisor',
                 ]
             );
 
-            IndurstrialSupervisor::create([
+            IndustrialSupervisor::create([
                 'user_id' => $user->id,
                 'company_id' => $user_company->id,
                 'staff_number' => Str::upper($validated['staff_number']),
@@ -114,7 +114,7 @@ class IndurstrialSupervisorController extends Controller
 
     public function getCompanyIndustrialSupervisors($company_id)
     {
-        $supervisors = IndurstrialSupervisor::with('user:id,name,phone_number,email')
+        $supervisors = IndustrialSupervisor::with('user:id,name,phone_number,email')
             ->where('company_id', $company_id)
             ->get(['id', 'user_id']); // only select what’s needed
 

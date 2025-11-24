@@ -2,8 +2,7 @@
 <?php
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CalenderController;
-use App\Http\Controllers\LogbookController;
+use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\AttachmentDetailsController;
@@ -29,13 +28,10 @@ Route::middleware(['ensure.attachment.selected'])->group(function () {
 
     });
 
-    Route::post('/logbook', [LogbookController::class, 'store'])->name('logbook.store');
+    Route::post('/daily-activities', [DailyReportController::class, 'store'])->name('student.daily_activities.store');
 
 // View all logbook entries
-    Route::get('/logbook/entries', [LogbookController::class, 'index'])->name('student.logbook.index');
-
-    Route::get('/calendar', [CalenderController::class, 'index'])->name('cal.index');
-    Route::post('/calendar/store', [CalenderController::class, 'store'])->name('cal.store');
+    Route::get('/daily-activities', [DailyReportController::class, 'index'])->name('student.daily_activities.index');
 });
 Route::get('reports', [StudentController::class, 'reportForm'])->name('student.reports.form');
 Route::post('reports', [StudentController::class, 'storeReport'])->name('student.reports.store');

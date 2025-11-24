@@ -57,7 +57,7 @@ Student::updateOrCreate(
 ['user_id' => $user->id],
 [
 'reg_no' => $reg_no,
-'programme_id' => $programme->id,
+'program_id' => $programme->id,
 'year_of_study' => $row['year_of_study'],
 'phone_number' => $row['phone_number'],
 ]

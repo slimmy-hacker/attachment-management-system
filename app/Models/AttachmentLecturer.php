@@ -16,6 +16,6 @@ class AttachmentLecturer extends Model
     }
 
     public function department() {
-        return $this->belongsTo(Department::class, 'department_id');
+        return $this->belongsTo(AdministrativeUnit::class, 'department_id');
     }
 }

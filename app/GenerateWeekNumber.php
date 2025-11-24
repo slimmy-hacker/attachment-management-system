@@ -22,10 +22,10 @@ class GenerateWeekNumber
     {
         $carbonDate = Carbon::parse($date);
 
-        $isoYear = $carbonDate->isoWeekYear(); // ISO week-numbering year
-        $isoWeek = $carbonDate->isoWeek();     // ISO week number
+        $isoYear = $carbonDate->isoWeekYear();
+        $isoWeek = $carbonDate->isoWeek();
 
-        // Ensure week is always 2 digits
+
         $weekId = $isoYear . str_pad($isoWeek, 2, '0', STR_PAD_LEFT);
 
         return $weekId;
@@ -34,14 +34,27 @@ class GenerateWeekNumber
     /**
      * Optionally, get the start and end dates of the ISO week.
      */
-    public function weekRange(string $date): array
+    public function weekRangeFromId(string $weekId): array
     {
-        $carbonDate = Carbon::parse($date);
+        // Extract year (first 4 chars)
+        $isoYear = substr($weekId, 0, 4);
+
+        // Extract week number (last 2 chars)
+        $isoWeek = substr($weekId, 4, 2);
+
+        // Get the start of the ISO week
+        $startOfWeek = Carbon::now()
+            ->setISODate($isoYear, (int)$isoWeek)
+            ->startOfWeek(Carbon::MONDAY);
+
+        // End of the ISO week
+        $endOfWeek = (clone $startOfWeek)->endOfWeek(Carbon::SUNDAY);
 
         return [
-            'start' => $carbonDate->startOfWeek(Carbon::MONDAY)->toDateString(),
-            'end' => $carbonDate->endOfWeek(Carbon::SUNDAY)->toDateString(),
+            'start' => $startOfWeek->toDateString(),
+            'end'   => $endOfWeek->toDateString(),
         ];
     }
+
 }
 
