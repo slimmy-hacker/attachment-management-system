@@ -1,6 +1,6 @@
 @extends('layouts.my_app')
 @section('title')
-    Log Book
+    My Activities
 @endsection
 
 
@@ -8,7 +8,7 @@
 
 <div>
     <H1>My Activities</H1>
-<div id='calendar'></div>
+<div id='daily_activities'></div>
 
 
     <div id="crud-modal" tabindex="-1" aria-hidden="true"  data-modal-backdrop="static" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -30,11 +30,13 @@
                 <!-- Modal body -->
                 <form id="calender_details_form" class="p-4 md:p-5">
                     @csrf
+
                     <div class="grid gap-4 mb-4 grid-cols-2">
 
                         <div class="col-span-2 sm:col-span-1">
+                            <input type="hidden" id="daily_report_id" name="daily_report_id">
                             <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 " >Start Date <span class="text-red-500">*</span></label>
-                            <input type="date" name="start_date" id="start_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="select start date" required="" readonly>
+                            <input type="date" name="start_date" id="start_date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="select start date" required="" >
                         </div>
 
                         <div class="col-span-2 sm:col-span-1">
@@ -58,17 +60,6 @@
                             <textarea id="challenges" name="challenges" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Write Challenges encountered here here"></textarea>
                         </div>
 
-                        <div class="col-span-2 sm:col-span-1">
-                            <label for="indurstrial_supervisor_id" class="block mb-2 text-sm font-medium text-gray-900 ">Supervisor<span class="text-red-500">*</span></label>
-                            <select id="indurstrial_supervisor_id" name="indurstrial_supervisor_id" class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ">
-
-                                <option value="1"> Nicholas Ndeche</option>
-                                <option value="5">Sam Njuguna</option>
-                                <option value="7">Dan Kanja</option>
-                                <option value="2">Simon Kuria</option>
-                            </select>
-                        </div>
-
                     </div>
                     <button type="button" id="calender_details_btn" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
                         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
@@ -89,6 +80,11 @@
     <script>
         $(document).ready(function () {
 
+            function minusOneDay(dateStr) {
+                let d = new Date(dateStr);
+                d.setDate(d.getDate() - 1);
+                return d.toISOString().split('T')[0];
+            }
             // Initialize Flowbite modal
             const modal = new Modal($('#crud-modal')[0], {
                 backdrop: 'static',
@@ -97,39 +93,26 @@
 
             // Pass backend events into JS
             let events = @json($events);
-            //let events = [];
-            let today = new Date();
-            let minDate = new Date("2025-01-01");
 
-            events = events.map(ev => {
-                let startDate = new Date(ev.start);
-                let editable = true;
 
-                if (ev.status !== "pending" || startDate > today || startDate < minDate) {
-                    editable = false;
-                }
 
-                return  ev
-            });
-
-            // Initialize FullCalendar
-            var calendarEl = document.getElementById('calendar');
+            var calendarEl = document.getElementById('daily_activities');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 editable: true,
                 selectable: true,
-                events: events
+                events: events,
             });
 
             calendar.render();
-            // Open modal when a date is clicked
             calendar.on('dateClick', function(info) {
+                $("#calender_details_form")[0].reset();
                 modal.show();
                 $('#start_date').val(info.dateStr);
                 $('#end_date').val(info.dateStr);
-                $('#indurstrial_supervisor_id').val("{{ $my_indurstrial_supervisor_id }}");
             });
             calendar.on('eventClick', function(info) {
+                $("#calender_details_form")[0].reset();
                 const props = info.event.extendedProps;
                 $.each(props, function(key, value) {
                     let $el = $('#' + key);
@@ -138,10 +121,11 @@
                     }
                 });
 
-
+                $("#daily_report_id").val(info.event?.id)
                 $('#start_date').val(info.event.startStr);
-                $('#end_date').val(info.event.endStr || info.event.startStr);
+                $('#end_date').val(minusOneDay(info.event.endStr) || info.event.startStr);
                 $('#task_title').val(info.event.title);
+
 
 
                 modal.show();
@@ -193,7 +177,7 @@
 
                 // 🔹 Ajax request
                 $.ajax({
-                    url: "{{ route('cal.store') }}",
+                    url: "{{ route('student.daily_activities.store') }}",
                     type: "POST",
                     data: formData,
                     success: function (response) {
@@ -212,16 +196,13 @@
                             $form[0].reset();
                             modal.hide();
 
-                            // 🔹 Add new event to calendar dynamically
-                            calendar.addEvent({
-                                id: response.data.id,
-                                title: response.data.title,
-                                start: response.data.start_date,
-                                end: response.data.end_date,
-                                color: response.data.status === 'pending' ? 'orange' :
-                                    response.data.status === 'approved' ? 'green' : 'red',
-                                editable: response.data.status === 'pending'
-                            });
+                            // 🔹 Add new event to daily_activities dynamically
+                            let event = calendar.getEventById(response.data.id);
+
+                            if (event) {
+                                event.remove();
+                            }
+                            calendar.addEvent(response.data);
 
                         } else {
                             Swal.fire({

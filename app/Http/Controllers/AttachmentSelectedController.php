@@ -6,7 +6,7 @@ use App\Models\Attachment;
 use App\Models\AttachmentLecturer;
 use App\Models\AttachmentStudent;
 use App\Models\Company;
-use App\Models\IndurstrialSupervisor;
+use App\Models\IndustrialSupervisor;
 use App\Models\Lecturer;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class AttachmentSelectedController extends Controller
                 break ;
             case 'industrial_supervisor':
 
-                $supervisor = IndurstrialSupervisor::where('user_id', Auth::id())->first();
+                $supervisor = IndustrialSupervisor::where('user_id', Auth::id())->first();
 
                 $attachment_slugs = AttachmentStudent::where('industrial_supervisor_id', $supervisor->id)
                     ->distinct('attachment_slug')

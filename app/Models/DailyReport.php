@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Logbook extends Model
+class DailyReport extends Model
 {
     use HasFactory;
 
@@ -16,4 +16,9 @@ class Logbook extends Model
     {
         return $this->belongsTo(User::class, 'registration_number', 'registration_number');
     }
+    public function weeklyReport()
+    {
+        return $this->belongsTo(WeeklyReport::class);
+    }
+
 }

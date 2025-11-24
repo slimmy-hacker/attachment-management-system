@@ -140,7 +140,7 @@ class CompanyController extends Controller
                 [
                     'name' => $validated['name'],
                     'phone_number' => $validated['contact'],
-                    'password' => Hash::make(1212),
+                    'password' => Hash::make(config('app.default_password')),
                     'role' => 'company',
                 ]
             );

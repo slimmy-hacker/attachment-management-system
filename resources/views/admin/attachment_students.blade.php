@@ -35,6 +35,7 @@
 
                 </div>
             </div>
+
             <div class="flex flex-col">
                 <div class="overflow-x-auto">
                     <div class="align-middle inline-block min-w-full">
@@ -129,7 +130,7 @@
                     </div>
                 </div>
             </div>
-
+            </div>
 
 
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AttachmentStudent;
 use App\Models\Company;
-use App\Models\Logbook;
+use App\Models\DailyReport;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -39,7 +39,7 @@ class AttachmentDetailsController extends Controller
                 ]
             ]);
         }
-        $exists = Logbook::where('attachment_student_id', $attachment_student_id)->exists();
+        $exists = DailyReport::where('attachment_student_id', $attachment_student_id)->exists();
 
         if ($exists) {
             return redirect()->back()->withInput()->with([
