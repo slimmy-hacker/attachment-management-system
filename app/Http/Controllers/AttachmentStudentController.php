@@ -26,7 +26,7 @@ class AttachmentStudentController extends Controller
                 ->addColumn('reg_no', fn ($row) =>  $row->student->reg_no ?? '-')
                 ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
                 ->addColumn('department', fn ($row) => $row->department->slug ?? '-')
-                ->addColumn('school_supervisor', fn ($row) => $row->department->slug ?? 0)
+                ->addColumn('lecturer', fn ($row) => $row->department->slug ?? 0)
                 ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
                 ->addColumn('action', function ($row) {
                     return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';

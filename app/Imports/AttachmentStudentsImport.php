@@ -1,19 +1,14 @@
 <?php
 namespace App\Imports;
-use App\Models\AttachmentSchedule;
+use App\Models\Attachment;
 use App\Models\AttachmentStudent;
-use App\Models\Location;
 use App\Models\Student;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Support\Facades\Validator;
 
 class AttachmentStudentsImport implements ToModel, WithHeadingRow, SkipsOnFailure, WithValidation
 
@@ -26,8 +21,8 @@ use Importable, SkipsFailures;
     public function rules(): array
     {
         return [
-            '*.reg_no'            => ['required', 'exists:students,reg_no'],
-            '*.attachment_slug'   => ['required', 'exists:attachment_schedules,slug'],
+            '*.reg_no'            => ['required'],
+            '*.attachment_slug'   => ['required'],
         ];
     }
 
@@ -36,11 +31,10 @@ use Importable, SkipsFailures;
     public function model(array $row)
     {
         try {
-            $reg = strtoupper($row['reg_no'] ?? '');
-            $slug = strtolower($row['attachment_slug'] ?? '');
-
+            $reg  = strtoupper(trim($row['reg_no'] ?? ''));
+            $slug = strtolower(trim($row['attachment_slug'] ?? ''));
             $student = Student::where('reg_no', $reg)->first();
-            $attachment = AttachmentSchedule::where('slug', $slug)->first();
+            $attachment = Attachment::where('slug', $slug)->first();
 
             $errors = [];
 
@@ -49,7 +43,15 @@ use Importable, SkipsFailures;
             }
 
             if (!$attachment) {
-                $errors[] = "Attachment schedule with slug '{$row['attachment_slug']}' not found";
+                $errors[] = "Attachment with slug '{$row['attachment_slug']}' not found";
+            }
+            if($student && $attachment) {
+                $attachment_student = AttachmentStudent::where('student_id', $student->id)
+                    ->where('attachment_id', $attachment->id)
+                    ->first();
+                if ($attachment_student) {
+                    $errors[] = "Student with reg_no '{$row['reg_no']}' for attachment '{$row['attachment_slug']}' had already been uploaded";
+                }
             }
 
             if (!empty($errors)) {

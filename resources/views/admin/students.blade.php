@@ -126,7 +126,7 @@
 
                         <!-- Modal footer -->
                         <div class="items-center p-6 border-t border-gray-200 rounded-b">
-                            <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium
+                            <button id="uploadBtn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium
                                rounded-lg text-sm px-5 py-2.5 text-center"
                                     type="submit">
                                 Upload
@@ -175,7 +175,11 @@
 
             $("#scheduleForm").on("submit", function (e) {
                 e.preventDefault();
+                let btn = $("#uploadBtn");
 
+                // Disable and show loading text
+                btn.prop("disabled", true)
+                    .html('Uploading <span class="loading-dots"></span>');
                 let formData = new FormData(this);
 
                 $.ajax({
@@ -237,6 +241,10 @@
                                 timerProgressBar: true
                             });
                         }
+                    },
+                    complete: function () {
+                        // ALWAYS re-enable button after request completes
+                        $("#uploadBtn").prop("disabled", false).html("Upload");
                     }
                 });
             });

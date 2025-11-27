@@ -1,7 +1,7 @@
 @extends('layouts.my_app')
 
 @section('title')
-   Upload Locations
+   Locations
 @endsection
 
 @section('content')
@@ -19,6 +19,7 @@
             <div class="shadow overflow-hidden">
                 <table class="table-fixed min-w-full divide-y divide-gray-200" id="locations_table">
                     <thead class="bg-gray-100">
+<<<<<<< HEAD
 
   
                             <th class="p-4 w-12">#</th>
@@ -26,12 +27,17 @@
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
               
 
+=======
+>>>>>>> ddc8c2222cbcf430ba3c1da32ac032bc16678a6e
                         <tr>
                             <th class="p-4 w-12">#</th>
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Parent</th>
+<<<<<<< HEAD
 
+=======
+>>>>>>> ddc8c2222cbcf430ba3c1da32ac032bc16678a6e
                             <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Level</th>
                             <th class="p-4">
                                 <button id="open-modal-btn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2">
@@ -68,7 +74,7 @@
                     </div>
 
                     <div class="items-center p-6 border-t border-gray-200 rounded-b">
-                        <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
+                        <button id="uploadBtn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
                             Upload
                         </button>
                     </div>
@@ -93,6 +99,7 @@ $(document).ready(function () {
         ordering: false,
         ajax: "{{ route('admin.locations.index') }}",
         columns: [
+<<<<<<< HEAD
 
 
 
@@ -104,6 +111,8 @@ $(document).ready(function () {
 
 
 
+=======
+>>>>>>> ddc8c2222cbcf430ba3c1da32ac032bc16678a6e
             { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
             { data: 'name', name: 'name' },
             { data: 'code', name: 'code' },
@@ -115,6 +124,11 @@ $(document).ready(function () {
 
     $("#locationForm").submit(function (e) {
         e.preventDefault();
+        let btn = $("#uploadBtn");
+
+        // Disable and show loading text
+        btn.prop("disabled", true)
+            .html('Uploading <span class="loading-dots"></span>');
         let formData = new FormData(this);
 
         $.ajax({
@@ -164,6 +178,10 @@ $(document).ready(function () {
                         timerProgressBar: true
                     });
                 }
+            },
+            complete: function () {
+                // ALWAYS re-enable button after request completes
+                $("#uploadBtn").prop("disabled", false).html("Upload");
             }
         });
     });

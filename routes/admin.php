@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\Admin\AttarchmentScheduleController;
-use App\Http\Controllers\AttachmentSchoolSupervisorController;
+use App\Http\Controllers\Admin\AttachmentController;
+use App\Http\Controllers\AttachmentLecturerController;
 use App\Http\Controllers\AttachmentStudentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LocationController;
@@ -15,18 +15,18 @@ Route::get('portal', function () {
     return view('admin.portal');
 })->name('admin.portal');
 
-Route::get('attarchment-schedules/index', [AttarchmentScheduleController::class, 'index'])->name('admin.attachment_schedules.index');
+Route::get('attarchment-schedules/index', [AttachmentController::class, 'index'])->name('admin.attachment_schedules.index');
 
 
-Route::post('attarchment-schedules/store', [AttarchmentScheduleController::class, 'store'])->name('admin.attachment_schedule.store');
+Route::post('attarchment-schedules/store', [AttachmentController::class, 'store'])->name('admin.attachment_schedule.store');
    Route::get('/locations', [LocationController::class, 'index'])->name('locations');
 
     Route::post('/locations/upload', [LocationController::class, 'upload'])->name('admin.locations.upload');
 Route::get('/locations', [LocationController::class, 'index'])->name('admin.locations.index');
 
-Route::get('attarchment-schedules-supervisors/index', [AttachmentSchoolSupervisorController::class, 'index'])->name('admin.attachment_schedules.supervisors.index');
+Route::get('attarchment-schedules-supervisors/index', [AttachmentLecturerController::class, 'index'])->name('admin.attachment_schedules.supervisors.index');
 
-Route::post('attachment-schedules-supervisors/upload', [AttachmentSchoolSupervisorController::class, 'upload'])->name('admin.attachment_schedules.supervisors.upload');
+Route::post('attachment-schedules-supervisors/upload', [AttachmentLecturerController::class, 'upload'])->name('admin.attachment_schedules.supervisors.upload');
 
 Route::get('attarchment-schedules-students/index', [AttachmentStudentController::class, 'index'])->name('admin.attachment_student.index');
 
@@ -48,8 +48,13 @@ Route::get('/lecturers', [LecturerController::class, 'index'])
 
 Route::post('upload-lecturers', [LecturerController::class, 'upload'])
     ->name('admin.lecturers.upload');
+
   
     Route::post('/administrative-units/upload', [AdministrativeUnitController::class, 'upload'])->name('admin.administrative-units.upload');
+
+
+Route::post('/administrative-units/upload', [AdministrativeUnitController::class, 'upload'])->name('admin.administrative-units.upload');
+
 Route::get('/administrative-units', [AdministrativeUnitController::class, 'index'])->name('admin.administrative-units.index');
 
     Route::delete('budgets/{id}', [AdminController::class, 'destroyBudget'])->name('admin.budgets.destroy');

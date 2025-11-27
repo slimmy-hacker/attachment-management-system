@@ -9,9 +9,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\IndurstrialSupervisorController;
 use App\Http\Controllers\CompanyController;
+<<<<<<< HEAD
 
 use App\Http\Controllers\AttachmentSelectedController;
 
+=======
+use App\Http\Controllers\AttachmentSelectedController;
+>>>>>>> ddc8c2222cbcf430ba3c1da32ac032bc16678a6e
 
 
 use App\Http\Controllers\OpportunityController;
@@ -38,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('get-company-industrial-supervisors/{id}', [IndurstrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
 
 
+<<<<<<< HEAD
     Route::get('/select-attarchment', [AttarchmentSelectedController::class, 'index'])->name('attachment.select');
     Route::post('/attachment/select', [AttarchmentSelectedController::class, 'store'])->name('attachment.store');
     Route::post('/attachment/change', [AttarchmentSelectedController::class, 'change'])->name('attachment.change');
@@ -49,6 +54,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/attachment/select', [AttachmentSelectedController::class, 'store'])->name('attachment_selected.store');
     Route::post('/attachment/change', [AttachmentSelectedController::class, 'change'])->name('attachment_selected.change');
 
+=======
+
+    Route::get('/select-attachment', [AttachmentSelectedController::class, 'index'])->name('attachment_selected.select');
+    Route::post('/attachment/select', [AttachmentSelectedController::class, 'store'])->name('attachment_selected.store');
+    Route::post('/attachment/change', [AttachmentSelectedController::class, 'change'])->name('attachment_selected.change');
+
+>>>>>>> ddc8c2222cbcf430ba3c1da32ac032bc16678a6e
     Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
     Route::get('/opportunities/{opportunity}/apply', [OpportunityController::class, 'showApplyForm'])->name('opportunities.apply');
     Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply');
@@ -61,7 +73,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['portal:student'])
     ->prefix('students')
-    ->group(base_path('routes/student.php'));
+    ->group(base_path('routes/Student.php'));
 
 
 Route::middleware(['portal:admin'])
@@ -85,5 +97,11 @@ Route::middleware(['portal:admin'])
             ->name('register.portal.store');
 
 
+<<<<<<< HEAD
 
     });
+=======
+
+    });
+
+>>>>>>> ddc8c2222cbcf430ba3c1da32ac032bc16678a6e

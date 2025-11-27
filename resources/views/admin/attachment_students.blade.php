@@ -35,6 +35,7 @@
 
                 </div>
             </div>
+
             <div class="flex flex-col">
                 <div class="overflow-x-auto">
                     <div class="align-middle inline-block min-w-full">
@@ -42,8 +43,8 @@
                             <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
                                 <thead class="bg-gray-100">
                                 <tr>
-                                    <th scope="col" class="p-4">
-                                        <div class="flex items-center">
+                                     <th scope="col" class="p-2 w-12">
+                                        <div class="flex items-center justify-center text-xs font-medium text-gray-500 uppercase">
                                             #
                                         </div>
                                     </th>
@@ -119,7 +120,7 @@
 
                         <!-- Modal footer -->
                         <div class="items-center p-6 border-t border-gray-200 rounded-b">
-                            <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium
+                            <button id="uploadBtn" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium
                                rounded-lg text-sm px-5 py-2.5 text-center"
                                     type="submit">
                                 Upload
@@ -129,7 +130,7 @@
                     </div>
                 </div>
             </div>
-
+            </div>
 
 
 
@@ -161,7 +162,7 @@
                     {data: 'reg_no', name: 'reg_no'},
                     {data: 'attachment', name: 'attachment'},
                     {data: 'department', name: 'department'},
-                    {data: 'school_supervisor', name: 'school_supervisor'},
+                    {data: 'lecturer', name: 'lecturer'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
@@ -169,7 +170,11 @@
 
             $("#scheduleForm").on("submit", function (e) {
                 e.preventDefault();
+                let btn = $("#uploadBtn");
 
+                // Disable and show loading text
+                btn.prop("disabled", true)
+                    .html('Uploading <span class="loading-dots"></span>');
                 let formData = new FormData(this);
 
                 $.ajax({
@@ -185,18 +190,21 @@
 
                             // Build failure list HTML table
                             let failureHtml = "";
+
                             if (stats.fail_count > 0) {
-                                failureHtml += "<table class='table table-bordered'><tr><th>Row</th><th>Error</th></tr>";
+                                failureHtml += "<ul class='list-group'>";
 
                                 stats.failed_records.forEach(function (item) {
-                                    failureHtml += `<tr>
-                            <td>${JSON.stringify(item.row)}</td>
-                            <td>${item.reason}</td>
-                        </tr>`;
+                                    failureHtml += `
+                                            <li class="list-group-item text-danger">
+                                                ${item.reason}
+                                            </li>
+                                        `;
                                 });
 
-                                failureHtml += "</table>";
+                                failureHtml += "</ul>";
                             }
+
 
                             let htmlMsg = `
                     <strong>Upload Completed!</strong><br>
@@ -253,6 +261,9 @@
                                 timerProgressBar: true
                             });
                         }
+                    },
+                    complete: function () {
+                        $("#uploadBtn").prop("disabled", false).html("Upload");
                     }
                 });
             });

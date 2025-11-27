@@ -17,41 +17,25 @@ class UsersSeeder extends Seeder
         $users = [
             [
                 'name' => 'Admin User',
-                'email' => 'admin@example.com',
-                'password' => Hash::make('1212'),
+                'email' => 'admin@dams.com',
+                'password' => Hash::make(config('app.default_password')),
                 'role' => 'admin',
-            ],
-            [
-                'name' => 'Student User',
-                'email' => 'student@example.com',
-                'password' => Hash::make('1212'),
-                'role' => 'student',
-            ],
-            [
-                'name' => 'School Supervisor',
-                'email' => 'schoolsupervisor@example.com',
-                'password' => Hash::make('1212'),
-                'role' => 'school_supervisor',
-            ],
-            [
-                'name' => 'Industrial Supervisor',
-                'email' => 'industrial@example.com',
-                'password' => Hash::make('1212'),
-                'role' => 'industrial_supervisor',
-            ],
-            [
-                'name' => 'Company',
-                'email' => 'company@example.com',
-                'password' => Hash::make('1212'),
-                'role' => 'company',
-            ],
+                'phone_number' => '254722000000',
+            ]
         ];
 
         foreach ($users as $user) {
-            User::updateOrCreate(
-                ['email' => $user['email']],
-                $user
-            );
+            try {
+
+
+                User::updateOrCreate(
+                    ['email' => $user['email']],
+                    $user
+                );
+            }catch (\Exception $e){
+                echo $e->getMessage();
+
+            }
         }
     }
 }

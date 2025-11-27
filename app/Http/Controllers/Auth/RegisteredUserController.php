@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
      */
     public function showPortalForm($portal): View
     {
-        $validPortals = ['student', 'supervisor', 'industrial_supervisor', 'company','admin'];
+        $validPortals = ['student', 'lecturer', 'industrial_supervisor', 'company','admin'];
 
         if (!in_array($portal, $validPortals)) {
             abort(404);
@@ -90,8 +90,8 @@ class RegisteredUserController extends Controller
         case 'student':
 
             return redirect()->route('student.portal');
-        case 'supervisor':
-            return redirect()->route('supervisor.portal');
+        case 'lecturer':
+            return redirect()->route('lecturer.portal');
         case 'industrial_supervisor':
             return redirect()->route('industrial_supervisor.portal');
             case 'admin':

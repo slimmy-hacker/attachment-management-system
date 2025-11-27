@@ -8,7 +8,7 @@
     <div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
         <h2 class="text-2xl font-bold text-center mb-6">Student Logbook</h2>
 
-        <!-- Logbook Form -->
+        <!-- DailyReport Form -->
         <form action="{{ route('logbook.store') }}" method="POST">
             @csrf
             <div class="mb-4">

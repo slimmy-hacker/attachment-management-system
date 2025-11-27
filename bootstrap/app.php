@@ -15,15 +15,15 @@ return Application::configure(basePath: dirname(__DIR__))
 
             Route::prefix('students')
                ->middleware(['web','portal:student'])
-                ->group(base_path('routes/student.php'));
+                ->group(base_path('routes/Student.php'));
 
             Route::prefix('admin')
                 ->middleware(['web','portal:admin'])
                ->group(base_path('routes/admin.php'));
-          Route::prefix('school-supervisor')
-                ->middleware(['web','portal:supervisor'])
-               ->group(base_path('routes/supervisor.php'));
-          Route::prefix('industrial-supervisor')
+          Route::prefix('lecturer')
+                ->middleware(['web','portal:lecturer'])
+               ->group(base_path('routes/lecturer.php'));
+          Route::prefix('industrial-lecturer')
                 ->middleware(['web','portal:industrial_supervisor'])
                ->group(base_path('routes/industrial_supervisor.php'));
 
@@ -38,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'portal' => \App\Http\Middleware\PortalMiddleWare::class,
+            'ensure.attachment.selected' =>  \App\Http\Middleware\EnsureAttachmentSelected::class,
 
         ]);
     })

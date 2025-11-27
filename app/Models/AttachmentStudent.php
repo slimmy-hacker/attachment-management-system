@@ -9,7 +9,7 @@ class AttachmentStudent extends Model
     protected $guarded = [];
 
     public function attachment() {
-        return $this->belongsTo(AttachmentSchedule::class, 'attachment_id');
+        return $this->belongsTo(Attachment::class, 'attachment_id');
     }
 
     public function department() {

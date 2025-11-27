@@ -1,12 +1,12 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+<script src="{{ asset('/js/jquery.min.js') }}"></script>
+<script src="{{ asset('/js/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('/js/flowbite.min.js') }}"></script>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ asset('/js/tailwindjs.17') }}"></script>
+<script src="{{ asset('/js/sweetalert2.js') }}"></script>
+<script src="{{ asset('/js/select2.min.js') }}"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141734189-6"></script>
-<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+<script src="{{ asset('/js/dataTables.min.js') }}"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -43,6 +43,23 @@
         //         modal.hide();
         //     }
         // });
+
+
+            const session_notification = @json(session('notification'));
+
+            if (session_notification && session_notification.message) {
+            Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: session_notification.icon,
+            title: session_notification.message,
+            message: session_notification.message,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+        }
+
     });
 </script>
-@yield('scripts');
+@yield('scripts')

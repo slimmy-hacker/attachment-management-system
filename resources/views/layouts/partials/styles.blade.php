@@ -21,11 +21,11 @@
   These load AFTER Tailwind so they can override specific styles
 ----------------------------------}}
 <link
-    href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    href="{{ asset('/css/select2.min.css') }}"
     rel="stylesheet"
 />
 <link
-    href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css"
+    href="{{ asset('/css/dataTables.dataTables.min.css')}}"
     rel="stylesheet"
 />
 
@@ -34,5 +34,16 @@
         content: " *";
         color: red;
         font-weight: bold;
+    }
+     .loading-dots::after {
+         content: '';
+         animation: dots 1.5s steps(5, end) infinite;
+     }
+
+    @keyframes dots {
+        0%, 20% { content: ''; }
+        40% { content: '.'; }
+        60% { content: '..'; }
+        80%, 100% { content: '...'; }
     }
 </style>

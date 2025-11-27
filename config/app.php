@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'AMS'),
 
+    'default_password' => env('DEFAULT_PASSWORD', '1212'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

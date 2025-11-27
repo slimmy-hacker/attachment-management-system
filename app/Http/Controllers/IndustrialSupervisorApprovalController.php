@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calender;
-use App\Models\IndustrialSupervisorApproval;
-use App\Models\Logbook;
+use App\Models\WeeklyReport;
+use App\Models\DailyReport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\GenerateWeekNumber;
@@ -16,7 +16,7 @@ class IndustrialSupervisorApprovalController extends Controller
         $weekGen = new GenerateWeekNumber();
         $uniqueWeekId = $weekGen->weekId(Carbon::now());
 
-        $events = Logbook::all()->map(function ($event) {
+        $events = DailyReport::all()->map(function ($event) {
             return [
                 'id'          => $event->id,
                 'title'       => $event->task_title,   // FullCalendar uses this
@@ -43,7 +43,7 @@ class IndustrialSupervisorApprovalController extends Controller
             $validated['end'] = 1;
 
 
-            $calender = IndustrialSupervisorApproval::create($validated);
+            $calender = WeeklyReport::create($validated);
 
             return response()->json([
                 'status'  => 'success',

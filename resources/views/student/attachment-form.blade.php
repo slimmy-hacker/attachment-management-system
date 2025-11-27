@@ -1,14 +1,14 @@
 
 @extends('layouts.my_app')
 @section('title')
-    Attarchment Form
+    Attachment Form
 @endsection
 @section('content')
     <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow">
         <h1 class="text-2xl font-bold text-center mb-4">DEDAN KIMATHI UNIVERSITY OF TECHNOLOGY </h1>
         <h2 class="text-xl font-semibold text-center mb-8 underline text-blue-700">EXTERNAL ATTACHMENT INFORMATION FORM</h2>
 
-        <form action="#" method="POST" class="space-y-6">
+        <form action="{{route('student.attachment-form.store')}}" method="POST" class="space-y-6">
             @csrf
             <fieldset class="border border-gray-300 p-4 rounded">
                 <legend class="font-semibold text-lg">Student Details</legend>
@@ -26,7 +26,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div>
             <label for="organization" class="block text-sm font-medium mb-1 required">Name of Organisation</label>
-            <select id="organization" name="organization" class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ">
+            <select required id="organization" name="company_id" class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ">
 
                 <option value=""> -- select org --</option>
                 @foreach($companies as $company)
@@ -34,6 +34,9 @@
                             data-town="{{ $company->sub_county }}"
                             data-street="{{ $company->street }}"
                             data-building="{{ $company->building }}"
+                            @if($attachment_student->company_id == $company->id)
+                                selected
+                           @endif
                     >{{$company->name}}</option>
                 @endforeach
 
@@ -42,12 +45,12 @@
 
         <div>
             <label for="date_commenced" class="block text-sm font-medium mb-1 required">Date Commenced</label>
-            <input type="date" id="date_commenced" name="date_commenced" class="p-2 border rounded w-full">
+            <input required type="date" id="date_commenced" name="start_date" value="{{$attachment_student->start_date}}"  class="p-2 border rounded w-full">
         </div>
 
         <div>
             <label for="date_finished" class="block text-sm font-medium mb-1 required">Expected Finishing Date</label>
-            <input type="date" id="date_finished" name="date_finished" class="p-2 border rounded w-full">
+            <input required type="date" id="date_finished" name="end_date" value="{{$attachment_student->end_date}}" class="p-2 border rounded w-full">
         </div>
 
         <div>
@@ -67,7 +70,7 @@
 
          <div>
             <label for="industrial_supervisor" class="block text-sm font-medium mb-1 required">Industrial Supervisor's Name</label>
-            <select id="industrial_supervisor" name="industrial_supervisor" class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ">
+            <select required id="industrial_supervisor" name="industrial_supervisor_id" class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ">
                 <option value=""> -- select Supervisor 1 --</option>
             </select>
          </div>
@@ -91,14 +94,21 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('#organization').on('change', function () {
-                let selected = $(this).find('option:selected');
+            if ($('#organization').val()) {
+                handleOrganizationChange();
+            }
+
+            function handleOrganizationChange() {
+                let selected = $('#organization').find('option:selected');
 
                 $('#town').val(selected.data('town') || '');
                 $('#street').val(selected.data('street') || '');
                 $('#building').val(selected.data('building') || '');
-                loadCompanySupervisors(selected.val())
-            });
+
+                loadCompanySupervisors(selected.val());
+            }
+
+            $("#organization").on('change', handleOrganizationChange);
 
             function loadCompanySupervisors(companyId) {
                 const url = `/get-company-industrial-supervisors/${companyId}`;
@@ -116,12 +126,12 @@
                                                 ${supervisor.user.name}
                                             </option>`);
                         });
+                        if(companyId == @json($attachment_student->company_id) && @json($attachment_student->industrial_supervisor_id)){
 
-                        // Re-initialize or refresh Select2
-                      //  $select.select2();
-
-                        // Ensure Select2 updates the displayed value properly
-                        $select.val('').trigger('change');
+                            $select.val(@json($attachment_student->industrial_supervisor_id)).trigger('change');
+                        }else {
+                            $select.val('').trigger('change');
+                        }
                     },
                     error: function (xhr) {
                         console.error('Error fetching supervisors:', xhr.responseText);
@@ -129,7 +139,7 @@
                 });
             }
 
-// When a supervisor is selected, update phone & email
+
             $('#industrial_supervisor').on('change', function () {
                 const selected = $(this).find(':selected');
                 $('#supervisor_phone').val(selected.data('phone') || '');

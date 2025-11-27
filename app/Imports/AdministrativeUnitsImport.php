@@ -32,10 +32,10 @@ use Importable, SkipsFailures;
     {
         return DB::transaction(function () use ($row) {
             return AdministrativeUnit ::updateOrCreate(
-                ['code' => $row['code']],
+                ['code' => strtolower($row['code'])],
                 [
                     'name'        => $row['name'],
-                    'parent_code' => $row['parent_code'] ?? null,
+                    'parent_code' => strtolower($row['parent_code']) ?? null,
                     'level'       => $row['level'],
                 ]
             );

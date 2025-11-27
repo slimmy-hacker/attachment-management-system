@@ -1,6 +1,7 @@
 <?php
 namespace App\Imports;
 
+use App\Models\AdministrativeUnit;
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Support\Facades\Hash;
@@ -26,7 +27,7 @@ $validator = Validator::make($row, [
 'phone_number' => 'nullable|string',
 'reg_no' => 'required|string',
 'year_of_study' => 'nullable|string',
-'programme' => 'required|string',
+'programme' => 'required|string|exists:administrative_units,code',
 ]);
 
 if ($validator->fails()) {
@@ -38,9 +39,12 @@ return null;
 // Use DB transaction to ensure consistency
 return DB::transaction(function () use ($row) {
 $reg_no = Str::upper($row['reg_no']);
+$email= Str::lower($row['email']);
+$programme_code= Str::upper($row['programme']);
+$programme = AdministrativeUnit::where('level', 3)->where('code', $programme_code)->first();
 
 $user = User::updateOrCreate(
-                ['email' => $row['email']],
+                ['email' => $email],
                 [
                 'name' => $row['name'],
                 'phone_number' => $row['phone_number'],
@@ -53,7 +57,7 @@ Student::updateOrCreate(
 ['user_id' => $user->id],
 [
 'reg_no' => $reg_no,
-'programme_slug' => $row['programme'],
+'program_id' => $programme->id,
 'year_of_study' => $row['year_of_study'],
 'phone_number' => $row['phone_number'],
 ]

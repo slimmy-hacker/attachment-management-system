@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Company;
+use App\Models\Location;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use App\Models\Opportunity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class CompanyController extends Controller
@@ -103,7 +105,12 @@ class CompanyController extends Controller
         }
 
         $counties = $this->getCounties();
-        $sub_counties = $this->getSubCounties();
+        $counties = Location::where('level','1')
+                             ->select('id','name','code')
+                            ->get();
+        $sub_counties = Location::where('level','2')
+                                ->select('id','name','code','parent_code')
+                                ->get();
         return view('companies', compact('counties',  'sub_counties'));
     }
 
@@ -129,11 +136,11 @@ class CompanyController extends Controller
         DB::beginTransaction();
         try {
             $user = User::updateOrCreate(
-                ['email' => $validated['email']],
+                ['email' =>Str::lower($validated['email'])],
                 [
                     'name' => $validated['name'],
                     'phone_number' => $validated['contact'],
-                    'password' => Hash::make(1212),
+                    'password' => Hash::make(config('app.default_password')),
                     'role' => 'company',
                 ]
             );
