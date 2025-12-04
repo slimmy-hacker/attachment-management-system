@@ -1,6 +1,7 @@
 <?php
 namespace App\Imports;
 
+use App\Models\AdministrativeUnit;
 use App\Models\User;
 use App\Models\Lecturer;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,8 @@ use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\Importable;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
 {
@@ -27,7 +30,12 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
                 'email' => 'required|email|unique:users,email',
                 'phone_number' => 'nullable|string',
                 'staff_number' => 'required|string',
-                'department' => 'required|string',
+                'department_code' => [
+                    'required',
+                    'string',
+                    Rule::exists('locations', 'code')->where('level', 2),
+                ],
+
                 'office_location' => 'nullable|string',
             ]);
 
@@ -46,6 +54,7 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
 
                 $staff_no = Str::upper(trim($row['staff_number']));
                 $email = Str::lower(trim($row['email']));
+                $department_code = Str::lower(trim($row['department_code']));
 
                 // Create or update the user
                 $user = User::updateOrCreate(
@@ -57,13 +66,15 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
                         'role' => 'lecturer',
                     ]
                 );
-
+                $department = AdministrativeUnit::where('code', $department_code)
+                                ->where('level',2)
+                                ->first();
                 // Create or update lecturer
                 Lecturer::updateOrCreate(
                     ['user_id' => $user->id],
                     [
                         'staff_number' => $staff_no,
-                        'department' => $row['department'],
+                        'department_id' => $department->id ?? '',
                         'office_location' => $row['office_location'] ?? null,
                         'office_phone' => $row['phone_number'] ?? null,
                     ]

@@ -1,10 +1,12 @@
 <?php
 namespace App\Imports;
+use App\Models\AdministrativeUnit;
 use App\Models\Attachment;
 use App\Models\AttachmentLecturer;
 use App\Models\AttachmentStudent;
 use App\Models\Department;
 use App\Models\Lecturer;
+use App\Models\Location;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -49,6 +51,14 @@ use Importable, SkipsFailures;
             if (!$attachment) {
                 $errors[] = "Attachment with slug '{$row['attachment_slug']}' not found";
             }
+            if ($department_code) {
+                $department = AdministrativeUnit::where('code', $department_code)
+                                        ->where('level',2)
+                                      ->first();
+                if (!$department) {
+                    $errors[] = "Department with code '{$row['department_code']}' not found";
+                }
+            }
             //::where('code', $department_code)->first();
             if($lecturer && $attachment) {
                 $attachment_lecturer = AttachmentLecturer::where('lecturer_id', $lecturer->id)
@@ -71,6 +81,7 @@ use Importable, SkipsFailures;
             AttachmentLecturer::create([
                 'lecturer_id' => $lecturer->id,
                 'attachment_id' => $attachment->id,
+                'department_id' => $department->id ?? $lecturer->department_id,
             ]);
 
             $this->successCount++;
