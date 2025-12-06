@@ -59,6 +59,7 @@ Route::get('/administrative-units', [AdministrativeUnitController::class, 'index
 
     Route::delete('budgets/{id}', [AdminController::class, 'destroyBudget'])->name('admin.budgets.destroy');
 
+
 Route::post('admin/locations/add', [LocationController::class, 'add'])->name('admin.locations.add');
 Route::post('attachment-student/add', [AttachmentStudentController::class, 'add'])
     ->name('admin.attachment_student.add');
@@ -69,3 +70,6 @@ Route::post('attachment-student/add', [AttachmentStudentController::class, 'add'
     // routes/web.php
 Route::post('/admin/attachment-lecturers/add', [AttachmentLecturerController::class, 'store'])
     ->name('admin.attachment_lecturers.add');
+
+
+

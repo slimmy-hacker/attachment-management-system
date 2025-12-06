@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\AttachmentAssessmentController;
 
 Route::get('portal', function () {
     return view('lecturer.portal');
@@ -20,4 +21,7 @@ Route::name('lecturer.')->group(function () {
 
     Route::get('/evaluate', [LecturerController::class, 'evaluate'])
         ->name('evaluate');
+        Route::post('/assessment', [AttachmentAssessmentController::class, 'storeSchool'])->name('assessment');
+         //Route::get('/lecturer/assessment/students', [AttachmentAssessmentController::class, 'listStudents'])->name('lecturer.assessment.students_list');
+         Route::get('/lecturer/assessment/students', [AttachmentAssessmentController::class, 'studentsList'])->name('assessment.students_list');
 });
