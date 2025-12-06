@@ -28,12 +28,11 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
             $validator = Validator::make($row, [
                 'name' => 'required|string',
                 'email' => 'required|email|unique:users,email',
-                'phone_number' => 'nullable|string',
-                'staff_number' => 'required|string',
+                'phone_number' => 'nullable|unique:users,phone_number',
+                'staff_number' => 'required',
                 'department_code' => [
                     'required',
-                    'string',
-                    Rule::exists('locations', 'code')->where('level', 2),
+                    Rule::exists('administrative_units', 'code')->where('level', 2),
                 ],
 
                 'office_location' => 'nullable|string',
@@ -57,30 +56,31 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
                 $department_code = Str::lower(trim($row['department_code']));
 
                 // Create or update the user
-                $user = User::updateOrCreate(
-                    ['email' => $email],
-                    [
+                $user = User::Create([
+                        'email' => $email,
                         'name' => $row['name'],
                         'phone_number' => $row['phone_number'],
-                        'password' => Hash::make($staff_no),
+                        'password' => bcrypt($staff_no),
                         'role' => 'lecturer',
-                    ]
-                );
+                    ]);
                 $department = AdministrativeUnit::where('code', $department_code)
                                 ->where('level',2)
                                 ->first();
-                // Create or update lecturer
-                Lecturer::updateOrCreate(
-                    ['user_id' => $user->id],
-                    [
+                if(!$department){
+                    $this->failedRecords[] = [
+                        'reason' => 'Department Not Found'
+                    ];
+                    return null;
+                }
+                Lecturer::create([
+                        'user_id' => $user->id,
                         'staff_number' => $staff_no,
                         'department_id' => $department->id ?? '',
                         'office_location' => $row['office_location'] ?? null,
                         'office_phone' => $row['phone_number'] ?? null,
-                    ]
-                );
+                    ]);
 
-                // Count successful rows
+
                 $this->successCount++;
 
                 return $user;
@@ -88,7 +88,6 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
 
         } catch (\Exception $e) {
 
-            // Handle DB errors like Unique constraint: users.email
             $this->failedRecords[] = [
                 'reason' => $e->getMessage()
             ];

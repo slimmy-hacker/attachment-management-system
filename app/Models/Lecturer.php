@@ -11,4 +11,8 @@ class Lecturer extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function department()
+    {
+        return $this->belongsTo(AdministrativeUnit::class, 'department_id');
+    }
 }

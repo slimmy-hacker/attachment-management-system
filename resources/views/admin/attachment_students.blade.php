@@ -37,7 +37,21 @@
     <div class="flex flex-col">
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
-                <div class="shadow overflow-hidden">
+                <div class="shadow overflow-hidden"> <div class="flex items-end gap-3 mt-3">
+                        <div class="w-64">
+                            <label for="attachment_filter" class="block text-sm font-medium text-gray-700">
+                                Attachment
+                            </label>
+
+                            <select name="attachment_filter" id="attachment_filter"
+                                    class="w-full border border-gray-300 rounded-lg p-2 select2 bg-white text-sm">
+                                <option value="">All Attachments</option>
+                                @foreach($attachments as $attachment)
+                                    <option value="{{ $attachment->id }}">{{ $attachment->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
                         <thead class="bg-gray-100">
                         <tr>
@@ -47,13 +61,13 @@
                                 </div>
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Name
+                                Attachment
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                Student
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Reg No
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Attachment
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Department
@@ -194,7 +208,7 @@
       <option value="pending">Pending</option>
     </select>
   </div>
-                        
+
                         <div class="items-center p-6 border-t border-gray-200 rounded-b">
                             <button id="addStudentBtn" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
                                 Add
@@ -220,7 +234,7 @@
             closable: false
         });
 
-       
+
         $('#open-modal-btn').on('click', function () {
             uploadModal.show();
         });
@@ -239,12 +253,17 @@
             processing: true,
             serverSide: true,
             ordering: false,
-            ajax: "{{ route('admin.attachment_student.index') }}",
+            ajax: {
+                url: "{{ route('admin.attachment_student.index') }}",
+                data: function (d) {
+                    d.attachment_id = $('#attachment_filter').val();
+                }
+            },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'attachment', name: 'attachment' },
                 { data: 'name', name: 'name' },
                 { data: 'reg_no', name: 'reg_no' },
-                { data: 'attachment', name: 'attachment' },
                 { data: 'department', name: 'department' },
                 { data: 'lecturer', name: 'lecturer' },
                 { data: 'status', name: 'status' },
@@ -389,6 +408,10 @@
                     btn.prop("disabled", false).text('Add');
                 }
             });
+        });
+
+        $('#attachment_filter').on('change', function () {
+            table.ajax.reload(null, false);
         });
 
     });

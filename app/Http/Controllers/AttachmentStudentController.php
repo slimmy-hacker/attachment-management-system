@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\AttachmentStudentsImport;
+use App\Models\Attachment;
 use App\Models\AttachmentStudent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +15,10 @@ class AttachmentStudentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = AttachmentStudent::with(['attachment', 'student', 'student.user'])->latest()->get();
+            $data = AttachmentStudent::with(['attachment', 'student', 'student.user']);
+                if (!empty($request->attachment_id)) {
+                    $data->where('attachment_id', $request->attachment_id);
+                }
 
             return DataTables::of($data)
                 ->addIndexColumn() // adds DT_RowIndex
@@ -34,8 +38,10 @@ class AttachmentStudentController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
-        return view('admin.attachment_students');
+        $attachments = Attachment::select('id', 'name')
+            ->orderBy('start_date', 'desc')
+            ->get();
+        return view('admin.attachment_students', compact('attachments'));
     }
     public function upload(Request $request)
     {

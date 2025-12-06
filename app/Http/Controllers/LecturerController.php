@@ -17,13 +17,13 @@ class LecturerController extends Controller
     public function index(Request $request){
 
         if ($request->ajax()) {
-            $data = Lecturer::with(['user'])->latest()->get();
+            $data = Lecturer::with(['user','department'])->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn() // adds DT_RowIndex
                 ->addColumn('name', fn ($row) => $row->user->name ?? '-')
                 ->addColumn('email', fn ($row) => $row->user->email ?? '-')
-                ->addColumn('department', fn ($row) =>  '-')
+                ->addColumn('department', fn ($row) =>  $row->department->name ?? '-')
                 ->addColumn('action', function ($row) {
                     return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
                 })

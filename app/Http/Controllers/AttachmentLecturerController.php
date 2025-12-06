@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\AttachmentLecturersImport;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
 use App\Models\AttachmentLecturer;
 use Maatwebsite\Excel\Facades\Excel;
@@ -14,14 +15,17 @@ class AttachmentLecturerController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = AttachmentLecturer::with(['attachment', 'lecturer.user','department'])->latest()->get();
+            $data = AttachmentLecturer::with(['attachment', 'lecturer.user','department']);
+            if (!empty($request->attachment_id)) {
+                $data->where('attachment_id', $request->attachment_id);
+            }                    // ->orderBy('');
 
             return DataTables::of($data)
                 ->addIndexColumn() // adds DT_RowIndex
                 ->addColumn('name', fn ($row) => $row->lecturer->user->name ?? '-')// adds DT_RowIndex
                 ->addColumn('staff_no', fn ($row) => $row->lecturer->staff_number ?? '-')
                 ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
-                ->addColumn('department', fn ($row) => $row->department->slug ?? '-')
+                ->addColumn('department', fn ($row) => $row->department->name ?? '-')
                 ->addColumn('students', fn ($row) => $row->department->slug ?? 0)
                 ->addColumn('action', function ($row) {
                     return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
@@ -29,8 +33,10 @@ class AttachmentLecturerController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
-        return view('admin.attachment_lecturers');
+        $attachments = Attachment::select('id', 'name')
+                                ->orderBy('start_date', 'desc')
+                                ->get();
+        return view('admin.attachment_lecturers', compact('attachments'));
     }
     public function upload(Request $request)
     {

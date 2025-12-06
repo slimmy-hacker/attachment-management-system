@@ -158,9 +158,54 @@ $(document).ready(function () {
     $("#locationForm").submit(function (e) {
         e.preventDefault();
         let formData = new FormData(this);
-        // your existing AJAX upload code here
+        $.ajax({
+            url: "{{ route('admin.administrative-units.upload') }}",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: response.status === "success" ? 'success' : 'error',
+                    title: response.message,
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                if (response.status === "success") {
+                    $("#locationForm")[0].reset();
+                    uploadModal.hide();
+                    table.ajax.reload(null, false);
+                }
+            },
+            error: function (xhr) {
+                let res = xhr.responseJSON;
+                if (res && res.errors) {
+                    let messages = Object.values(res.errors).flat().join("\n");
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: "Validation failed:\n" + messages,
+                        showConfirmButton: false,
+                        timer: 9000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Something went wrong',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                }
+            }
+        });
     });
-
     // Add form submission
     $("#addAdminUnitForm").submit(function(e) {
         e.preventDefault();
@@ -212,6 +257,7 @@ $(document).ready(function () {
                 }
             }
         });
+
     });
 });
 </script>
