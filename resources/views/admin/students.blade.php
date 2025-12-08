@@ -190,21 +190,47 @@
                     contentType: false,
                     success: function (response) {
                         if (response.status === "success") {
+
+                            // let stats = response.stats;
+
+                            // Build failure list HTML table
+                            let failureHtml = "";
+
+                            if (response.fail_count > 0) {
+                                failureHtml += "<ul class='list-group'>";
+
+                                response.failed_records.forEach(function (item) {
+                                    failureHtml += `
+                                            <li class="list-group-item text-danger">
+                                                ${item.reason}
+                                            </li>
+                                        `;
+                                });
+
+                                failureHtml += "</ul>";
+                            }
+
+
+                            let htmlMsg = `
+                                <strong>Upload Completed!</strong><br>
+                                <strong>Successful:</strong> ${response.success_count}<br>
+                                <strong>Failed:</strong> ${response.fail_count}<br><br>
+                                ${failureHtml}
+                            `;
+
                             Swal.fire({
-                                toast: true,
-                                position: 'top-end',
-                                icon: 'success',
-                                title: response.message,
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true
+                                icon: response.fail_count > 0 ? "warning" : "success",
+                                title: "Import Report",
+                                html: htmlMsg,
+                                width: 600,
                             });
 
-                            // optionally reset form and close modal
                             $("#scheduleForm")[0].reset();
-                           modal.hide();
+                            modal.hide();
                             table.ajax.reload(null, false);
-                        } else {
+
+                        }
+                        else {
                             Swal.fire({
                                 toast: true,
                                 position: 'top-end',

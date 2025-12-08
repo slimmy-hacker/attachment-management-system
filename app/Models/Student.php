@@ -29,17 +29,6 @@ class Student extends Model
         return $this->belongsTo(AdministrativeUnit::class, 'program_id');
     }
 
-    public function department()
-    {
-        return $this->hasOneThrough(
-            AdministrativeUnit::class, // Final target (department)
-            AdministrativeUnit::class, // Intermediate (program)
-            'id',                      // Local key on program table
-            'id',                      // Local key on department table
-            'program_id',              // FK on students table → program
-            'parent_id'                // FK on programs table → department
-        );
-    }
 
 
 }

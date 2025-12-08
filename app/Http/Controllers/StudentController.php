@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\LecturersImport;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Report;
 use App\Models\AttachmentLecturer;
@@ -24,7 +25,7 @@ class StudentController extends Controller
 public function index(Request $request){
 
     if ($request->ajax()) {
-        $data = Student::with('user')
+        $data = Student::with('user', 'program', 'program.parent')
             ->whereHas('user')
             ->orderBy(User::select('name')->whereColumn('users.id', 'students.user_id'))
             ->get();
@@ -33,9 +34,8 @@ public function index(Request $request){
             ->addIndexColumn() // adds DT_RowIndex
             ->addColumn('name', fn ($row) => $row->user->name ?? '-')
             ->addColumn('email', fn ($row) => $row->user->email ?? '-')
-            ->addColumn('department', fn ($row) =>  '-')
-            ->addColumn('program', fn ($row) =>  '-')
-          //  ->addColumn('department', fn ($row) => $row->department->slug ?? '-')
+            ->addColumn('department', fn ($row) => $row->program->parent->name ??  '-')
+            ->addColumn('program', fn ($row) => $row->program->name ?? '-')
            // ->addColumn('pro', fn ($row) => $row->department->slug ?? 0)
 
             ->addColumn('action', function ($row) {
@@ -50,18 +50,29 @@ public function index(Request $request){
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,xlsx,xls|max:2048',
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ]);
 
-        $file = $request->file('file');
+        try {
+            $import = new StudentsImport();
+            Excel::import($import, $request->file('file'));
 
-        Excel::import(new StudentsImport, $file);
+            return response()->json([
+                'status'        => 'success',
+                'message'        => 'Upload completed',
+                'success_count'  => $import->successCount,
+                'fail_count'     => count($import->failedRecords),
+                'failed_records' => $import->failedRecords
+            ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Students imported successfully',
-        ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
     public function portal() {
         return view('student.portal');

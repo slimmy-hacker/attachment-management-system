@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->integer('lecturer_id');
             $table->integer('attachment_id');
-            $table->integer('department_id')->nullable();
+            $table->integer('department_id');
             $table->timestamps();
             $table->softDeletes();
 

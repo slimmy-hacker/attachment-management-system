@@ -1,4 +1,4 @@
-@extends('layouts.my_app')
+d@extends('layouts.my_app')
 @section('title')
    Staffs
 @endsection
@@ -198,10 +198,6 @@
                     contentType: false,
                     success: function (response) {
                         if (response.status === "success") {
-
-                           // let stats = response.stats;
-
-                            // Build failure list HTML table
                             let failureHtml = "";
 
                             if (response.fail_count > 0) {

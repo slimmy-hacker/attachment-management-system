@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\GenerateWeekNumber;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
@@ -16,10 +17,17 @@ class AttachmentController extends Controller
     public function index(Request $request){
         if ($request->ajax()) {
 
-            $data = Attachment::query();
+            $data = Attachment::query()
+            ->orderBy('start_date','DESC');
 
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('start_date', function ($data) {
+                    return Carbon::parse($data->start_date)->format('d M Y');
+                })
+                ->addColumn('end_date', function ($data) {
+                    return Carbon::parse($data->end_date)->format('d M Y');
+                })
                 ->addColumn('action', function($row){
 
                     $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
