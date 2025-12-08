@@ -23,5 +23,10 @@ Route::name('lecturer.')->group(function () {
         ->name('evaluate');
         Route::post('/assessment', [AttachmentAssessmentController::class, 'storeSchool'])->name('assessment');
          //Route::get('/lecturer/assessment/students', [AttachmentAssessmentController::class, 'listStudents'])->name('lecturer.assessment.students_list');
-         Route::get('/lecturer/assessment/students', [AttachmentAssessmentController::class, 'studentsList'])->name('assessment.students_list');
+        Route::get('/lecturer/assessment/students',
+    [AttachmentAssessmentController::class, 'listStudents'])->name('assessment.students_list');
+    Route::get('/lecturer/my-students', [LecturerController::class, 'myStudents'])
+    ->name('my-students');
+
+
 });
