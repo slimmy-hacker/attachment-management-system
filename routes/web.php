@@ -7,7 +7,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttachmentSelectedController;
-use App\Http\Controllers\IndurstrialSupervisorController;
+use App\Http\Controllers\IndustrialSupervisorController;
 use App\Http\Controllers\CompanyController;
 
 
@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/companies', [CompanyController::class, 'companies'])->name('companies');
     Route::post('/companies', [CompanyController::class, 'storeCompany'])->name('companies.store');
 
-    Route::get('get-company-industrial-supervisors/{id}', [IndurstrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
+    Route::get('get-company-industrial-supervisors/{id}', [IndustrialSupervisorController::class, 'getCompanyIndustrialSupervisors'])->name('get_company_industrial_supervisors');
 
 
     Route::get('/select-attachment', [AttachmentSelectedController::class, 'index'])->name('attachment_selected.select');

@@ -95,7 +95,7 @@
                     @csrf               
     
     <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 mb-1">
+        <label class=" required block text-sm font-medium text-gray-700 mb-1">
             Code
         </label>
         <input type="text" name="code" value="{{ old('code') }}"
@@ -107,7 +107,7 @@
 
     <!-- Name -->
     <div class="mb-4">
-        <label class="block  text-sm font-medium text-gray-700 mb-1">
+        <label class=" required block  text-sm font-medium text-gray-700 mb-1">
             Name
         </label>
         <input type="text" name="name" value="{{ old('name') }}"
@@ -117,22 +117,42 @@
         @enderror
     </div>
 
-    <!-- Level -->
-    <div class="mb-4">
-        <label class="block  select2 text-sm font-medium text-gray-700 mb-1">
-            Select Level
-        </label>
-        <select name="level"
-            class="select2 block w-full p-2 border rounded focus:ring focus:border-blue-300 @error('level') border-red-500 @enderror" required>
-            <option value="">-- Select Level --</option>
-            <option value="1" {{ old('level') == '1' ? 'selected' : '' }}>School</option>
-            <option value="2" {{ old('level') == '2' ? 'selected' : '' }}>department</option>
-            <option value="3" {{ old('level') == '3' ? 'selected' : '' }}>Course</option>
-        </select>
-        @error('level')
-            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-        @enderror
-    </div>
+   <!-- Level -->
+<div class="mb-4">
+    <label class="required block select2 text-sm font-medium text-gray-700 mb-1">
+        Select Level
+    </label>
+    <select name="level" id="level"
+        class="select2 block w-full p-2 border rounded focus:ring focus:border-blue-300 @error('level') border-red-500 @enderror" required>
+        <option value="">-- Select Level --</option>
+        <option value="1" {{ old('level') == '1' ? 'selected' : '' }}>School</option>
+        <option value="2" {{ old('level') == '2' ? 'selected' : '' }}>Department</option>
+        <option value="3" {{ old('level') == '3' ? 'selected' : '' }}>Course</option>
+    </select>
+    @error('level')
+        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
+<!-- Parent -->
+<div class="mb-4">
+    <label class="block select2 text-sm font-medium text-gray-700 mb-1">
+        Select Parent
+    </label>
+    <select name="parent" id="parent"
+        class="select2 block w-full p-2 border rounded focus:ring focus:border-blue-300 @error('parent') border-red-500 @enderror">
+        <option value="">-- Select Parent --</option>
+        @foreach($admin_units as $admin_unit)
+            <option value="{{ $admin_unit->id }}" {{ old('parent') == $admin_unit->id ? 'selected' : '' }}>
+                {{ $admin_unit->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('parent')
+        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
     <!-- Submit button -->
     <button type="submit" id="addAdministrativeUnitBtn"
@@ -151,6 +171,7 @@
 @section('scripts')
 <script>
 $(document).ready(function () {
+ let allUnits = @json($admin_units);
    
     const uploadModal = new Modal($('#add-location-modal')[0], { backdrop: 'static', closable: false });
     const addModal = new Modal($('#add-administrative-unit-modal')[0], { backdrop: 'static', closable: false });
@@ -238,7 +259,7 @@ $(document).ready(function () {
         let data = form.serialize();
 
         $.ajax({
-            url: "{{ route('admin.administrative-units.store') }}", // Make sure you have this route
+            url: "{{ route('admin.administrative-units.add') }}", // Make sure you have this route
             method: "POST",
             data: data,
             success: function(response) {
@@ -284,6 +305,34 @@ $(document).ready(function () {
         });
 
     });
+    $("#level").on('change', function () {
+    let level = parseInt($(this).val());
+    let $parent = $("#parent");
+
+    if (level === 1) {
+        // No parent for level 1
+        $parent.val(null).trigger('change');
+        $parent.prop('disabled', true);
+    } else {
+        // Enable parent select
+        $parent.prop('disabled', false);
+
+        // Filter parent options by level = level - 1
+        // Assuming you have all admin units in JS with their levels, e.g.:
+        // let allUnits = @json($admin_units);
+
+        let parentLevel = level - 1;
+        let filteredParents = allUnits.filter(u => u.level === parentLevel);
+
+        // Clear current options and add filtered ones
+        $parent.empty().append('<option value="">-- Select Parent --</option>');
+        $.each(filteredParents, function (i, unit) {
+            $parent.append(`<option value="${unit.id}">${unit.name}</option>`);
+        });
+        $parent.val(null).trigger('change');
+    }
+});
+
 });
 </script>
 @endsection

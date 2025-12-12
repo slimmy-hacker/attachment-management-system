@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\IndurstrialSupervisorController;
+use App\Http\Controllers\IndustrialSupervisorController;
 
 use App\Http\Controllers\OpportunityController;
 
@@ -36,8 +36,8 @@ Route::get('/documents', [CompanyController::class, 'documents'])->name('documen
 
     Route::get('/reports', [CompanyController::class, 'reports'])->name('reports');
 
-    Route::get('/supervisors', [IndurstrialSupervisorController::class, 'index'])->name('is.index');
-    Route::post('/supervisors/store', [IndurstrialSupervisorController::class, 'store'])->name('is.store');
+    Route::get('/supervisors', [IndustrialSupervisorController::class, 'index'])->name('is.index');
+    Route::post('/supervisors/store', [IndustrialSupervisorController::class, 'store'])->name('is.store');
 });
 
 

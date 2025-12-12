@@ -58,8 +58,10 @@ class AdministrativeUnitController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+        $admin_units=AdministrativeUnit::orderBy('name')->get();
 
-        return view('admin.administrative-units');
+
+        return view('admin.administrative-units',compact('admin_units'));
     }
 
     // Upload Excel file
@@ -93,7 +95,12 @@ class AdministrativeUnitController extends Controller
     $request->validate([
         'name' => 'required|string|max:255',
         'code' => 'required|string|max:50|unique:administrative_units,code',
-        'parent_code' => 'nullable|string|exists:administrative_units,code',
+       'parent_code' => [
+            'string',
+            'exists:administrative_units,code',
+            'nullable',
+            'required_if:level,!=,1'
+        ],
         'level' => 'required|integer|min:1',
     ]);
 
@@ -103,6 +110,7 @@ class AdministrativeUnitController extends Controller
         'parent_code' => $request->parent_code,
         'level' => $request->level,
     ]);
+  
 
     return response()->json([
         'status' => 'success',
@@ -110,25 +118,5 @@ class AdministrativeUnitController extends Controller
     ]);
 }
 
-public function store(Request $request)
-{
-    // Validate incoming data
-    $validated = $request->validate([
-        'name'        => 'required|string|max:255',
-        'code'        => 'required|string|max:255|unique:administrative_units,code',
-        'parent_code' => 'nullable|string|max:255',
-        'level'       => 'required|string|max:255',
-    ]);
-
-    // Create the administrative unit
-    AdministrativeUnit::create([
-        'name'        => $request->name,
-        'code'        => $request->code,
-        'parent_code' => $request->parent_code,
-        'level'       => $request->level,
-    ]);
-
-    return redirect()->back()->with('success', 'Administrative unit added successfully.');
-}
 
 }

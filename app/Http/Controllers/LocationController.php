@@ -116,6 +116,9 @@ public function create()
 ]);
 
 
-        return redirect()->back()->with('success', 'Location added successfully.');
-    }
+       return response()->json([
+        'status' => 'success',
+        'message' => 'Location added successfully.',
+    ]);
+}
 }

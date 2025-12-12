@@ -37,7 +37,21 @@
     <div class="flex flex-col">
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
-                <div class="shadow overflow-hidden">
+                <div class="shadow overflow-hidden"> <div class="flex items-end gap-3 mt-3">
+                        <div class="w-64">
+                            <label for="attachment_filter" class="block text-sm font-medium text-gray-700">
+                                Attachment
+                            </label>
+
+                            <select name="attachment_filter" id="attachment_filter"
+                                    class="w-full border border-gray-300 rounded-lg p-2 select2 bg-white text-sm">
+                                <option value="">All Attachments</option>
+                                @foreach($attachments as $attachment)
+                                    <option value="{{ $attachment->id }}">{{ $attachment->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
                         <thead class="bg-gray-100">
                         <tr>
@@ -47,13 +61,13 @@
                                 </div>
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Name
+                                Attachment
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                Student
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Reg No
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Attachment
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Department
@@ -156,55 +170,102 @@
 
                 <!-- Modal body -->
                 <div class="p-6 space-y-6">
-                    <form id="addStudentForm">
-                        @csrf()
-                        <!-- Add your input fields here for adding a student -->
-                        <div class="mb-4">
-                            <label for="student_name" class="text-sm font-medium text-gray-900 block mb-2">Student Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="student_name" id="student_name" required class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter student name">
-                        </div>
-                        <div class="mb-4">
-                            <label for="reg_no" class="text-sm font-medium text-gray-900 block mb-2">Registration Number <span class="text-red-500">*</span></label>
-                            <input type="text" name="reg_no" id="reg_no" required class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter registration number">
-                        </div>
-                        <div class="mb-4">
-    <label for="attachment" class="text-sm font-medium text-gray-900 block mb-2">Attachment <span class="text-red-500">*</span></label>
-    <input type="text" name="attachment" id="attachment" required
-      class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter attachment name">
-  </div>
+                    <form id ="addStudentForm" >
+    @csrf
 
-  <div class="mb-4">
-    <label for="department" class="text-sm font-medium text-gray-900 block mb-2">Department <span class="text-red-500">*</span></label>
-    <input type="text" name="department" id="department" required
-      class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter department name">
-  </div>
+    <!-- Student -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Select Student
+        </label>
+        <select name="student_id"  class="select2 block w-full p-2 border rounded focus:ring focus:border-blue-300">
+            <option value="">-- choose student --</option>
+            @foreach ($students as $student)
+                <option value="{{ $student->id }}">
+                    {{ $student->reg_no }} - {{ $student->user->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
 
-  <div class="mb-4">
-    <label for="lecturer" class="text-sm font-medium text-gray-900 block mb-2">Lecturer <span class="text-red-500">*</span></label>
-    <input type="text" name="lecturer" id="lecturer" required
-      class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter lecturer name">
-  </div>
+    <!-- Attachment -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Select Attachment
+        </label>
+        <select name="attachment_id" class="select2 block w-full p-2 border rounded focus:ring focus:border-blue-300">
+            <option value="">-- choose attachment --</option>
+            @foreach ($attachments as $attachment)
+                <option value="{{ $attachment->id }}" >
+                    {{ $attachment->name}}
+                </option>
+            @endforeach
+        </select>
+    </div>
 
-  <div class="mb-4">
-    <label for="status" class="text-sm font-medium text-gray-900 block mb-2">Status <span class="text-red-500">*</span></label>
-    <select name="status" id="status" required class="block w-full border border-gray-300 rounded-lg p-2.5">
-      <option value="">Select status</option>
-      <option value="active">Active</option>
-      <option value="inactive">Inactive</option>
-      <option value="pending">Pending</option>
-    </select>
-  </div>
-                        
-                        <div class="items-center p-6 border-t border-gray-200 rounded-b">
-                            <button id="addStudentBtn" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
-                                Add
-                            </button>
-                        </div>
-                    </form>
+    <!-- Submit button -->
+    <button type="submit" id="addStudentBtn"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">
+        Add
+    </button>
+</form>
                 </div>
             </div>
         </div>
     </div>
+      <!-- Assess Student Modal -->
+<div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" id="assess-modal">
+    <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
+        <div class="bg-white rounded-lg shadow relative">
+            <div class="flex items-start justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold">Assess Student</h3>
+                <button type="button" class="close-assess-modal-btn text-gray-400 hover:bg-gray-200 rounded-lg p-1.5">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6">
+    <form id="assessForm">
+        @csrf
+        <input type="hidden" name="student_id" value="{{ $student->id ?? '' }}">
+
+        <div class="space-y-4">
+            <div>
+                <label for="practical_marks" class="block font-medium">Practical Marks</label>
+                <input type="number" min="0" max="100" id="practical_marks" name="practical_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="practical_remarks" class="block font-medium">Practical Remarks</label>
+                <textarea id="practical_remarks" name="practical_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+
+            <div>
+                <label for="report_marks" class="block font-medium">Report Marks</label>
+                <input type="number" min="0" max="100" id="report_marks" name="report_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="report_remarks" class="block font-medium">Report Remarks</label>
+                <textarea id="report_remarks" name="report_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+
+            <div>
+                <label for="presentation_marks" class="block font-medium">Presentation Marks</label>
+                <input type="number" min="0" max="100" id="presentation_marks" name="presentation_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="presentation_remarks" class="block font-medium">Presentation Remarks</label>
+                <textarea id="presentation_remarks" name="presentation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="mt-6 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit School Assessment</button>
+    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 @section('scripts')
@@ -220,7 +281,7 @@
             closable: false
         });
 
-       
+
         $('#open-modal-btn').on('click', function () {
             uploadModal.show();
         });
@@ -239,12 +300,17 @@
             processing: true,
             serverSide: true,
             ordering: false,
-            ajax: "{{ route('admin.attachment_student.index') }}",
+            ajax: {
+                url: "{{ route('admin.attachment_student.index') }}",
+                data: function (d) {
+                    d.attachment_id = $('#attachment_filter').val();
+                }
+            },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'attachment', name: 'attachment' },
                 { data: 'name', name: 'name' },
                 { data: 'reg_no', name: 'reg_no' },
-                { data: 'attachment', name: 'attachment' },
                 { data: 'department', name: 'department' },
                 { data: 'lecturer', name: 'lecturer' },
                 { data: 'status', name: 'status' },
@@ -389,6 +455,10 @@
                     btn.prop("disabled", false).text('Add');
                 }
             });
+        });
+
+        $('#attachment_filter').on('change', function () {
+            table.ajax.reload(null, false);
         });
 
     });

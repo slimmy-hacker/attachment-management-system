@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Imports\LecturersImport;
 use App\Models\Lecturer;
+use App\Models\Attachment; 
+use App\Models\AttachmentStudent;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Maatwebsite\Excel\Facades\Excel;
@@ -59,15 +61,16 @@ class LecturerController extends Controller
         }
     }
 
-    public function studentsAssigned()
+   public function studentsAssigned()
 {
-    $supervisor = auth()->user();
+    $students = Student::with('user')->get();
 
-    // fetch students from users table
-    $students = $supervisor->assignedStudents()->get();
+    // Load attachments for the filter dropdown
+    $attachments = Attachment::all();
 
-    return view('lecturer.students-assigned', compact('students'));
+    return view('lecturer.my-students', compact('students', 'attachments'));
 }
+
 
 
     /**
@@ -123,9 +126,35 @@ class LecturerController extends Controller
     {
         return view('lecturer.evaluate');
     }
-    public function myStudents()
+   public function myStudents(Request $request)
 {
-    return view('lecturer.my-students');
-}
+     if ($request->ajax()) {
+            
+            $data = AttachmentStudent::with(['attachment', 'student', 'student.user']);
+                if (!empty($request->attachment_id)) {
+                    $data->where('attachment_id', $request->attachment_id);
+                }
 
+            return DataTables::of($data)
+                ->addIndexColumn() // adds DT_RowIndex
+                ->addColumn('name', function ($row) {
+                    return $row->student && $row->student->user
+                        ? $row->student->user->name
+                        : '-';
+                })
+                ->addColumn('reg_no', fn ($row) =>  $row->student->reg_no ?? '-')
+                ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
+                ->addColumn('department', fn ($row) => $row->department->name ?? '-')
+                ->addColumn('lecturer', fn ($row) => $row->lecturer->user->name ?? '-')
+                ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
+                ->addColumn('action', function ($row) {
+                    return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    $attachments = Attachment::all();  
+
+    return view('lecturer.my-students', compact('attachments'));
+}
 }

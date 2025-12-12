@@ -37,8 +37,22 @@
     <div class="flex flex-col">
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
-                <div class="shadow overflow-hidden">
-                    <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
+                <div class="shadow overflow-hidden"> <div class="flex items-end gap-3 mt-3">
+                        <div class="w-64">
+                            <label for="attachment_filter" class="block text-sm font-medium text-gray-700">
+                                Attachment
+                            </label>
+
+                            <select name="attachment_filter" id="attachment_filter"
+                                    class="w-full border border-gray-300 rounded-lg p-2 select2 bg-white text-sm">
+                                <option value="">All Attachments</option>
+                                @foreach($attachments as $attachment)
+                                    <option value="{{ $attachment->id }}">{{ $attachment->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <table class="table-fixed min-w-full divide-y divide-gray-200" id="my_students_table">
                         <thead class="bg-gray-100">
                         <tr>
                             <th scope="col" class="p-2 w-12">
@@ -47,13 +61,13 @@
                                 </div>
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Name
+                                Attachment
+                            </th>
+                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                Student
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Reg No
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Attachment
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Department
@@ -156,55 +170,63 @@
 
                 <!-- Modal body -->
                 <div class="p-6 space-y-6">
-                    <form id="addStudentForm">
-                        @csrf()
-                        <!-- Add your input fields here for adding a student -->
-                        <div class="mb-4">
-                            <label for="student_name" class="text-sm font-medium text-gray-900 block mb-2">Student Name <span class="text-red-500">*</span></label>
-                            <input type="text" name="student_name" id="student_name" required class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter student name">
-                        </div>
-                        <div class="mb-4">
-                            <label for="reg_no" class="text-sm font-medium text-gray-900 block mb-2">Registration Number <span class="text-red-500">*</span></label>
-                            <input type="text" name="reg_no" id="reg_no" required class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter registration number">
-                        </div>
-                        <div class="mb-4">
-    <label for="attachment" class="text-sm font-medium text-gray-900 block mb-2">Attachment <span class="text-red-500">*</span></label>
-    <input type="text" name="attachment" id="attachment" required
-      class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter attachment name">
-  </div>
+                    <form id ="addStudentForm" >
+    
 
-  <div class="mb-4">
-    <label for="department" class="text-sm font-medium text-gray-900 block mb-2">Department <span class="text-red-500">*</span></label>
-    <input type="text" name="department" id="department" required
-      class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter department name">
-  </div>
+    
+    <!-- Assess Student Modal -->
+<div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" id="assess-modal">
+    <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
+        <div class="bg-white rounded-lg shadow relative">
+            <div class="flex items-start justify-between p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold">Assess Student</h3>
+                <button type="button" class="close-assess-modal-btn text-gray-400 hover:bg-gray-200 rounded-lg p-1.5">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
 
-  <div class="mb-4">
-    <label for="lecturer" class="text-sm font-medium text-gray-900 block mb-2">Lecturer <span class="text-red-500">*</span></label>
-    <input type="text" name="lecturer" id="lecturer" required
-      class="block w-full border border-gray-300 rounded-lg p-2.5" placeholder="Enter lecturer name">
-  </div>
+            <div class="p-6 space-y-6">
+    <form id="assessForm">
+        @csrf
+        <input type="hidden" name="student_id" value="{{ $student->id ?? '' }}">
 
-  <div class="mb-4">
-    <label for="status" class="text-sm font-medium text-gray-900 block mb-2">Status <span class="text-red-500">*</span></label>
-    <select name="status" id="status" required class="block w-full border border-gray-300 rounded-lg p-2.5">
-      <option value="">Select status</option>
-      <option value="active">Active</option>
-      <option value="inactive">Inactive</option>
-      <option value="pending">Pending</option>
-    </select>
-  </div>
-                        
-                        <div class="items-center p-6 border-t border-gray-200 rounded-b">
-                            <button id="addStudentBtn" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">
-                                Add
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        <div class="space-y-4">
+            <div>
+                <label for="practical_marks" class="block font-medium">Practical Marks</label>
+                <input type="number" min="0" max="100" id="practical_marks" name="practical_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="practical_remarks" class="block font-medium">Practical Remarks</label>
+                <textarea id="practical_remarks" name="practical_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+
+            <div>
+                <label for="report_marks" class="block font-medium">Report Marks</label>
+                <input type="number" min="0" max="100" id="report_marks" name="report_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="report_remarks" class="block font-medium">Report Remarks</label>
+                <textarea id="report_remarks" name="report_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+
+            <div>
+                <label for="presentation_marks" class="block font-medium">Presentation Marks</label>
+                <input type="number" min="0" max="100" id="presentation_marks" name="presentation_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="presentation_remarks" class="block font-medium">Presentation Remarks</label>
+                <textarea id="presentation_remarks" name="presentation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="mt-6 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit School Assessment</button>
+    </form>
             </div>
         </div>
     </div>
+</div>
+
 
 @endsection
 @section('scripts')
@@ -220,7 +242,7 @@
             closable: false
         });
 
-       
+
         $('#open-modal-btn').on('click', function () {
             uploadModal.show();
         });
@@ -235,16 +257,21 @@
             addModal.hide();
         });
 
-        var table = $("#attarchment_schedules_table").DataTable({
+        var table = $("#my_students_table").DataTable({
             processing: true,
             serverSide: true,
             ordering: false,
-            ajax: "{{ route('admin.attachment_student.index') }}",
+            ajax: {
+                url: "{{ route('lecturer.my-students') }}",
+                data: function (d) {
+                    d.attachment_id = $('#attachment_filter').val();
+                }
+            },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'attachment', name: 'attachment' },
                 { data: 'name', name: 'name' },
                 { data: 'reg_no', name: 'reg_no' },
-                { data: 'attachment', name: 'attachment' },
                 { data: 'department', name: 'department' },
                 { data: 'lecturer', name: 'lecturer' },
                 { data: 'status', name: 'status' },
@@ -252,92 +279,7 @@
             ]
         });
 
-        // Upload form submit
-        $("#scheduleForm").on("submit", function (e) {
-            e.preventDefault();
-            let btn = $("#uploadBtn");
-            btn.prop("disabled", true).html('Uploading <span class="loading-dots"></span>');
-            let formData = new FormData(this);
-
-            $.ajax({
-                url: "{{ route('admin.attachment_student.upload') }}",
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.status === "success") {
-                        let stats = response.stats;
-                        let failureHtml = "";
-
-                        if (stats.fail_count > 0) {
-                            failureHtml += "<ul class='list-group'>";
-                            stats.failed_records.forEach(function (item) {
-                                failureHtml += `<li class="list-group-item text-danger">${item.reason}</li>`;
-                            });
-                            failureHtml += "</ul>";
-                        }
-
-                        let htmlMsg = `
-                            <strong>Upload Completed!</strong><br>
-                            <strong>Successful:</strong> ${stats.success_count}<br>
-                            <strong>Failed:</strong> ${stats.fail_count}<br><br>
-                            ${failureHtml}
-                        `;
-
-                        Swal.fire({
-                            icon: stats.fail_count > 0 ? "warning" : "success",
-                            title: "Import Report",
-                            html: htmlMsg,
-                            width: 600,
-                        });
-
-                        $("#scheduleForm")[0].reset();
-                        uploadModal.hide();
-                        table.ajax.reload(null, false);
-
-                    } else {
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'error',
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
-                    }
-                },
-                error: function (xhr) {
-                    let res = xhr.responseJSON;
-                    if (res && res.errors) {
-                        let messages = Object.values(res.errors).flat().join("\n");
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'error',
-                            title: "Validation failed:\n" + messages,
-                            showConfirmButton: false,
-                            timer: 9000,
-                            timerProgressBar: true
-                        });
-                    } else {
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Something went wrong',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
-                    }
-                },
-                complete: function () {
-                    $("#uploadBtn").prop("disabled", false).html("Upload");
-                }
-            });
-        });
+        
 
         // Add student form submit (example)
         $("#addStudentForm").on("submit", function(e) {
@@ -348,7 +290,7 @@
             let formData = $(this).serialize();
 
             $.ajax({
-                url: "{{ route('admin.attachment_student.add') }}",  // Define this route to handle add student
+                url: "#",  // Define this route to handle add student
                 type: "POST",
                 data: formData,
                 success: function(response) {
@@ -390,6 +332,66 @@
                 }
             });
         });
+
+        $('#attachment_filter').on('change', function () {
+            table.ajax.reload(null, false);
+        });
+        const assessModal = new Modal($('#assess-modal')[0], {
+    backdrop: 'static',
+    closable: false
+});
+
+// open modal when assess button is clicked
+$(document).on('click', '.assessBtn', function () {
+    let id = $(this).data('id');
+    let name = $(this).data('name');
+
+    $('#assess_student_id').val(id);
+    $('#assess_student_name').val(name);
+
+    assessModal.show();
+});
+
+// close button
+$('.close-assess-modal-btn').on('click', function () {
+    assessModal.hide();
+});
+
+// submit assessment
+$("#assessForm").on("submit", function(e) {
+    e.preventDefault();
+    let btn = $("#assessBtn");
+    btn.prop("disabled", true).text('Submitting...');
+
+    $.ajax({
+        url: "{{ route('lecturer.assessment.store') }}", // <-- Add this route
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(response) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Assessment Saved',
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            assessModal.hide();
+            $("#assessForm")[0].reset();
+            $("#attarchment_schedules_table").DataTable().ajax.reload(null, false);
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Could not save assessment'
+            });
+        },
+        complete: function() {
+            btn.prop("disabled", false).text('Submit Assessment');
+        }
+    });
+});
+
 
     });
 </script>

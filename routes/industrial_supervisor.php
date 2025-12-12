@@ -42,7 +42,7 @@ Route::post('/industrial-supervisor/assessment/store',
     Route::get('/industrial-supervisor/assessment/students', 
         [AttachmentAssessmentController::class, 'listStudents'])
         ->name('industrial_supervisor.assessment.students_list');
-        Route::get('/cal', [CalController::class, 'index'])->name('cal.index');
+       // Route::get('/cal', [CalController::class, 'index'])->name('cal.index');
         Route::get('/industrial-supervisor/attaches', [IndustrialSupervisorController::class, 'attaches']) ->name('industrial_supervisor.attaches');
            
             

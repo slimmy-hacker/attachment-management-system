@@ -8,9 +8,9 @@ Route::get('portal', function () {
     return view('lecturer.portal');
 })->name('lecturer.portal');
 
-Route::name('lecturer.')->group(function () {
-   Route::get('/students-assigned', [LecturerController::class, 'studentsAssigned'])
-        ->name('students-assigned');
+
+Route::middleware(['ensure.attachment.selected'])->name('lecturer.')->group(function () {
+   
 
 
     Route::get('/reports', [LecturerController::class, 'reports'])
@@ -23,10 +23,18 @@ Route::name('lecturer.')->group(function () {
         ->name('evaluate');
         Route::post('/assessment', [AttachmentAssessmentController::class, 'storeSchool'])->name('assessment');
          //Route::get('/lecturer/assessment/students', [AttachmentAssessmentController::class, 'listStudents'])->name('lecturer.assessment.students_list');
-        Route::get('/lecturer/assessment/students',
-    [AttachmentAssessmentController::class, 'listStudents'])->name('assessment.students_list');
-    Route::get('/lecturer/my-students', [LecturerController::class, 'myStudents'])
-    ->name('my-students');
+       
+ 
+
+  Route::get('/my-students', [LecturerController::class, 'myStudents'])
+        ->name('my-students');
+
+    Route::get('/assessment/{studentId}', [AttachmentAssessmentController::class, 'createSchool'])
+        ->name('lecturer.assessment.form');
+
+    Route::post('/assessment', [AttachmentAssessmentController::class, 'storeSchool'])
+        ->name('assessment.store');
+       
 
 
 });

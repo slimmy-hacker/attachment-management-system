@@ -64,9 +64,8 @@ Route::post('admin/locations/add', [LocationController::class, 'add'])->name('ad
 Route::post('attachment-student/add', [AttachmentStudentController::class, 'add'])
     ->name('admin.attachment_student.add');
     Route::get('administrative-units', [AdministrativeUnitController::class, 'index'])->name('admin.administrative-units.index');
-    Route::post('administrative-units', [AdministrativeUnitController::class, 'store'])->name('admin.administrative-units.store');
-    Route::post('/administrative-units/store', [AdministrativeUnitController::class, 'store'])
-    ->name('admin.administrative-units.store');
+       Route::post('/administrative-units/add', [AdministrativeUnitController::class, 'add'])
+    ->name('admin.administrative-units.add');
     // routes/web.php
 Route::post('/admin/attachment-lecturers/add', [AttachmentLecturerController::class, 'store'])
     ->name('admin.attachment_lecturers.add');

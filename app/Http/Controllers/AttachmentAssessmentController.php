@@ -1,22 +1,57 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Student; 
 use App\Models\AttachmentAssessment;
 use Illuminate\Http\Request;
 
 class AttachmentAssessmentController extends Controller
 {
+ public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            
+            $data = AttachmentStudent::with(['attachment', 'student', 'student.user']);
+                if (!empty($request->attachment_id)) {
+                    $data->where('attachment_id', $request->attachment_id);
+                }
 
+            return DataTables::of($data)
+                ->addIndexColumn() // adds DT_RowIndex
+                ->addColumn('name', function ($row) {
+                    return $row->student && $row->student->user
+                        ? $row->student->user->name
+                        : '-';
+                })
+                ->addColumn('reg_no', fn ($row) =>  $row->student->reg_no ?? '-')
+                ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
+                ->addColumn('department', fn ($row) => $row->department->name ?? '-')
+                ->addColumn('lecturer', fn ($row) => $row->lecturer->user->name ?? '-')
+                ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
+                ->addColumn('action', function ($row) {
+                    return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        $attachments = Attachment::select('id', 'name')
+            ->orderBy('start_date', 'desc')
+            ->get();
+            $students = Student::select('id', 'user_id')
+    ->with('user:id,name')
+    ->get();
 
-public function createIndustrial($studentId)
-{
-    $student = Student::findOrFail($studentId);  // fetch the student record
+        return view('lecturer.my-students', compact('attachments','students'));
+    }
+    // INDUSTRIAL SUPERVISOR ASSESSMENT FORM
+    public function createIndustrial($studentId)
+    {
+        $student = Student::findOrFail($studentId);
+        return view('attaches.industrial_supervisor', compact('student'));
+    }
 
-    return view('assessment.industrial_supervisor', compact('student'));
-}
-
-    // Store Industrial Supervisor assessment data
+    // SAVE Industrial Supervisor Assessment
     public function storeIndustrial(Request $request)
     {
         $request->validate([
@@ -49,18 +84,19 @@ public function createIndustrial($studentId)
             ])
         );
 
-        return redirect()->back()->with('success', 'Industrial assessment saved successfully.');
+        // 🔥 Redirect Industrial Supervisor to their attaches page
+        return redirect()->route('industrial_supervisor.attaches')
+            ->with('success', 'Industrial assessment saved successfully.');
     }
 
-    // Show form for School Supervisor to assess a student
+    // SCHOOL SUPERVISOR ASSESSMENT FORM
     public function createSchool($studentId)
     {
-        $student = Student::findOrFail($studentId);  // fetch the student record
-
-    return view('assessment.lecturer', compact('student'));
+        $student = Student::findOrFail($studentId);
+        return view('my.lecturer', compact('student'));
     }
 
-    // Store School Supervisor assessment data
+    // SAVE School Supervisor Assessment
     public function storeSchool(Request $request)
     {
         $request->validate([
@@ -85,20 +121,8 @@ public function createIndustrial($studentId)
             ])
         );
 
-        return redirect()->back()->with('success', 'School assessment saved successfully.');
+        // 🔥 Redirect School Supervisor to My Students page
+        return redirect()->route('lecturer.my-students')
+            ->with('success', 'School assessment saved successfully.');
     }
-   public function listStudents()
-{
-    $industrySupervisor = auth()->user();
-
-    if (!$industrySupervisor) {
-        abort(403, 'Unauthorized');
-    }
-
-    $students = $industrySupervisor->attachedStudents ?? collect();
-
-    return view('assessment.students_list', compact('students'));
-}
-
-
 }
