@@ -1,4 +1,4 @@
-d@extends('layouts.my_app')
+@extends('layouts.my_app')
 @section('title')
    Staffs
 @endsection
