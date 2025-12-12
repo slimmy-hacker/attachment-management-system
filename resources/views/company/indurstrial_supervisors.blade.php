@@ -158,7 +158,6 @@
                                 <div>
                                         <label for="position_title" class="block font-semibold required">
                                            Position
-                                            <span class="text-red-600">*</span>
                                         </label>
                                         <input type="text" name="position_title" id="position_title" value="{{ old('position_title') }}"
                                                class="w-full border rounded p-2" required>

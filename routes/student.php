@@ -29,6 +29,7 @@ Route::middleware(['ensure.attachment.selected'])->group(function () {
     });
 
     Route::post('/daily-activities', [DailyReportController::class, 'store'])->name('student.daily_activities.store');
+    Route::post('/weekly-activities', [DailyReportController::class, 'storeStudentWeeklyReport'])->name('student.weekly_activities.store');
 
 // View all logbook entries
     Route::get('/daily-activities', [DailyReportController::class, 'index'])->name('student.daily_activities.index');

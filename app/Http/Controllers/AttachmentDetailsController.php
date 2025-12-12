@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attachment;
 use App\Models\AttachmentStudent;
 use App\Models\Company;
 use App\Models\DailyReport;
 use App\Models\Student;
+use App\Models\WeeklyReport;
 use Illuminate\Http\Request;
 
 class AttachmentDetailsController extends Controller
@@ -13,20 +15,32 @@ class AttachmentDetailsController extends Controller
 {
     $attachment_student_id = $req->session()->get('attachment_student_id');
     $attachment_student = AttachmentStudent::find($attachment_student_id);
-    $companies = Company::all();
+    $companies = Company::with('subcounty')->get();
     $logged_user = auth()->user();
-    $my_student_details = Student::where('user_id', $logged_user->id)
-        ->first();
+    $my_student_details = Student::with('program')
+                                    ->where('user_id', $logged_user->id)
+                                    ->first();
     return view('student.attachment-form',  compact('companies',  'logged_user','my_student_details','attachment_student'));
 }
     public function update(Request $request)
     {
-        // 1. Validate the request
+        $attachment_id = $request->session()->get('attachment_id');
+        $attachment = Attachment::find($attachment_id);
         $validated = $request->validate([
             'company_id' => 'required|exists:companies,id',
             'industrial_supervisor_id' => 'required|exists:users,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_date' => [
+                'required',
+                'date',
+                'after_or_equal:' . $attachment->start_date,
+                'before_or_equal:' . $attachment->end_date,
+            ],
+            'end_date' => [
+                'required',
+                'date',
+                'after_or_equal:start_date',
+                'before_or_equal:' . $attachment->end_date,
+            ],
         ]);
         $attachment_student_id = $request->session()->get('attachment_student_id');
 
@@ -39,7 +53,10 @@ class AttachmentDetailsController extends Controller
                 ]
             ]);
         }
-        $exists = DailyReport::where('attachment_student_id', $attachment_student_id)->exists();
+
+        $exists = WeeklyReport::where('attachment_student_id', $attachment_student_id)
+                                ->whereHas('dailyReports')
+                                ->exists();
 
         if ($exists) {
             return redirect()->back()->withInput()->with([
