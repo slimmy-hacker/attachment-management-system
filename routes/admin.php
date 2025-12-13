@@ -23,6 +23,7 @@ Route::post('attarchment-schedules/store', [AttachmentController::class, 'store'
 
     Route::post('/locations/upload', [LocationController::class, 'upload'])->name('admin.locations.upload');
 Route::get('/locations', [LocationController::class, 'index'])->name('admin.locations.index');
+Route::get('/auto-fill-missing-coordinates', [LocationController::class, 'autoFillMissingCoordinates'])->name('admin.locations.auto_fill');
 
 Route::get('attarchment-schedules-supervisors/index', [AttachmentLecturerController::class, 'index'])->name('admin.attachment_schedules.supervisors.index');
 
@@ -49,7 +50,7 @@ Route::get('/lecturers', [LecturerController::class, 'index'])
 Route::post('upload-lecturers', [LecturerController::class, 'upload'])
     ->name('admin.lecturers.upload');
 
-  
+
     Route::post('/administrative-units/upload', [AdministrativeUnitController::class, 'upload'])->name('admin.administrative-units.upload');
 
 

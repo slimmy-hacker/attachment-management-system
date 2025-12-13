@@ -86,4 +86,19 @@ class AttachmentDetailsController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $data = AttachmentStudent::with([
+            'student',
+            'student.user',
+            'student.program',
+            'company.subcounty',
+            'industrialSupervisor.user',
+            'lecturer',
+            'attachment'
+        ])->findOrFail($id);
+
+        return response()->json($data);
+    }
+
 }

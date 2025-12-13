@@ -16,8 +16,15 @@ class AttachmentStudent extends Model
     {
         return $this->belongsTo(Lecturer::class, 'lecturer_id');
     }
+    public function industrialSupervisor()
+    {
+        return $this->belongsTo(IndustrialSupervisor::class, 'industrial_supervisor_id');
+    }
     public function student() {
         return $this->belongsTo(Student::class, 'student_id');
+    }
+    public function company() {
+        return $this->belongsTo(Company::class, 'company_id');
     }
 
     public function program()

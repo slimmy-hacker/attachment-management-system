@@ -37,7 +37,7 @@
             </div>
             <div class="flex flex-col">
                 <div class="overflow-x-auto">
-                    <div class="align-middle inline-block min-w-full">
+                    <div class="align-middle inline-block min-w-full"h>
                         <div class="shadow overflow-hidden">
                             <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
                                 <thead class="bg-gray-100">

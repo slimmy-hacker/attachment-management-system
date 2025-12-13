@@ -67,10 +67,12 @@
                         </div>
 
                     </div>
-                    <button type="button" id="calender_details_btn" type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
-                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                       Save
-                    </button>
+                    @if($user_role == 'student')
+                        <button type="button" id="calender_details_btn" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                           Save
+                        </button>
+                    @endif
                     <button  type="button" class="text-white inline-flex items-center bg-gray-300 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center close-modals-btn ">
                         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                        close
@@ -149,7 +151,6 @@
         </div>
     </div>
 
-
 </div>
     @endsection
 @section('scripts')
@@ -197,6 +198,7 @@
                     }
                 });
                 let type =props.type;
+                console.log(JSON.stringify(info.event));
                 if(type == "weekly"){
                     var week_period  = info.event.startStr + ' - ' + info.event.endStr;
                     $("#attachment_period").html(week_period);
@@ -407,11 +409,17 @@
                             response.data.forEach(function(eventData) {
                                 let event = calendar.getEventById(eventData.id);
                                 if (event) {
-                                    // Update event
-                                    event.setProp("title", eventData.title);
-                                    event.setStart(eventData.start);
-                                    event.setEnd(eventData.end);
+                                    if (eventData.title) event.setProp("title", eventData.title);
+                                    if (eventData.start) event.setStart(eventData.start);
+                                    if (eventData.end) event.setEnd(eventData.end);
                                     if (eventData.color) event.setProp("color", eventData.color);
+                                    if (eventData) {
+                                        Object.keys(eventData).forEach(key => {
+                                            if (['id', 'title', 'start', 'end', 'color'].includes(key)) return;
+
+                                            event.setExtendedProp(key, eventData[key]);
+                                        });
+                                    }
                                 } else {
                                     calendar.addEvent({
                                         id: eventData.id,

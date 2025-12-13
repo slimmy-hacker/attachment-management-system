@@ -18,22 +18,19 @@ class EnsureAttachmentSelected
     public function handle(Request $request, Closure $next): Response
     {
         if(auth()->check() && auth()->user()->role){
-            $user_role = auth()->user()->role;
-            if($request->session()->has('attachment_id') && $request->session()->has('attachment_name')){
-                if($user_role == 'student'){
-                    if($request->session()->has('attachment_student_id')){
+            $user_role =  auth()->user()->role;
+            if($request->session()->has('attachment_id') && $request->session()->has('attachment_name')) {
+                if ($user_role == 'student') {
+                    if ($request->session()->has('attachment_student_id')) {
                         return $next($request);
                     }
-                }
-               elseif($user_role == 'lecturer'){
-                    if($request->session()->has('attachment_lecturer_id')){
+                } elseif ($user_role == 'lecturer') {
+                    if ($request->session()->has('attachment_lecturer_id')) {
                         return $next($request);
                     }
-                }else{
+                } else {
                     return $next($request);
                 }
-
-
             }
 
 

@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LecturerController;
+use App\Http\Controllers\DailyReportController;
 use App\Http\Controllers\AttachmentAssessmentController;
 
 Route::get('portal', function () {
@@ -10,21 +11,18 @@ Route::get('portal', function () {
 
 
 Route::middleware(['ensure.attachment.selected'])->name('lecturer.')->group(function () {
-   
+
 
 
     Route::get('/reports', [LecturerController::class, 'reports'])
         ->name('reports');
 
-    Route::get('/logbook', [LecturerController::class, 'logbook'])
-        ->name('logbook');
-
     Route::get('/evaluate', [LecturerController::class, 'evaluate'])
         ->name('evaluate');
         Route::post('/assessment', [AttachmentAssessmentController::class, 'storeSchool'])->name('assessment');
          //Route::get('/lecturer/assessment/students', [AttachmentAssessmentController::class, 'listStudents'])->name('lecturer.assessment.students_list');
-       
- 
+
+
 
   Route::get('/my-students', [LecturerController::class, 'myStudents'])
         ->name('my-students');
@@ -34,7 +32,10 @@ Route::middleware(['ensure.attachment.selected'])->name('lecturer.')->group(func
 
     Route::post('/assessment', [AttachmentAssessmentController::class, 'storeSchool'])
         ->name('assessment.store');
-       
+
+    Route::post('/weekly-activities-store', [DailyReportController::class, 'storeLecturerWeeklyReport'])
+        ->name('weekly_activities.store');
+
 
 
 });

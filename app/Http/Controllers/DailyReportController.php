@@ -32,6 +32,7 @@ class DailyReportController extends Controller
         }
         if ($type == 'weekly') {
             $weekly_report = WeeklyReport::findOrFail($id);
+
             $data = [
                     'id' => $weekly_report->week_id,
                     'title' => $weekly_report->status,
@@ -48,9 +49,16 @@ class DailyReportController extends Controller
         }
         return $data;
     }
-    public function index(Request $request)
-    {
-        $attachment_student_id = $request->session()->get('attachment_student_id');
+    public function index(Request $request, $id = null)
+    {       $user_role = Auth::user()->role;
+        if ($user_role == 'student') {
+            $attachment_student_id = $request->session()->get('attachment_student_id');
+        }elseif($id){
+            $attachment_student_id = $id;
+        }else{
+            abort(404);
+        }
+
         $weekly_reports = WeeklyReport::where('attachment_student_id', $attachment_student_id)->pluck('id');
         $weekly_events =
             $weekly_reports ->map(function ($event) {
@@ -65,7 +73,7 @@ class DailyReportController extends Controller
         $attachment_student = AttachmentStudent::with([ 'student', 'student.user'])
                                     ->where('id', $attachment_student_id)
                                     ->first();
-        $user_role = Auth::user()->role;
+
         $report_route =  '#';
         if ($user_role == 'student') {
             $report_route =  route('student.weekly_activities.store');
@@ -231,6 +239,14 @@ class DailyReportController extends Controller
                           ->update([
                                 'weekly_report' => $validated['weekly_report'],
                             ]);
+            $data = collect([
+                $this->calenderResponse($validated['weekly_report_id'], 'weekly'),
+            ]);
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Weekly Report Saved.',
+                'data'    => $data
+            ]);
         }
         catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
@@ -254,12 +270,20 @@ class DailyReportController extends Controller
         try {
             $validated = $request->validate([
                                     'weekly_report_id' => 'required|exists:weekly_reports,id',
-                                    'weekly_report' => 'required|string|max:255',
+                                    'industrial_supervisor_comment' => 'required|string|max:255',
                                 ]);
             WeeklyReport::find($validated['weekly_report_id'])
                           ->update([
-                                'weekly_report' => $validated['weekly_report'],
+                                'industrial_supervisor_comment' => $validated['industrial_supervisor_comment'],
                             ]);
+            $data = collect([
+                $this->calenderResponse($validated['weekly_report_id'], 'weekly'),
+            ]);
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Weekly Report Remarks Saved.',
+                'data'    => $data
+            ]);
         }
         catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([

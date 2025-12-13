@@ -1,7 +1,7 @@
 @extends('layouts.my_app')
 
 @section('title')
-    Select Attarchment
+    Select Attachment
 @endsection
 
 @section('content')
@@ -27,6 +27,7 @@
                         <form action="{{ route('attachment_selected.store') }}" method="POST" class="group">
                             @csrf
                             <input type="hidden" name="attachment_id" value="{{ $attachment->id }}">
+                            <input type="hidden" name="attachment_name" value="{{ $attachment->name }}">
                             <button type="submit"
                                     class="block w-full text-left bg-white p-6 rounded-2xl shadow-sm border border-transparent hover:border-blue-400 hover:shadow-md transition-all duration-200 focus:ring-2 focus:ring-blue-500">
                                 <div class="flex flex-col">

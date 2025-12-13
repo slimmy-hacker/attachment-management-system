@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttachmentSelectedController;
 use App\Http\Controllers\IndustrialSupervisorController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DailyReportController;
+use \App\Http\Controllers\AttachmentDetailsController;
 
 
 
@@ -39,13 +41,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/select-attachment', [AttachmentSelectedController::class, 'index'])->name('attachment_selected.select');
     Route::post('/attachment/select', [AttachmentSelectedController::class, 'store'])->name('attachment_selected.store');
-    Route::post('/attachment/change', [AttachmentSelectedController::class, 'change'])->name('attachment_selected.change');
+    Route::get('/student/logbook/{attachment_student_id}', [DailyReportController::class, 'index'])->name('logbook');
+
 
     Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
     Route::get('/opportunities/{opportunity}/apply', [OpportunityController::class, 'showApplyForm'])->name('opportunities.apply');
     Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply');
     Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply.submit');
     Route::get('/opportunities/{opportunity}/applications', [OpportunityController::class, 'showApplications']) ->name('opportunities.applications');
+    Route::get('/atachment-details/{atachment_student_id}', [AttachmentDetailsController::class, 'show']) ->name('attachmentDetails.show');
 
 });
 

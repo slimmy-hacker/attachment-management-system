@@ -1,6 +1,6 @@
 @extends('layouts.my_app')
 @section('title')
-   Attachment students
+   Attachies
 @endsection
 @section('content')
 

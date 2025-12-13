@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code');
-            $table->string('parent_code')->nullable();
+            $table->string('name',100);
+            $table->string('code',50);
+            $table->string('parent_code',50)->nullable();
             $table->integer('level');
+            $table->string('latitude',14)->nullable();
+            $table->string('longitude',14)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

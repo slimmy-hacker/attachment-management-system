@@ -21,7 +21,6 @@ Route::middleware(['ensure.attachment.selected'])->group(function () {
         Route::post('/register/student', [RegisteredUserController::class, 'student'])
             ->name('register.student');
         Route::get('/student/reports', [StudentController::class, 'reports'])->name('reports');
-        Route::get('/student/logbook', [StudentController::class, 'logbook'])->name('logbook');
         Route::get('/student/results', [StudentController::class, 'results'])->name('results');
         Route::get('/student/companies', [StudentController::class, 'companies'])->name('companies');
         Route::post('/student/companies', [StudentController::class, 'storeCompany'])->name('companies.store');

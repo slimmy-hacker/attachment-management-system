@@ -37,21 +37,6 @@
     <div class="flex flex-col">
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
-                <div class="shadow overflow-hidden"> <div class="flex items-end gap-3 mt-3">
-                        <div class="w-64">
-                            <label for="attachment_filter" class="block text-sm font-medium text-gray-700">
-                                Attachment
-                            </label>
-
-                            <select name="attachment_filter" id="attachment_filter"
-                                    class="w-full border border-gray-300 rounded-lg p-2 select2 bg-white text-sm">
-                                <option value="">All Attachments</option>
-                                @foreach($attachments as $attachment)
-                                    <option value="{{ $attachment->id }}">{{ $attachment->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                     <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
                         <thead class="bg-gray-100">
                         <tr>
@@ -59,9 +44,6 @@
                                 <div class="flex items-center justify-center text-xs font-medium text-gray-500 uppercase">
                                     #
                                 </div>
-                            </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Attachment
                             </th>
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Student
@@ -79,16 +61,7 @@
                                 Status
                             </th>
                             <th scope="col" class="p-4">
-                                <div class="flex space-x-2 justify-end">
-                                    <button type="button" id="open-add-modal-btn" class="w-auto text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center">
-                                        <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                        Add
-                                    </button>
-                                    <button type="button" id="open-modal-btn" class="w-auto text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2 text-center">
-                                        <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                                        Upload
-                                    </button>
-                                </div>
+                                Action
                             </th>
                         </tr>
                         </thead>
@@ -98,8 +71,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
     <!-- Upload Students Modal -->
     <div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" id="add-schedule-modal">
         <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
@@ -173,35 +144,9 @@
                     <form id ="addStudentForm" >
     @csrf
 
-    <!-- Student -->
-    <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 mb-1">
-            Select Student
-        </label>
-        <select name="student_id"  class="select2 block w-full p-2 border rounded focus:ring focus:border-blue-300">
-            <option value="">-- choose student --</option>
-            @foreach ($students as $student)
-                <option value="{{ $student->id }}">
-                    {{ $student->reg_no }} - {{ $student->user->name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
 
-    <!-- Attachment -->
-    <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 mb-1">
-            Select Attachment
-        </label>
-        <select name="attachment_id" class="select2 block w-full p-2 border rounded focus:ring focus:border-blue-300">
-            <option value="">-- choose attachment --</option>
-            @foreach ($attachments as $attachment)
-                <option value="{{ $attachment->id }}" >
-                    {{ $attachment->name}}
-                </option>
-            @endforeach
-        </select>
-    </div>
+
+
 
     <!-- Submit button -->
     <button type="submit" id="addStudentBtn"
@@ -228,7 +173,7 @@
             <div class="p-6 space-y-6">
     <form id="assessForm">
         @csrf
-        <input type="hidden" name="student_id" value="{{ $student->id ?? '' }}">
+        <input type="hidden" name="student_attachment_id" >
 
         <div class="space-y-4">
             <div>
@@ -265,7 +210,7 @@
         </div>
     </div>
 </div>
-
+@include('student.student_attachment_details_modal')
 
 @endsection
 @section('scripts')
@@ -301,14 +246,13 @@
             serverSide: true,
             ordering: false,
             ajax: {
-                url: "{{ route('admin.attachment_student.index') }}",
+                url: "{{ route('industrial_supervisor.attaches') }}",
                 data: function (d) {
                     d.attachment_id = $('#attachment_filter').val();
                 }
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                { data: 'attachment', name: 'attachment' },
                 { data: 'name', name: 'name' },
                 { data: 'reg_no', name: 'reg_no' },
                 { data: 'department', name: 'department' },

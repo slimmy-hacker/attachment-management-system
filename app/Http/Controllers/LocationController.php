@@ -8,6 +8,8 @@ use App\Models\Location;
 use App\Imports\LocationsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Http;
+
 
 class LocationController extends Controller
 {
@@ -121,4 +123,57 @@ public function create()
         'message' => 'Location added successfully.',
     ]);
 }
+    function fetchCoordinatesFromExternalSource($name)
+    {
+        $url = "https://nominatim.openstreetmap.org/search?format=json&q=" . urlencode($name);
+        $response = Http::withHeaders([
+            'User-Agent' => 'MyLaravelApp/1.0 (evansowinodero@gmail.com)'
+        ])->get($url, [
+            'format' => 'json',
+            'q' => $name
+        ]);
+
+        $data = $response->json();
+        if (!empty($data)) {
+            return [
+                'lat' => $data[0]['lat'],
+                'lng' => $data[0]['lon']
+            ];
+        }
+
+        return null;
+    }
+    public function autoFillMissingCoordinates()
+    {ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
+
+        $results = [];
+
+        $locations = Location::whereNull('latitude')
+            ->orWhereNull('longitude')
+            ->get();
+
+        foreach ($locations as $c) {
+            $coords = $this->fetchCoordinatesFromExternalSource($c->name);
+
+            if ($coords) {
+                $c->latitude = $coords['lat'];
+                $c->longitude = $coords['lng'];
+                $c->save();
+
+                $results[] = [
+                    'level' => 1,
+                    'name' => $c->name,
+                    'lat' => $coords['lat'],
+                    'lng' => $coords['lng']
+                ];
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Locations fetched successfully!',
+            'updated' => $results
+        ]);
+    }
+
 }

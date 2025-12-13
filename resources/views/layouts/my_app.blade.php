@@ -32,6 +32,7 @@
     <meta property="og:image" content="https://themewagon.github.io/docs/images/og-image.jpg">
     <meta property="og:image:type" content="image/png">
     @include('layouts.partials.scripts')
+
 </head>
 <body class="bg-gray-50">
 

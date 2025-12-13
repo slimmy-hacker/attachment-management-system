@@ -63,6 +63,10 @@
                                         <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                                         Add
                                     </button>
+                                    <button id="auto_fill_locations" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium inline-flex items-center justify-center rounded-lg text-sm px-3 py-2">
+                                        <svg class="-ml-1 mr-2 h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                        Fill Cords
+                                    </button>
                                 </div>
                             </th>
                         </tr>
@@ -197,7 +201,6 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -353,6 +356,46 @@ $(document).ready(function () {
             },
             complete: function () {
                 btn.prop("disabled", false).html("Add");
+            }
+        });
+    });
+
+    $("#auto_fill_locations").on('click', function (e) {
+        e.preventDefault();
+        let btn = $(this);
+
+        btn.prop("disabled", true).html('updating <span class="loading-dots"></span>');
+
+
+
+        $.ajax({
+            url: "{{ route('admin.locations.auto_fill') }}",
+            type: "get",
+            success: function (response) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: response.status === "success" ? 'success' : 'error',
+                    title: response.message || 'Locations updated successfully',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+            },
+            error: function (xhr) {
+
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Something went wrong',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+            },
+            complete: function () {
+                btn.prop("disabled", false).html("Update");
             }
         });
     });

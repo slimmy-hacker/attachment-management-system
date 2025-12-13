@@ -23,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
           Route::prefix('lecturer')
                 ->middleware(['web','portal:lecturer'])
                ->group(base_path('routes/lecturer.php'));
-          Route::prefix('industrial-lecturer')
+          Route::prefix('industrial-supervisor')
                 ->middleware(['web','portal:industrial_supervisor'])
                ->group(base_path('routes/industrial_supervisor.php'));
 

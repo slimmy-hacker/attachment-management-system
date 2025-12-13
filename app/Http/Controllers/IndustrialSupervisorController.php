@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Attachment;
+use App\Models\AttachmentStudent;
 use App\Models\Company;
 use App\Models\IndustrialSupervisor;
 use App\Models\Student;
@@ -61,7 +63,7 @@ class IndustrialSupervisorController extends Controller
         DB::beginTransaction();
         try {
             $user = User::updateOrCreate(
-                ['email' => $validated['email']],
+                ['email' => strtolower($validated['email'])],
                 [
                     'name' => $validated['name'],
                     'phone_number' => $validated['phone_number'],
@@ -97,24 +99,56 @@ class IndustrialSupervisorController extends Controller
 
 
 
-public function attaches()
+    public function attaches(Request $request)
 {
+    if ($request->ajax()) {
+
+    $attachment_id = $request->session()->get('attachment_id');
+    $industrial_supervisor_id = IndustrialSupervisor::where('user_id', Auth::id())->first()->id;
+    $data = AttachmentStudent::with(['attachment', 'student', 'student.user'])
+        ->where('attachment_id', $attachment_id)
+        ->where('industrial_supervisor_id', $industrial_supervisor_id)
+    ;
+    return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('name', function ($row) {
+            return $row->student && $row->student->user
+                ? $row->student->user->name
+                : '-';
+        })
+        ->addColumn('reg_no', fn ($row) =>  $row->student->reg_no ?? '-')
+        ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
+        ->addColumn('department', fn ($row) => $row->department->name ?? '-')
+        ->addColumn('lecturer', fn ($row) => $row->lecturer->user->name ?? '-')
+        ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
+        ->addColumn('action', function ($row) {
+            return '
+            <div class="flex space-x-2">
+                <button   data-id="' . $row->id . '" type="button" id="open-add-modal-btn" class="w-auto text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center">
+                    Assess
+                </button>
+               <a href="' . route('logbook', [$row->id]) . '"
+                   class="w-auto text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center">
+                    Logbook
+                </a>
+
+                <a href="javascript:void(0)"  data-id="' . $row->id . '"
+                   class="w-auto text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center open-student_attachment_details_modal-btn">
+                    Profile
+                </a>
+
+            </div>
+            ';
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+}
+
     return view('industrial_supervisor.attaches');
 }
 
 
-    public function students()
-    {
-        // Get logged-in company
-        $companyId = Auth::id();  // if companies log in through users table
 
-        // Get students linked to this company through placements
-        $students = Student::whereHas('placements', function ($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        })->get();
-
-        return view('company.students', compact('students'));
-    }
 
     public function getCompanyIndustrialSupervisors($company_id)
     {

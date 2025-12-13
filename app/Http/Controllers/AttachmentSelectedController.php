@@ -34,6 +34,7 @@ class AttachmentSelectedController extends Controller
                     $lecturer = Lecturer::where('user_id', Auth::id())->first();
                    $attachment_lecturers = AttachmentLecturer::with('attachment')
                                                                         ->where('lecturer_id', $lecturer->id)
+                                                                        ->orderBy('attachments.start_date', 'DESC')
                                                                         ->get();
 
                     return view('attachment_selected.lecturers', compact('attachment_lecturers'));
@@ -45,7 +46,8 @@ class AttachmentSelectedController extends Controller
                 $attachment_ids = AttachmentStudent::where('industrial_supervisor_id', $supervisor->id)
                     ->distinct('attachment_id')
                     ->pluck('attachment_id');
-                $attachments = Attachment::whereIn('attachment_id', $attachment_ids)
+                $attachments = Attachment::whereIn('id', $attachment_ids)
+                    ->orderBy('start_date', 'DESC')
                     ->get();
 
                 break;
@@ -60,6 +62,7 @@ class AttachmentSelectedController extends Controller
                     ->pluck('attachment_id');
                 $attachments = Attachment::whereIn('id', $attachment_ids)
                     ->distinct()
+                    ->orderBy('start_date', 'DESC')
                     ->get();
                 break;
 
@@ -82,20 +85,20 @@ class AttachmentSelectedController extends Controller
                     'attachment_id' => 'required|exists:attachments,id',
                     'attachment_name' => 'required',
                 ]);
-                session(['attachment_student_id' => $request->get('attachment_student_id'), 'attachment_id'=> $request->get('attachment_id'), 'attachment_name'=> $request->get('attachment_name')]);
-            }
-            elseif (Auth::user()->role == 'lecturer') {
+                session(['attachment_student_id' => $request->get('attachment_student_id'), 'attachment_id' => $request->get('attachment_id'), 'attachment_name' => $request->get('attachment_name')]);
+            } elseif (Auth::user()->role == 'lecturer') {
                 $request->validate([
                     'attachment_lecturer_id' => 'required|exists:attachment_lecturers,id',
                     'attachment_id' => 'required|exists:attachments,id',
                     'attachment_name' => 'required',
                 ]);
-                session(['attachment_lecturer_id' => $request->get('attachment_lecturer_id'), 'attachment_id'=> $request->get('attachment_id'), 'attachment_name'=> $request->get('attachment_name')]);
-            }
-            else {
+                session(['attachment_lecturer_id' => $request->get('attachment_lecturer_id'), 'attachment_id' => $request->get('attachment_id'), 'attachment_name' => $request->get('attachment_name')]);
+            } else {
                 $request->validate([
                     'attachment_id' => 'required|exists:attachments,id',
+                    'attachment_name' => 'required',
                 ]);
+                session(['attachment_id' => $request->get('attachment_id'), 'attachment_name' => $request->get('attachment_name')]);
             }
 
             // Proceed normally if validation passes
@@ -117,6 +120,7 @@ class AttachmentSelectedController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             // Catch any other unexpected errors
             return redirect()->back()->with([
                 'notification' => [
@@ -128,14 +132,4 @@ class AttachmentSelectedController extends Controller
         }
     }
 
-    public function change()
-    {
-        session()->forget('selected_period_id');
-        return redirect()->route('period.select');
-    }
-
-    public function dashboard()
-    {
-       dd('Mkenya');
-    }
 }
