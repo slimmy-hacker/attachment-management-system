@@ -9,11 +9,11 @@ class CreateAttachmentAssessmentsTable extends Migration
     public function up()
     {
         Schema::create('attachment_assessments', function (Blueprint $table) {
-            $table->id();           
-            $table->unsignedBigInteger('student_id');
+            $table->id();
+            $table->unsignedBigInteger('attachment_student_id')->unique();
             $table->unsignedBigInteger('industrial_supervisor_id')->nullable();
 
-        
+
             $table->unsignedBigInteger('school_supervisor_id')->nullable();
 
             /**
@@ -55,7 +55,7 @@ class CreateAttachmentAssessmentsTable extends Migration
             $table->timestamps();
 
             // Foreign keys (optional)
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('attachment_student_id')->references('id')->on('attachment_students')->onDelete('cascade');
             $table->foreign('industrial_supervisor_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('school_supervisor_id')->references('id')->on('users')->onDelete('set null');
         });

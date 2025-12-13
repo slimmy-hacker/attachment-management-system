@@ -69,30 +69,31 @@
             function fillAttachmentTable(data) {
                 let html = '';
 
-                html += `<tr><th class="p-3 bg-gray-100">Student Name</th><td class="p-3">${data.student.user.name}</td>
-                            <th class="p-3 bg-gray-100">Student Phone No</th><td class="p-3">${data.student.user.phone_number}</td></tr>`;
-                html += `<tr><th class="p-3 bg-gray-100">Registration No</th><td class="p-3">${data.student.reg_no}</td>
-                               <th class="p-3 bg-gray-100">Email</th><td class="p-3">${data.student.user.email}</td></tr>`;
-                html += `<tr><th class="p-3 bg-gray-100">Course</th><td class="p-3">${data.student.program.name}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Student Name</th><td class="p-3">${data?.student?.user?.name}</td>
+                            <th class="p-3 bg-gray-100">Student Phone No</th><td class="p-3">${data?.student?.user?.phone_number}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Registration No</th><td class="p-3">${data?.student?.reg_no}</td>
+                               <th class="p-3 bg-gray-100">Email</th><td class="p-3">${data?.student?.user?.email}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Course</th><td class="p-3">${data?.student?.program?.name}</td></tr>`;
 
-                html += `<tr><th class="p-3 bg-gray-100">Organization</th><td class="p-3">${data.company.name}</td>
-                            <th class="p-3 bg-gray-100">Street</th><td class="p-3">${data.company.street}</td></tr>`;
-                html += `<tr><th class="p-3 bg-gray-100">Town</th><td class="p-3">${data.company.subcounty.name}</td>
-                            <th class="p-3 bg-gray-100">Building</th><td class="p-3">${data.company.building}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Organization</th><td class="p-3">${data?.company?.name}</td>
+                            <th class="p-3 bg-gray-100">Street</th><td class="p-3">${data?.company?.street}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Town</th><td class="p-3">${data?.company?.subcounty?.name}</td>
+                            <th class="p-3 bg-gray-100">Building</th><td class="p-3">${data?.company?.building}</td></tr>`;
 
-                html += `<tr><th class="p-3 bg-gray-100">Attachment Name</th><td class="p-3">${data.attachment.name ?? ''}</td></tr>`;
-                html += `<tr><th class="p-3 bg-gray-100">Start Date</th><td class="p-3">${data.start_date}</td><th class="p-3 bg-gray-100">End Date</th><td class="p-3">${data.end_date}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Attachment Name</th><td class="p-3">${data?.attachment?.name ?? ''}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Start Date</th><td class="p-3">${data?.start_date}</td>
+<th class="p-3 bg-gray-100">End Date</th><td class="p-3">${data?.end_date}</td></tr>`;
 
 
                 // Supervisor
-                html += `<tr><th class="p-3 bg-gray-100">Industrial Supervisor</th><td class="p-3">${data.industrial_supervisor?.user?.name ?? ''}</td>
-                            <th class="p-3 bg-gray-100">Supervisor Email</th><td class="p-3">${data.industrial_supervisor?.user?.email ?? ''}</td></tr>`;
-                html += `<tr><th class="p-3 bg-gray-100">Supervisor Phone</th><td class="p-3">${data.industrial_supervisor?.user?.phone_number ?? ''}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Industrial Supervisor</th><td class="p-3">${data?.industrial_supervisor?.user?.name ?? ''}</td>
+                            <th class="p-3 bg-gray-100">Supervisor Email</th><td class="p-3">${data?.industrial_supervisor?.user?.email ?? ''}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Supervisor Phone</th><td class="p-3">${data?.industrial_supervisor?.user?.phone_number ?? ''}</td></tr>`;
 
                 // Lecturer
-                html += `<tr><th class="p-3 bg-gray-100">Lecturer</th><td class="p-3">${data.lecturer?.name ?? ''}</td>
-                            <th class="p-3 bg-gray-100">Lecturer Email</th><td class="p-3">${data.lecturer?.email ?? ''}</td></tr>`;
-                html += `<tr><th class="p-3 bg-gray-100">Lecturer Phone</th><td class="p-3">${data.lecturer?.phone_number ?? ''}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Lecturer</th><td class="p-3">${data?.lecturer?.name ?? ''}</td>
+                            <th class="p-3 bg-gray-100">Lecturer Email</th><td class="p-3">${data?.lecturer?.email ?? ''}</td></tr>`;
+                html += `<tr><th class="p-3 bg-gray-100">Lecturer Phone</th><td class="p-3">${data?.lecturer?.phone_number ?? ''}</td></tr>`;
 
 
                 $("#student_attachment_detailsTable tbody").html(html);

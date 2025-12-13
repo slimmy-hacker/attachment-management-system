@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\LecturersImport;
 use App\Models\Lecturer;
-use App\Models\Attachment; 
+use App\Models\Attachment;
 use App\Models\AttachmentStudent;
 use Illuminate\Http\Request;
 use App\Models\Student;
@@ -129,7 +129,7 @@ class LecturerController extends Controller
    public function myStudents(Request $request)
 {
      if ($request->ajax()) {
-            
+
             $data = AttachmentStudent::with(['attachment', 'student', 'student.user']);
                 if (!empty($request->attachment_id)) {
                     $data->where('attachment_id', $request->attachment_id);
@@ -143,29 +143,39 @@ class LecturerController extends Controller
                         : '-';
                 })
                 ->addColumn('reg_no', fn ($row) =>  $row->student->reg_no ?? '-')
-              
+
                 ->addColumn('department', fn ($row) => $row->department->name ?? '-')
                 ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
-                
+
                 ->rawColumns(['action'])
-                
+
                 ->addColumn('action', function ($row)
                  {
+                     $name = $row->student->reg_no . ' - ' . $row->student->user->name;
                     return '
-                    
-                    <button 
+
+                    <button
                             class="assessBtn bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700"
-                            data-id="'.$row->id.'" 
-                            data-name="'.$row->student->user->name.'">
+                            data-id="'.$row->id.'"
+                            data-name="'. $name .'">
                             Assess
                         </button>
+                        <a href="' . route('logbook', [$row->id]) . '"
+                   class="w-auto text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center">
+                    Logbook
+                </a>
+
+                <a href="javascript:void(0)"  data-id="' . $row->id . '"
+                   class="w-auto text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center open-student_attachment_details_modal-btn">
+                    Profile
+                </a>
                         ';
 
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-    $attachments = Attachment::all();  
+    $attachments = Attachment::all();
 
     return view('lecturer.my-students', compact('attachments'));
 }

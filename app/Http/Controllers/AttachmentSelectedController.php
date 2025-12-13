@@ -33,7 +33,9 @@ class AttachmentSelectedController extends Controller
             case 'lecturer':
                     $lecturer = Lecturer::where('user_id', Auth::id())->first();
                    $attachment_lecturers = AttachmentLecturer::with('attachment')
-                                                                        ->where('lecturer_id', $lecturer->id)
+                                                                       ->join('attachments', 'attachments.id', '=', 'attachment_lecturers.attachment_id')
+
+                                                                        ->where('attachment_lecturers.lecturer_id', $lecturer->id)
                                                                         ->orderBy('attachments.start_date', 'DESC')
                                                                         ->get();
 

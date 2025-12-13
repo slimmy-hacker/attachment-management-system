@@ -233,11 +233,11 @@ class DailyReportController extends Controller
         try {
             $validated = $request->validate([
                                     'weekly_report_id' => 'required|exists:weekly_reports,id',
-                                    'weekly_report' => 'required|string|max:255',
+                                    'lecturer_comment' => 'required|string|max:255',
                                 ]);
             WeeklyReport::find($validated['weekly_report_id'])
                           ->update([
-                                'weekly_report' => $validated['weekly_report'],
+                                'lecturer_comment' => $validated['lecturer_comment'],
                             ]);
             $data = collect([
                 $this->calenderResponse($validated['weekly_report_id'], 'weekly'),

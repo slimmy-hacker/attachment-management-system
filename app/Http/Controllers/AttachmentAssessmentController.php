@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student; 
+use App\Models\Student;
 use App\Models\AttachmentAssessment;
 use Illuminate\Http\Request;
 
@@ -11,7 +11,7 @@ class AttachmentAssessmentController extends Controller
  public function index(Request $request)
     {
         if ($request->ajax()) {
-            
+
             $data = AttachmentStudent::with(['attachment', 'student', 'student.user']);
                 if (!empty($request->attachment_id)) {
                     $data->where('attachment_id', $request->attachment_id);
@@ -100,23 +100,23 @@ class AttachmentAssessmentController extends Controller
     public function storeSchool(Request $request)
     {
         $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'practical_marks' => 'nullable|integer|min:0|max:5',
-            'practical_remarks' => 'nullable|string',
-            'report_marks' => 'nullable|integer|min:0|max:5',
-            'report_remarks' => 'nullable|string',
-            'presentation_marks' => 'nullable|integer|min:0|max:5',
-            'presentation_remarks' => 'nullable|string',
-            'communication_marks' => 'nullable|integer|min:0|max:5',
-            'communication_remarks' => 'nullable|string',
-            'skills_marks' => 'nullable|integer|min:0|max:5',
-            'skills_remarks' => 'nullable|string',
-            'innovativeness_marks' => 'nullable|integer|min:0|max:5',
-            'innovativeness_remarks' => 'nullable|string',
+            'attachment_student_id' => 'required|exists:attachment_students,id,',
+            'practical_marks' => 'required|integer|min:0|max:5',
+            'practical_remarks' => 'required|string',
+            'report_marks' => 'required|integer|min:0|max:5',
+            'report_remarks' => 'required|string',
+            'presentation_marks' => 'required|integer|min:0|max:5',
+            'presentation_remarks' => 'required|string',
+            'communication_marks' => 'required|integer|min:0|max:5',
+            'communication_remarks' => 'required|string',
+            'skills_marks' => 'required|integer|min:0|max:5',
+            'skills_remarks' => 'required|string',
+            'innovativeness_marks' => 'required|integer|min:0|max:5',
+            'innovativeness_remarks' => 'required|string',
         ]);
 
         AttachmentAssessment::updateOrCreate(
-            ['student_id' => $request->student_id],
+            ['attachment_student_id' => $request->attachment_student_id],
             $request->only([
                 'practical_marks',
                 'practical_remarks',
@@ -133,7 +133,7 @@ class AttachmentAssessmentController extends Controller
             ])
         );
 
-        // 🔥 Redirect School Supervisor to My Students page
+
         return redirect()->route('lecturer.my-students')
             ->with('success', 'School assessment saved successfully.');
     }

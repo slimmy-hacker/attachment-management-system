@@ -37,21 +37,8 @@
     <div class="flex flex-col">
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
-                <div class="shadow overflow-hidden"> <div class="flex items-end gap-3 mt-3">
-                        <div class="w-64">
-                            <label for="attachment_filter" class="block text-sm font-medium text-gray-700">
-                                Attachment
-                            </label>
+                <div class="shadow overflow-hidden">
 
-                            <select name="attachment_filter" id="attachment_filter"
-                                    class="w-full border border-gray-300 rounded-lg p-2 select2 bg-white text-sm">
-                                <option value="">All Attachments</option>
-                                @foreach($attachments as $attachment)
-                                    <option value="{{ $attachment->id }}">{{ $attachment->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                     <table class="table-fixed min-w-full divide-y divide-gray-200" id="my_students_table">
                         <thead class="bg-gray-100">
                         <tr>
@@ -60,7 +47,7 @@
                                     #
                                 </div>
                             </th>
-                            
+
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Student
                             </th>
@@ -70,7 +57,7 @@
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Department
                             </th>
-                           
+
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Status
                             </th>
@@ -87,172 +74,104 @@
         </div>
     </div>
 
-    <!-- Upload Students Modal -->
-    <div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" id="add-schedule-modal">
-        <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
-            <!-- Modal content -->
-            <div class="bg-white rounded-lg shadow relative">
-                <!-- Modal header -->
-                <div class="flex items-start justify-between p-5 border-b rounded-t">
-                    <h3 class="text-xl font-semibold">
-                        Upload Students
-                    </h3>
-                    <button type="button" class="close-modal-btn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
+                <div id="my_students_assessment-modal" tabindex="-1" aria-hidden="true"  data-modal-backdrop="static" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-4/5 max-h-full">
+                        <!-- Modal content -->
+                        <div class="relative bg-white rounded-lg shadow-sm ">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                                <h3 class="text-lg font-semibold text-gray-">
+                                    Student <span id="assessed_student_name"></span> Assement
+                                </h3>
+                                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center close-assess-modal-btn">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                                <div class="p-2">
+                                     <form id="assessForm">
+
+                                @csrf
+                                <!-- Hidden student ID, set dynamically -->
+                                <input type="hidden" id="attachment_student_id" name="attachment_student_id" value="">
+
+                                <div class="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                    <div >
+                                        <label for="practical_marks" class="required block font-medium">Practical Marks(max 5)</label>
+                                        <input type="number" min="0" max="5" id="practical_marks" name="practical_marks" class="w-full border rounded p-2" required>
+                                    </div>
+                                    <div >
+                                        <label for="practical_remarks" class="required block font-medium">Practical Remarks</label>
+                                        <textarea id="practical_remarks" name="practical_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label for="communication_marks" class="required block font-medium">Communication Marks</label>
+                                        <input type="number" min="0" max="5" id="communication_marks" name="communication_marks" class="w-full border rounded p-2" required>
+                                    </div>
+                                    <div>
+                                        <label for="communication_remarks" class="required block font-medium">Report Remarks</label>
+                                        <textarea id="communication_remarks" name="communication_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+                                    <div>
+                                        <label for="report_marks" class="required block font-medium">Report Marks</label>
+                                        <input type="number" min="0" max="5" id="report_marks" name="report_marks" class="w-full border rounded p-2" required>
+                                    </div>
+                                    <div>
+                                        <label for="report_remarks" class="required block font-medium">Report Remarks</label>
+                                        <textarea id="report_remarks" name="report_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="presentation_marks" class="required block font-medium">Presentation Marks</label>
+                                        <input type="number" min="0" max="5" id="presentation_marks" name="presentation_marks" class="w-full border rounded p-2" required>
+                                    </div>
+                                    <div>
+                                        <label for="presentation_remarks" class="required block font-medium">Presentation Remarks</label>
+                                        <textarea id="presentation_remarks" name="presentation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="skills_marks" class="required block font-medium">Skills Marks</label>
+                                        <input type="number" min="0" max="5" id="presentation_marks" name="skills_marks" class="w-full border rounded p-2" required>
+                                    </div>
+                                    <div>
+                                        <label for="skills_remarks" class="required block font-medium">Skills Remarks</label>
+                                        <textarea id="skills_remarks" name="skills_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="innovativeness_marks" class="required block font-medium">Innovativeness Marks</label>
+                                        <input type="number" min="0" max="5" id="presentation_marks" name="innovativeness_marks" class="w-full border rounded p-2" required>
+                                    </div>
+                                    <div>
+                                        <label for="innovativeness_remarks" class="required block font-medium">Innovativeness Remarks</label>
+                                        <textarea id="innovativeness_remarks" name="innovatiness_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+                                </div>
+
+
+
+                                <button type="submit" class="mt-6 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit School Assessment</button>
+
+
+                            </form>
+                                </div>
+                            <button  type="button" class="text-white inline-flex items-center bg-gray-300 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center close-assess-modal-btn">
+                                <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                close
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Modal body -->
-                <div class="p-6 space-y-6">
-
-                <form id="assessForm">
-                
-          @csrf
-          <!-- Hidden student ID, set dynamically -->
-          <input type="hidden" id="assess_student_id" name="student_id" value="">
-
-          <div class="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <div >
-              <label for="practical_marks" class="required block font-medium">Practical Marks(max 5)</label>
-              <input type="number" min="0" max="5" id="practical_marks" name="practical_marks" class="w-full border rounded p-2" required>
-            </div>
-            <div >
-              <label for="practical_remarks" class="required block font-medium">Practical Remarks</label>
-              <textarea id="practical_remarks" name="practical_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-            </div>
-            <div>
-              <label for="communication_marks" class="required block font-medium">Communication Marks</label>
-              <input type="number" min="0" max="5" id="communication_marks" name="communication_marks" class="w-full border rounded p-2" required>
-            </div>
-            <div>
-              <label for="communication_remarks" class="required block font-medium">Report Remarks</label>
-              <textarea id="communication_remarks" name="communication_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-            </div>
-            <div>
-              <label for="report_marks" class="required block font-medium">Report Marks</label>
-              <input type="number" min="0" max="5" id="report_marks" name="report_marks" class="w-full border rounded p-2" required>
-            </div>
-            <div>
-              <label for="report_remarks" class="required block font-medium">Report Remarks</label>
-              <textarea id="report_remarks" name="report_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-            </div>
-
-            <div>
-              <label for="presentation_marks" class="required block font-medium">Presentation Marks</label>
-              <input type="number" min="0" max="5" id="presentation_marks" name="presentation_marks" class="w-full border rounded p-2" required>
-            </div>
-            <div>
-              <label for="presentation_remarks" class="required block font-medium">Presentation Remarks</label>
-              <textarea id="presentation_remarks" name="presentation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-            </div>
-            
-            <div>
-              <label for="skills_marks" class="required block font-medium">Skills Marks</label>
-              <input type="number" min="0" max="5" id="presentation_marks" name="skills_marks" class="w-full border rounded p-2" required>
-            </div>
-            <div>
-              <label for="skills_remarks" class="required block font-medium">Skills Remarks</label>
-              <textarea id="skills_remarks" name="skills_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-            </div>
-            
-            <div>
-              <label for="innovativeness_marks" class="required block font-medium">Innovativeness Marks</label>
-              <input type="number" min="0" max="5" id="presentation_marks" name="innovativeness_marks" class="w-full border rounded p-2" required>
-            </div>
-            <div>
-              <label for="innovativeness_remarks" class="required block font-medium">Innovativeness Remarks</label>
-              <textarea id="innovativeness_remarks" name="innovatiness_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-            </div>
-          </div>
-          
-
-
-          <button type="submit" class="mt-6 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit School Assessment</button>
-    
-            
-        </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Student Modal -->
-    <div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" id="add-student-modal">
-        <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
-            <!-- Modal content -->
-            <div class="bg-white rounded-lg shadow relative">
-                <!-- Modal header -->
-                <div class="flex items-start justify-between p-5 border-b rounded-t">
-                    <h3 class="text-xl font-semibold">
-                        Add Student
-                    </h3>
-                    <button type="button" class="close-add-modal-btn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                  clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                </div>
-
-            
-    <!-- Assess Student Modal -->
-<div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full" id="assess-modal">
-  <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
-    <div class="bg-white rounded-lg shadow relative">
-      <div class="flex items-start justify-between p-5 border-b rounded-t">
-        <h3 class="text-xl font-semibold">Assess Student</h3>
-        <button type="button" class="close-assess-modal-btn text-gray-400 hover:bg-gray-200 rounded-lg p-1.5">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class="p-6 space-y-6">
-       
-      </div>
-    </div>
-  </div>
-</div>
-
+    @include('student.student_attachment_details_modal')
 
 @endsection
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function () {
-        // Initialize modals
-        const uploadModal = new Modal($('#add-schedule-modal')[0], {
-            backdrop: 'static',
-            closable: false
-        });
-        const addModal = new Modal($('#add-student-modal')[0], {
-            backdrop: 'static',
-            closable: false
-        });
-
-
-        $('#open-modal-btn').on('click', function () {
-            uploadModal.show();
-        });
-        $('.close-modal-btn').on('click', function () {
-            uploadModal.hide();
-        });
-
-        $('#open-add-modal-btn').on('click', function () {
-            addModal.show();
-        });
-        $('.close-add-modal-btn').on('click', function () {
-            addModal.hide();
-        });
-
         var table = $("#my_students_table").DataTable({
             processing: true,
             serverSide: true,
@@ -265,85 +184,28 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-           
+
                 { data: 'name', name: 'name' },
                 { data: 'reg_no', name: 'reg_no' },
                 { data: 'department', name: 'department' },
-                
+
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ]
         });
 
-        
-
-        // Add student form submit (example)
-        $("#addStudentForm").on("submit", function(e) {
-            e.preventDefault();
-            let btn = $("#addStudentBtn");
-            btn.prop("disabled", true).text('Adding...');
-
-            let formData = $(this).serialize();
-
-            $.ajax({
-                url: "#",  // Define this route to handle add student
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    if(response.status === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Student Added Successfully',
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
-                        addModal.hide();
-                        table.ajax.reload(null, false);
-                        $("#addStudentForm")[0].reset();
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: response.message || 'Failed to add student'
-                        });
-                    }
-                },
-                error: function(xhr) {
-                    let res = xhr.responseJSON;
-                    if (res && res.errors) {
-                        let messages = Object.values(res.errors).flat().join("\n");
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Validation Error',
-                            text: messages
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Something went wrong'
-                        });
-                    }
-                },
-                complete: function() {
-                    btn.prop("disabled", false).text('Add');
-                }
-            });
-        });
-
-        $('#attachment_filter').on('change', function () {
-            table.ajax.reload(null, false);
-        });
-        const assessModal = new Modal($('#add-schedule-modal')[0], {
+        const assessModal = new Modal($('#my_students_assessment-modal')[0], {
                             backdrop: 'static',
                             closable: false
                             });
 
 // open modal when assess button is clicked
 $(document).on('click', '.assessBtn', function () {
+    $("#assessForm")[0].reset();
     let id = $(this).data('id');
     let name = $(this).data('name');
-
-    $('#assess_student_id').val(id);
-    $('#assess_student_name').val(name);
+    $('#attachment_student_id').val(id);
+    $('#assessed_student_name').html(name);
 
     assessModal.show();
 });
@@ -373,7 +235,6 @@ $("#assessForm").on("submit", function(e) {
 
             assessModal.hide();
             $("#assessForm")[0].reset();
-            $("#attarchment_schedules_table").DataTable().ajax.reload(null, false);
         },
         error: function(xhr) {
             Swal.fire({

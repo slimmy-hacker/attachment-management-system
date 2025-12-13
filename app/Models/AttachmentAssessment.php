@@ -10,7 +10,7 @@ class AttachmentAssessment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id',
+        'attachment_student_id',
 
         // Industrial Supervisor fields
         'attendance_marks',

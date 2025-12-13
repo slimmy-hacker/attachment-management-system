@@ -124,18 +124,40 @@
 
                         <div class="col-span-2">
                             <label for="weekly_report" class=" @if($user_role == 'student') required @endif block mb-2 text-sm font-medium text-gray-900 "> Weekly Report Summary</label>
-                            <textarea @if($user_role !== 'student') disabled @endif id="weekly_report" name="weekly_report" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder=""></textarea>
+                            <textarea @if($user_role !== 'student') disabled @else required  @endif id="weekly_report" name="weekly_report" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder=""></textarea>
                         </div>
 
                         <div class="col-span-2">
-                            <label for="industrial_supervisor_comment" class=" @if($user_role == 'industrial_supervisor') required @endif block mb-2 text-sm font-medium text-gray-900 "> Industrial supervisor comment</label>
-                            <input  @if($user_role !== 'industrial_supervisor') disabled @endif type="text" id="industrial_supervisor_comment" name="industrial_supervisor_comment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="">
+                            <label for="industrial_supervisor_comment"
+                                   class="@if($user_role == 'industrial_supervisor') required @endif block mb-2 text-sm font-medium text-gray-900">
+                                Industrial supervisor comment
+                            </label>
+
+                            <input
+                                type="text"
+                                id="industrial_supervisor_comment"
+                                name="industrial_supervisor_comment"
+                                @if($user_role !== 'industrial_supervisor') disabled @else required @endif
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="">
                         </div>
 
                         <div class="col-span-2">
-                            <label for="lecturer_comment" class="@if($user_role == 'lecturer') required @endif block mb-2 text-sm font-medium text-gray-900 "> Lecturer Comment</label>
-                            <input  @if($user_role !== 'lecturer') disabled @endif type="text" id="lecturer_comment" name="lecturer_comment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="">
+                            <label for="lecturer_comment"
+                                   class="@if($user_role == 'lecturer') required @endif block mb-2 text-sm font-medium text-gray-900">
+                                Lecturer Comment
+                            </label>
+
+                            <input
+                                type="text"
+                                id="lecturer_comment"
+                                name="lecturer_comment"
+
+                                @if($user_role !== 'lecturer') disabled @else required @endif
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="">
                         </div>
+
 
                     </div>
                     <button type="button" id="weekly_report_btn" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
