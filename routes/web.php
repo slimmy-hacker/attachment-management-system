@@ -16,12 +16,11 @@ use \App\Http\Controllers\AttachmentDetailsController;
 
 
 use App\Http\Controllers\OpportunityController;
-
 Route::get('/', function () {
     if (Auth::check() && Auth::user()->role) {
         return redirect()->route(Auth::user()->role . '.portal');
     }
-    return redirect()->route('login');
+    return view('welcome');
 })->name('welcome');
 
 

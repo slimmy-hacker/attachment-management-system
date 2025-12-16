@@ -124,9 +124,14 @@ class IndustrialSupervisorController extends Controller
         ->addColumn('action', function ($row) {
             return '
             <div class="flex space-x-2">
-                <button   data-id="' . $row->id . '" type="button" id="open-add-modal-btn" class="w-auto text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center">
-                    Assess
-                </button>
+                <button
+            type="button"
+            class="assessBtn text-white bg-green-600 hover:bg-green-700
+                   focus:ring-4 focus:ring-green-200 rounded-lg text-xs px-2 py-1"
+            data-id="'.$row->id.'"
+            data-name="'.$row->student->user->name.'">
+            Assess
+        </button>
                <a href="' . route('logbook', [$row->id]) . '"
                    class="w-auto text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center">
                     Logbook

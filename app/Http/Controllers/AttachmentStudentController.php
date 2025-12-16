@@ -34,7 +34,10 @@ class AttachmentStudentController extends Controller
                 ->addColumn('lecturer', fn ($row) => $row->lecturer->user->name ?? '-')
                 ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
                 ->addColumn('action', function ($row) {
-                    return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
+                    return ' <a href="javascript:void(0)"  data-id="' . $row->id . '"
+                   class="w-auto text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium inline-flex items-center justify-center rounded-lg text-xs px-2 py-1 text-center open-student_attachment_details_modal-btn">
+                    Profile
+                </a>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

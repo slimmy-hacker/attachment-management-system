@@ -6,35 +6,52 @@ use App\Models\Opportunity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
+use Yajra\DataTables\Facades\DataTables;
 class OpportunityController extends Controller
 {
     // Display all opportunities (for students)
   
 
 
-    public function index()
-    {
-        $user = Auth::user();
 
-        // Determine if user is a company or student by role or portal session
-        $isCompany = $user->role === 'company'; // adjust based on your auth logic
+public function index(Request $request)
+{
+    $user = Auth::user();
+    $isCompany = $user->role === 'company';
 
+    if ($request->ajax()) {
         if ($isCompany) {
-            // Company: show only their own opportunities
-            $opportunities = Opportunity::where('company_id', $user->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
+            $query = Opportunity::where('company_id', $user->id);
         } else {
-            // Student: show all non-expired opportunities from all companies
-            $opportunities = Opportunity::where('expiry_date', '>=', now())
-                ->with('company')
-                ->orderBy('expiry_date', 'asc')
-                ->get();
+            $query = Opportunity::with('company')->whereDate('expiry_date', '>=', now());
         }
 
-        return view('opportunities.index', compact('opportunities', 'isCompany'));
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('company', function ($row) {
+                return $row->company->name ?? 'N/A';
+            })
+            ->addColumn('action', function ($row) use ($isCompany) {
+                if ($isCompany) {
+                    return '
+                        <form method="POST" action="' . route('opportunities.destroy', $row->id) . '" onsubmit="return confirm(\'Are you sure?\');">
+                            ' . csrf_field() . method_field('DELETE') . '
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    ';
+                }
+                return ''; // no actions for students
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
+
+    // Normal page load returns blade view with minimal data (or empty)
+    return view('opportunities.index', [
+        'isCompany' => $isCompany,
+    ]);
+}
+
 
 
 
@@ -59,6 +76,7 @@ class OpportunityController extends Controller
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'expiry_days' => 'required|integer|min:1|max:90', // how long it should stay active
+             
         ]);
 
         Opportunity::create([

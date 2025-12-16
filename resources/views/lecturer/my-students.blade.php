@@ -108,55 +108,54 @@
 
                                 <div class="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                     <div >
-                                        <label for="practical_marks" class="required block font-medium">Practical Marks(max 5)</label>
-                                        <input type="number" min="0" max="5" id="practical_marks" name="practical_marks" class="w-full border rounded p-2" required>
+                                        <label for="practical_orientation_marks" class="required block font-medium">Practical Orientation Marks(max 5)</label>
+                                        <input type="number" min="0" max="5" id="practical_orientation_marks" name="practical_orientation_marks" class="w-full border rounded p-2" required>
                                     </div>
                                     <div >
-                                        <label for="practical_remarks" class="required block font-medium">Practical Remarks</label>
-                                        <textarea id="practical_remarks" name="practical_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                        <label for="practical_orientation_remarks" class="required block font-medium">practical Orientation Remarks</label>
+                                        <textarea id="practical_orientation_remarks" name="practical_orientation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+                                   
+                                    <div>
+                                        <label for="intellectual_activity_Marks" class="required block font-medium">Intellectual Activity Marks(max5)</label>
+                                        <input type="number" min="0" max="5" id="report_marks" name="intellectual_activity_Marks" class="w-full border rounded p-2" required>
                                     </div>
                                     <div>
-                                        <label for="communication_marks" class="required block font-medium">Communication Marks</label>
+                                        <label for="intellectual_activity_Remarks" class="required block font-medium">Intellectual Activity Remarks</label>
+                                        <textarea id="intellectual_activity_Remarks" name="intellectual_activity_Remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="independence_marks" class="required block font-medium">Independence Marks(max5)</label>
+                                        <input type="number" min="0" max="5" id="independence_marks" name="independence_marks" class="w-full border rounded p-2" required>
+                                    </div>
+                                    <div>
+                                        <label for="independence_remarks" class="required block font-medium">Independence Remarks</label>
+                                        <textarea id="independence_remarks" name="independence_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+                                      <label for="communication_marks" class="required block font-medium">Communication Marks(max5)</label>
                                         <input type="number" min="0" max="5" id="communication_marks" name="communication_marks" class="w-full border rounded p-2" required>
                                     </div>
                                     <div>
-                                        <label for="communication_remarks" class="required block font-medium">Report Remarks</label>
+                                        <label for="communication_remarks" class="required block font-medium">Communication Remarks</label>
                                         <textarea id="communication_remarks" name="communication_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
                                     </div>
                                     <div>
-                                        <label for="report_marks" class="required block font-medium">Report Marks</label>
-                                        <input type="number" min="0" max="5" id="report_marks" name="report_marks" class="w-full border rounded p-2" required>
+                                        <label for="technology_and_skills_marks" class="required block font-medium">Technology And Skills Marks(max5)</label>
+                                        <input type="number" min="0" max="5" id="technology_and_skills_marks" name="technology_and_skills_marks" class="w-full border rounded p-2" required>
                                     </div>
                                     <div>
-                                        <label for="report_remarks" class="required block font-medium">Report Remarks</label>
-                                        <textarea id="report_remarks" name="report_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-                                    </div>
-
-                                    <div>
-                                        <label for="presentation_marks" class="required block font-medium">Presentation Marks</label>
-                                        <input type="number" min="0" max="5" id="presentation_marks" name="presentation_marks" class="w-full border rounded p-2" required>
-                                    </div>
-                                    <div>
-                                        <label for="presentation_remarks" class="required block font-medium">Presentation Remarks</label>
-                                        <textarea id="presentation_remarks" name="presentation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                        <label for="technology_and_skills_remarks" class="required block font-medium">Technology And Skills Remarks</label>
+                                        <textarea id="technology_and_skills_remarks" name="technology_and_skills_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
                                     </div>
 
                                     <div>
-                                        <label for="skills_marks" class="required block font-medium">Skills Marks</label>
-                                        <input type="number" min="0" max="5" id="presentation_marks" name="skills_marks" class="w-full border rounded p-2" required>
-                                    </div>
-                                    <div>
-                                        <label for="skills_remarks" class="required block font-medium">Skills Remarks</label>
-                                        <textarea id="skills_remarks" name="skills_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-                                    </div>
-
-                                    <div>
-                                        <label for="innovativeness_marks" class="required block font-medium">Innovativeness Marks</label>
-                                        <input type="number" min="0" max="5" id="presentation_marks" name="innovativeness_marks" class="w-full border rounded p-2" required>
+                                        <label for="innovativeness_marks" class="required block font-medium">Innovativeness Marks(max5)</label>
+                                        <input type="number" min="0" max="5" id="innovativeness_marks" name="innovativeness_marks" class="w-full border rounded p-2" required>
                                     </div>
                                     <div>
                                         <label for="innovativeness_remarks" class="required block font-medium">Innovativeness Remarks</label>
-                                        <textarea id="innovativeness_remarks" name="innovatiness_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                        <textarea id="innovativeness_remarks" name="innovativeness_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
                                     </div>
                                 </div>
 

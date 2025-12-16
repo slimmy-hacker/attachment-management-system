@@ -213,6 +213,7 @@
             </div>
         </div>
     </div>
+     @include('student.student_attachment_details_modal')
 
 @endsection
 @section('scripts')

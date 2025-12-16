@@ -37,7 +37,7 @@
     <div class="flex flex-col">
         <div class="overflow-x-auto">
             <div class="align-middle inline-block min-w-full">
-                    <table class="table-fixed min-w-full divide-y divide-gray-200" id="attarchment_schedules_table">
+                    <table class="table-fixed min-w-full divide-y divide-gray-200" id="attaches_table">
                         <thead class="bg-gray-100">
                         <tr>
                             <th scope="col" class="p-2 w-12">
@@ -54,9 +54,7 @@
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Department
                             </th>
-                            <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                Supervisor
-                            </th>
+                           
                             <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                 Status
                             </th>
@@ -91,6 +89,7 @@
                 </div>
 
                 <!-- Modal body -->
+                 
                 <div class="p-6 space-y-6">
                     <form id="scheduleForm" enctype="multipart/form-data">
                         @csrf()
@@ -170,42 +169,141 @@
                 </button>
             </div>
 
-            <div class="p-6 space-y-6">
-    <form id="assessForm">
-        @csrf
-        <input type="hidden" name="student_attachment_id" >
+             <div class="p-2">
+         <div class="p-2 max-h-[80vh] overflow-y-auto">
+         <form id="assessForm">
+            @csrf
+        <input type="hidden" name="attachment_student_id" id="attachment_student_id">
 
-        <div class="space-y-4">
-            <div>
-                <label for="practical_marks" class="block font-medium">Practical Marks</label>
-                <input type="number" min="0" max="100" id="practical_marks" name="practical_marks" class="w-full border rounded p-2" required>
-            </div>
-            <div>
-                <label for="practical_remarks" class="block font-medium">Practical Remarks</label>
-                <textarea id="practical_remarks" name="practical_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
-            </div>
 
+         <div class="space-y-4 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
-                <label for="report_marks" class="block font-medium">Report Marks</label>
-                <input type="number" min="0" max="100" id="report_marks" name="report_marks" class="w-full border rounded p-2" required>
+                <label for="punctuality_marks" class="required block font-medium">Punctuality Marks(max2)</label>
+                <input type="number" min="0" max="5" id="punctuality_marks" name="punctuality_marks" class="w-full border rounded p-2" required>
             </div>
             <div>
-                <label for="report_remarks" class="block font-medium">Report Remarks</label>
-                <textarea id="report_remarks" name="report_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                <label for="punctuality_remarks" class="required block font-medium">Punctuality Remarks</label>
+                <textarea id="punctuality_remarks" name="ppunctuality_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
             </div>
 
             <div>
-                <label for="presentation_marks" class="block font-medium">Presentation Marks</label>
-                <input type="number" min="0" max="100" id="presentation_marks" name="presentation_marks" class="w-full border rounded p-2" required>
+                <label for="attendance_marks" class="required block font-medium">Attendance Marks(max2)</label>
+                <input type="number" min="0" max="5" id="attendance_marks" name="attendance_marks" class="w-full border rounded p-2" required>
             </div>
             <div>
-                <label for="presentation_remarks" class="block font-medium">Presentation Remarks</label>
-                <textarea id="presentation_remarks" name="presentation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                <label for="attendance_remarks" class="required block font-medium">Attendance Remarks</label>
+                <textarea id="attendance_remarks" name="attendance_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div>
+               <label for="basic_skils_marks" class="required block font-medium">Basic Skills Marks(max4)</label>
+                <input type="number" min="0" max="5" id="basic_skilsn_marks" name="basic_skils_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+              <label for="basic_skils_remarks" class="required block font-medium">Basic Skills Remarks</label>
+             <textarea id="basic_skils_remarks" name="basic_skils_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div>
+                <label for="general_office_applications_marks" class="required block font-medium">General Office Applications Marks(max4)</label>
+                <input type="number" min="0" max="5" id="general_office_applications_marks" name="general_office_applications_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for=" general_office_applications_remarks" class="required block font-medium">General Office Applications Remarks</label>
+                <textarea id="general_office_applications_remarks" name="general_office_applications_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div>
+                <label for="technical_applications_marks" class="required block font-medium">Technical Applications Marks(max4)</label>
+                <input type="number" min="0" max="5" id="technical_applications_marks" name="technical_applicationss_marks" class="w-full border rounded p-2" required>
+             </div>
+            <div>
+                <label for="technical_applications" class="required block font-medium">Technical Applications Remarks</label>
+               <textarea id="technical_applications_remarks" name="technical_applications_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+           </div>
+            <div>               
+                <label for="area_of_specialization_marks" class="required block font-medium">Area Of Specialization Marks(max4)</label>
+                <input type="number" min="0" max="5" id="area_of_specialization_marks" name="area_of_specialization_marks" class="w-full border rounded p-2" required>
+          </div>
+         <div> 
+             <label for="area_of_specialization_remarks" class="required block font-medium">Area Of Specialization Remarks</label>
+             <textarea id="area_of_specialization_remarks" name="area_of_specialization_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+         </div>
+           <div>
+                <label for="scientific_and_technical_knowledge_marks" class="required block font-medium">Scientific And Technical Knowledge Marks(max2)</label>
+                <input type="number" min="0" max="5" id="scientific_and_technical_knowledge_marks" name="scientific_and_technical_knowledgel_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="scientific_and_technical_knowledge_remarks" class="required block font-medium">Scientific And Technical Knowledge Remarks</label>
+                <textarea id="scientific_and_technical_knowledge_remarks" name="scientific_and_technical_knowledgel_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div>
+                <label for="intelligence_marks" class="required block font-medium">Intelligence Marks(max2)</label>
+                <input type="number" min="0" max="5" id="intelligence_marks" name="intelligence_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="intelligence_remarks" class="required block font-medium">Intelligence Remarks</label>
+                <textarea id="intelligence_remarks" name="intelligence_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div>
+               <label for="learning_ability_marks" class="required block font-medium">Learning Ability Marks(max2)</label>
+                <input type="number" min="0" max="5" id="learning_ability_marks" name="learning_ability_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+              <label for="learning_ability_remarks" class="required block font-medium">Learning Ability Remarks</label>
+             <textarea id="learning_ability_remarks" name="learning_ability_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div> 
+                <label for="responsibility_acceptance_marks" class="required block font-medium">Responsibility Acceptance Marks(max2)</label>
+                <input type="number" min="0" max="5" id="responsibility_acceptance_marks" name="responsibility_acceptance_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for=" responsibility_acceptance_remarks" class="required block font-medium">Responsibility Acceptance  Remarks</label>
+                <textarea id="responsibility_acceptance_remarks" name="responsibility_acceptance_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div>
+                <label for="improvisation_marks" class="required block font-medium">Improvisation Marks(max2)</label>
+                <input type="number" min="0" max="5" id="improvisation_marks" name="improvisation_marks" class="w-full border rounded p-2" required>
+             </div>
+            <div>
+                <label for="improvisation_remarks" class="required block font-medium">Improvisation Remarks</label>
+               <textarea id="improvisation_remarks" name="improvisation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+           </div>
+            <div>               
+                <label for="environment_adjustment_marks" class="required block font-medium">Environment Adjustment Marks(max2)</label>
+                <input type="number" min="0" max="5" id="environment_adjustment_marks" name="environment_adjustment_marks" class="w-full border rounded p-2" required>
+          </div>
+         <div> 
+             <label for="environment_adjustment_remarks" class="required block font-medium">Environment Adjustment Remarks</label>
+             <textarea id="environment_adjustment_remarks" name="environment_adjustment_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+         </div>
+          <div>
+                <label for="dependability_and_reliability_marks" class="required block font-medium">Dependability And Reliability Marks(max2)</label>
+                <input type="number" min="0" max="5" id="dependability_and_reliability_marks" name="dependability_and_reliability_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="dependability_and_reliability_remarks" class="required block font-medium">Dependability And Relibility Remarks</label>
+                <textarea id="dependability_and_reliability_remarks" name="dependability_and_reliability_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div>
+               <label for="organization_and_planning_marks" class="required block font-medium">Organizatiion And Planning Marks(max2)</label>
+                <input type="number" min="0" max="5" id="organization_and_planning_marks" name="organization_and_planning_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+              <label for="organization_and_planning_remarks" class="required block font-medium">Organization And Planning Remarks</label>
+             <textarea id="organization_and_planning_remarks" name="organization_and_planning_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+            </div>
+            <div> 
+                <label for="effective_time_use_marks" class="required block font-medium">Effective Time Use Marks(max2)</label>
+                <input type="number" min="0" max="5" id="effective_time_use_marks" name="effective_time_use_marks" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+                <label for="effective_time_use_remarks" class="required block font-medium">Effective Time Use  Remarks</label>
+                <textarea id="effective_time_use_remarks" name="effective_time_use_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
             </div>
         </div>
 
-        <button type="submit" class="mt-6 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit School Assessment</button>
+        <button type="submit" class="mt-6 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit Industry Assessment</button>
     </form>
+</div>
+    
             </div>
         </div>
     </div>
@@ -215,196 +313,119 @@
 @endsection
 @section('scripts')
 <script type="text/javascript">
+
+
     $(document).ready(function () {
-        // Initialize modals
-        const uploadModal = new Modal($('#add-schedule-modal')[0], {
-            backdrop: 'static',
-            closable: false
-        });
-        const addModal = new Modal($('#add-student-modal')[0], {
-            backdrop: 'static',
-            closable: false
-        });
-
-
-        $('#open-modal-btn').on('click', function () {
-            uploadModal.show();
-        });
-        $('.close-modal-btn').on('click', function () {
-            uploadModal.hide();
-        });
-
-        $('#open-add-modal-btn').on('click', function () {
-            addModal.show();
-        });
-        $('.close-add-modal-btn').on('click', function () {
-            addModal.hide();
-        });
-
-        var table = $("#attarchment_schedules_table").DataTable({
+        var table = $("#attaches_table").DataTable({
             processing: true,
             serverSide: true,
-            ordering: false,
-            ajax: {
-                url: "{{ route('industrial_supervisor.attaches') }}",
-                data: function (d) {
-                    d.attachment_id = $('#attachment_filter').val();
-                }
-            },
+            ordering: false,             
+            ajax: "{{ route('industrial_supervisor.attaches') }}",
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                 { data: 'name', name: 'name' },
                 { data: 'reg_no', name: 'reg_no' },
                 { data: 'department', name: 'department' },
-                { data: 'lecturer', name: 'lecturer' },
                 { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ]
         });
 
-        // Upload form submit
-        $("#scheduleForm").on("submit", function (e) {
-            e.preventDefault();
-            let btn = $("#uploadBtn");
-            btn.prop("disabled", true).html('Uploading <span class="loading-dots"></span>');
-            let formData = new FormData(this);
-
-            $.ajax({
-                url: "{{ route('admin.attachment_student.upload') }}",
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.status === "success") {
-                        let stats = response.stats;
-                        let failureHtml = "";
-
-                        if (stats.fail_count > 0) {
-                            failureHtml += "<ul class='list-group'>";
-                            stats.failed_records.forEach(function (item) {
-                                failureHtml += `<li class="list-group-item text-danger">${item.reason}</li>`;
+    
+        const assessModal = new Modal($('#assess-modal')[0], {
+                            backdrop: 'static',
+                            closable: false
                             });
-                            failureHtml += "</ul>";
+
+// open modal when assess button is clicked
+$(document).on('click', '.assessBtn', function () {
+    $("#assessForm")[0].reset();
+    let id = $(this).data('id');
+    let name = $(this).data('name');
+    $('#attachment_student_id').val(id);
+    $('#assessed_student_name').html(name);
+
+    assessModal.show();
+});
+
+// close button
+$('.close-assess-modal-btn').on('click', function () {
+    assessModal.hide();
+});
+
+// submit assessment
+$("#assessForm").on("submit", function(e) {
+    e.preventDefault();
+    let btn = $("#assessBtn");
+    btn.prop("disabled", true).text('Submitting...');
+
+    $.ajax({
+        url: "{{ route('industrial_supervisor.assessment.store') }}", // <-- Add this route
+        type: "POST",
+        data: $(this).serialize(),
+          success: function (response) {
+                        if (response.status === "success") {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+
+                            // optionally reset form and close modal
+                            $(this)[0].reset();
+                            modal.hide();
+                            table.ajax.reload(null, false);
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
                         }
-
-                        let htmlMsg = `
-                            <strong>Upload Completed!</strong><br>
-                            <strong>Successful:</strong> ${stats.success_count}<br>
-                            <strong>Failed:</strong> ${stats.fail_count}<br><br>
-                            ${failureHtml}
-                        `;
-
-                        Swal.fire({
-                            icon: stats.fail_count > 0 ? "warning" : "success",
-                            title: "Import Report",
-                            html: htmlMsg,
-                            width: 600,
-                        });
-
-                        $("#scheduleForm")[0].reset();
-                        uploadModal.hide();
-                        table.ajax.reload(null, false);
-
-                    } else {
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'error',
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
+                    },
+                    error: function (xhr) {
+                        let res = xhr.responseJSON;
+                        if (res && res.errors) {
+                            let messages = Object.values(res.errors).flat().join("\n");
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: "Validation failed:\n" + messages,
+                                showConfirmButton: false,
+                                timer: 9000,
+                                timerProgressBar: true
+                            });
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Something went wrong',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true
+                            });
+                        }
+                    },
+                    complete: function () {
+                        // ALWAYS re-enable button after request completes
+                        btn.prop("disabled", false).html("Add");
                     }
-                },
-                error: function (xhr) {
-                    let res = xhr.responseJSON;
-                    if (res && res.errors) {
-                        let messages = Object.values(res.errors).flat().join("\n");
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'error',
-                            title: "Validation failed:\n" + messages,
-                            showConfirmButton: false,
-                            timer: 9000,
-                            timerProgressBar: true
-                        });
-                    } else {
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Something went wrong',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
-                    }
-                },
-                complete: function () {
-                    $("#uploadBtn").prop("disabled", false).html("Upload");
-                }
-            });
-        });
+    });
+});
 
-        // Add student form submit (example)
-        $("#addStudentForm").on("submit", function(e) {
-            e.preventDefault();
-            let btn = $("#addStudentBtn");
-            btn.prop("disabled", true).text('Adding...');
-
-            let formData = $(this).serialize();
-
-            $.ajax({
-                url: "{{ route('admin.attachment_student.add') }}",  // Define this route to handle add student
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    if(response.status === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Student Added Successfully',
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
-                        addModal.hide();
-                        table.ajax.reload(null, false);
-                        $("#addStudentForm")[0].reset();
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: response.message || 'Failed to add student'
-                        });
-                    }
-                },
-                error: function(xhr) {
-                    let res = xhr.responseJSON;
-                    if (res && res.errors) {
-                        let messages = Object.values(res.errors).flat().join("\n");
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Validation Error',
-                            text: messages
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Something went wrong'
-                        });
-                    }
-                },
-                complete: function() {
-                    btn.prop("disabled", false).text('Add');
-                }
-            });
-        });
-
-        $('#attachment_filter').on('change', function () {
-            table.ajax.reload(null, false);
-        });
 
     });
 </script>
+
+
 @endsection

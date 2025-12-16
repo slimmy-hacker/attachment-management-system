@@ -145,8 +145,8 @@ public function storeOpportunity(Request $request)
     $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',
-        'location' => 'nullable|string',
-        'deadline' => 'nullable|date',
+        'location' => 'required|string',
+        'deadline' => 'required|date',
     ]);
 
     Opportunity::create([
@@ -157,7 +157,11 @@ public function storeOpportunity(Request $request)
         'deadline' => $request->deadline,
     ]);
 
-    return back()->with('success', 'Opportunity created successfully.');
+   return response()->json([
+        'status' => 'success',
+        'message' => 'Opportunity created successfully.',
+        'data' => $opportunity,
+    ]);
 }
 
     // 📌 Documents
