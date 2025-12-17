@@ -19,6 +19,7 @@ class LecturerController extends Controller
     public function index(Request $request){
 
         if ($request->ajax()) {
+
             $data = Lecturer::with(['user','department'])->latest()->get();
 
             return DataTables::of($data)
@@ -129,11 +130,10 @@ class LecturerController extends Controller
    public function myStudents(Request $request)
 {
      if ($request->ajax()) {
-
-            $data = AttachmentStudent::with(['attachment', 'student', 'student.user', 'industrialSupervisor.user', 'company',]);
-                if (!empty($request->attachment_id)) {
-                    $data->where('attachment_id', $request->attachment_id);
-                }
+         $attachment_lecturer_id = $request->session()->get('attachment_lecturer_id');
+         $attachment_id= $request->session()->get('attachment_id');
+            $data = AttachmentStudent::with(['attachment', 'student', 'student.user', 'industrialSupervisor.user', 'company',])
+                                    ->where('lecturer_id', $attachment_lecturer_id );
 
             return DataTables::of($data)
                 ->addIndexColumn() // adds DT_RowIndex

@@ -99,7 +99,6 @@
                                     <span class="sr-only">Close modal</span>
                                 </button>
                             </div>
-                                <div class="p-2">
                                      <form id="assessForm">
 
                                 @csrf
@@ -115,7 +114,7 @@
                                         <label for="practical_orientation_remarks" class="required block font-medium">practical Orientation Remarks</label>
                                         <textarea id="practical_orientation_remarks" name="practical_orientation_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
                                     </div>
-                                   
+
                                     <div>
                                         <label for="intellectual_activity_Marks" class="required block font-medium">Intellectual Activity Marks(max5)</label>
                                         <input type="number" min="0" max="5" id="report_marks" name="intellectual_activity_Marks" class="w-full border rounded p-2" required>

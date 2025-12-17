@@ -21,9 +21,7 @@ class AttachmentSelectedController extends Controller
             case 'student':
                 $student = Student::where('user_id', Auth::id())->first();
                 $attachment_students = AttachmentStudent::with('attachment')
-                    ->join('attachments', 'attachments.id', '=', 'attachment_students.attachment_id')
                     ->where('attachment_students.student_id', $student->id)
-                    ->orderBy('attachments.start_date', 'DESC')
                     ->select('attachment_students.*')
                     ->get();
 
@@ -32,11 +30,8 @@ class AttachmentSelectedController extends Controller
 
             case 'lecturer':
                     $lecturer = Lecturer::where('user_id', Auth::id())->first();
-                   $attachment_lecturers = AttachmentLecturer::with('attachment')
-                                                                       ->join('attachments', 'attachments.id', '=', 'attachment_lecturers.attachment_id')
-
+                   $attachment_lecturers = AttachmentLecturer::with('attachment', 'department')
                                                                         ->where('attachment_lecturers.lecturer_id', $lecturer->id)
-                                                                        ->orderBy('attachments.start_date', 'DESC')
                                                                         ->get();
 
                     return view('attachment_selected.lecturers', compact('attachment_lecturers'));
