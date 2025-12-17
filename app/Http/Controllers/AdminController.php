@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Budget;
+use App\Models\AttachmentAssessment;
 
 use Illuminate\Http\Request;
 
@@ -95,4 +96,22 @@ public function destroyBudget($id)
     public function settings() {
         return view('admin.settings');
     }
+    public function index()
+{
+    $assessments = AttachmentAssessment::with([
+        'attachmentStudent.student.user',
+        'attachmentStudent.student.program',
+        'lecturer.user',
+        'industrialSupervisor.user'
+    ])->get();
+
+    $totals = [
+        'lecturer_total' => $assessments->sum(fn($a) => $a->lecturer_total_marks ?? 0),
+        'industrial_total' => $assessments->sum(fn($a) => $a->industrial_supervisor_total_marks ?? 0),
+        'combined_total' => $assessments->sum(fn($a) => ($a->lecturer_total_marks ?? 0) + ($a->industrial_supervisor_total_marks ?? 0)),
+    ];
+
+    return view('admin.assessments', compact('assessments', 'totals'));
+}
+
 }

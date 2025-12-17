@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 class AttachmentDetailsController extends Controller
 {public function edit(Request $req)
-{
+{   
     $attachment_student_id = $req->session()->get('attachment_student_id');
     $attachment_student = AttachmentStudent::find($attachment_student_id);
     $companies = Company::with('subcounty')->get();

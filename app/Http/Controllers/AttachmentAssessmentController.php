@@ -208,7 +208,7 @@ class AttachmentAssessmentController extends Controller
             'intellectual_activity_remarks' => $validated['intellectual_activity_Remarks'],
 
             'independence_marks'   => $validated['independence_marks'],
-            'independence_marks'   => $validated['independence_remarks'],
+            'independence_remarks'   => $validated['independence_remarks'],
             
 
             'communication_marks'   => $validated['communication_marks'],
@@ -226,6 +226,39 @@ class AttachmentAssessmentController extends Controller
         'status'  => 'success',
         'message' => 'Assessment saved successfully',
     ]);
+}
+  
+public function getLecturerTotalMarksAttribute()
+{
+    return $this->practical_orientation_marks
+         + $this->intellectual_activity_marks
+         + $this->independence_marks
+         + $this->communication_marks
+         + $this->technology_and_skills_marks
+         + $this->innovativeness_marks;
+}
+
+public function getIndustrialSupervisorTotalMarksAttribute()
+{
+    return $this->punctuality_marks
+         + $this->attendance_marks
+         + $this->basic_skills_marks
+         + $this->general_office_applications_marks
+         + $this->technical_applications_marks
+         + $this->area_of_specialization_marks
+         + $this->scientific_and_technical_knowledge_marks
+         + $this->intelligence_marks
+         + $this->learning_ability_marks
+         + $this->responsibility_acceptance_marks
+         + $this->improvisation_marks
+         + $this->environment_adjustment_marks
+         + $this->dependability_and_reliability_marks
+         + $this->organization_and_planning_marks
+         + $this->effective_time_use_marks;
+}
+public function getCombinedTotalMarksAttribute()
+{
+    return $this->lecturer_total_marks + $this->industrial_supervisor_total_marks;
 }
 
 }

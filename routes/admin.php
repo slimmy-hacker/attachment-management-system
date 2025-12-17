@@ -72,4 +72,7 @@ Route::post('/admin/attachment-lecturers/add', [AttachmentLecturerController::cl
     ->name('admin.attachment_lecturers.add');
 
 
-
+Route::get('/assessments', [AdminController::class, 'index'])
+        ->name('assessments');
+        Route::get('admin/assessments', [AdminController::class, 'index'])
+    ->name('admin.assessments');

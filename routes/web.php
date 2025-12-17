@@ -42,7 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/attachment/select', [AttachmentSelectedController::class, 'store'])->name('attachment_selected.store');
     Route::get('/student/logbook/{attachment_student_id}', [DailyReportController::class, 'index'])->name('logbook');
 
-
+Route::get('/attachments/{id}', [AttachmentDetailsController::class, 'show'])
+     ->name('attachments.show');
     Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
     Route::get('/opportunities/{opportunity}/apply', [OpportunityController::class, 'showApplyForm'])->name('opportunities.apply');
     Route::post('/opportunities/{opportunity}/apply', [OpportunityController::class, 'submitApplication'])->name('opportunities.apply');
