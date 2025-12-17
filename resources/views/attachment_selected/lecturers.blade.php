@@ -54,6 +54,9 @@
                                     }
                                 @endphp
                                 <p class="text-sm text-gray-500 mt-1">
+                                   Department : {{ $attachment->department->name }}
+                                </p>
+                                <p class="text-sm text-gray-500 mt-1">
                                     {{ $start->format('M d, Y') }}
                                     —
                                     {{ $end->format('M d, Y') }}
