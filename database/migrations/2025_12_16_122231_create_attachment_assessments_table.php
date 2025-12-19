@@ -11,78 +11,78 @@ return new class extends Migration {
 
             // Foreign keys
             $table->foreignId('attachment_student_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('supervisor_id')->constrained('users')->cascadeOnDelete();
+           
 
-           // ===== Practical & Professional Skills =====
-$table->unsignedTinyInteger('practical_orientation_marks')->default(0);
-$table->text('practical_orientation_remarks')->default('');
+
+    $table->unsignedTinyInteger('practical_orientation_marks')->default(0);
+$table->text('practical_orientation_remarks')->nullable();
 
 $table->unsignedTinyInteger('intellectual_activity_marks')->default(0);
-$table->text('intellectual_activity_remarks')->default('');
+$table->text('intellectual_activity_remarks')->nullable();
 
 $table->unsignedTinyInteger('independence_marks')->default(0);
-$table->text('independence_remarks')->default('');
+$table->text('independence_remarks')->nullable();
 
 $table->unsignedTinyInteger('communication_marks')->default(0);
-$table->text('communication_remarks')->default('');
+$table->text('communication_remarks')->nullable();
 
 $table->unsignedTinyInteger('technology_and_skills_marks')->default(0);
-$table->text('technology_and_skills_remarks')->default('');
+$table->text('technology_and_skills_remarks')->nullable();
 
 $table->unsignedTinyInteger('innovativeness_marks')->default(0);
-$table->text('innovativeness_remarks')->default('');
+$table->text('innovativeness_remarks')->nullable();
 
 // ===== Work Discipline =====
 $table->unsignedTinyInteger('punctuality_marks')->default(0);
-$table->text('punctuality_remarks')->default('');
+$table->text('punctuality_remarks')->nullable();
 
 $table->unsignedTinyInteger('attendance_marks')->default(0);
-$table->text('attendance_remarks')->default('');
+$table->text('attendance_remarks')->nullable();
 
 // ===== Skills & Knowledge =====
 $table->unsignedTinyInteger('basic_skills_marks')->default(0);
-$table->text('basic_skills_remarks')->default('');
+$table->text('basic_skills_remarks')->nullable();
 
 $table->unsignedTinyInteger('general_office_applications_marks')->default(0);
-$table->text('general_office_applications_remarks')->default('nullable');
+$table->text('general_office_applications_remarks')->nullable();
 
 $table->unsignedTinyInteger('technical_applications_marks')->default(0);
-$table->text('technical_applications_remarks')->default('');
+$table->text('technical_applications_remarks')->nullable();
 
 $table->unsignedTinyInteger('area_of_specialization_marks')->default(0);
-$table->text('area_of_specialization_remarks')->default('');
+$table->text('area_of_specialization_remarks')->nullable();
 
 $table->unsignedTinyInteger('scientific_and_technical_knowledge_marks')->default(0);
-$table->text('scientific_and_technical_knowledge_remarks')->default('');
+$table->text('scientific_and_technical_knowledge_remarks')->nullable();
 
 // ===== Personal Attributes =====
 $table->unsignedTinyInteger('intelligence_marks')->default(0);
-$table->text('intelligence_remarks')->default('');
+$table->text('intelligence_remarks')->nullable();
 
 $table->unsignedTinyInteger('learning_ability_marks')->default(0);
-$table->text('learning_ability_remarks')->default('');
+$table->text('learning_ability_remarks')->nullable();
 
 $table->unsignedTinyInteger('responsibility_acceptance_marks')->default(0);
-$table->text('responsibility_acceptance_remarks')->default('');
+$table->text('responsibility_acceptance_remarks')->nullable();
 
 $table->unsignedTinyInteger('improvisation_marks')->default(0);
-$table->text('improvisation_remarks')->default('');
+$table->text('improvisation_remarks')->nullable();
 
 $table->unsignedTinyInteger('environment_adjustment_marks')->default(0);
-$table->text('environment_adjustment_remarks')->default('');
+$table->text('environment_adjustment_remarks')->nullable();
 
 $table->unsignedTinyInteger('dependability_and_reliability_marks')->default(0);
-$table->text('dependability_and_reliability_remarks')->default('');
+$table->text('dependability_and_reliability_remarks')->nullable();
 
 $table->unsignedTinyInteger('organization_and_planning_marks')->default(0);
-$table->text('organization_and_planning_remarks')->default('');
+$table->text('organization_and_planning_remarks')->nullable();
 
 $table->unsignedTinyInteger('effective_time_use_marks')->default(0);
-$table->text('effective_time_use_remarks')->default('');
+$table->text('effective_time_use_remarks')->nullable();
 
-// ===== Overall =====
 $table->unsignedSmallInteger('total_marks')->default(0);
-$table->text('overall_remarks')->default('');
+$table->text('overall_remarks')->nullable();
+
 
             $table->timestamps();
         });

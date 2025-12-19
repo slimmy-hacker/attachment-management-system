@@ -6,26 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('attachment_assessments', function (Blueprint $table) {
-            
-            
-            $table->foreignId('attachment_student_id')
-                                    ->onDelete('cascade')          
-                  ->after('id');                 
-        });
+    $table->dropColumn('supervisor_id');
+});
     }
 
-    
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('attachment_assessments', function (Blueprint $table) {
-            
-            $table->dropConstrainedForeignId('attachment_student_id'); 
-            
-            
+            //
         });
     }
 };

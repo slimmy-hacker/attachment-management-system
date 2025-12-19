@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Opportunity;
+use App\Models\AttachmentAssessment;
 
 
 use Illuminate\Http\Request;
@@ -122,6 +123,19 @@ class IndustrialSupervisorController extends Controller
         ->addColumn('lecturer', fn ($row) => $row->lecturer->user->name ?? '-')
         ->addColumn('status', fn ($row) => $row->attachment->status ?? '-')
         ->addColumn('action', function ($row) {
+    $supervisorId = request()->session()->get('industrial_supervisor_id');
+
+$assessment = AttachmentAssessment::where('attachment_student_id', $row->id)
+    ->where('industrial_supervisor_id', $supervisorId)
+    ->first();
+
+if ($assessment && $assessment->punctuality_marks !== null) {
+    return '<button type="button" disabled class="bg-green-600 text-white font-semibold px-3 py-1 rounded cursor-not-allowed opacity-70">
+                Already Assessed 
+            </button>';
+}
+
+    
             return '
             <div class="flex space-x-2">
                 <button

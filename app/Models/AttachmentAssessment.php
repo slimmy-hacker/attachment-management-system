@@ -11,7 +11,7 @@ class AttachmentAssessment extends Model
 
     protected $fillable = [
         'attachment_student_id',
-
+        
             // --- Practical & Professional Skills ---
         'practical_orientation_marks',
         'practical_orientation_remarks',
@@ -50,6 +50,8 @@ class AttachmentAssessment extends Model
         'learning_ability_marks',
         'learning_ability_remarks',
         'responsibility_acceptance_marks',
+        'responsibility_acceptance_remarks',
+
         'improvisation_marks',
         'improvisation_remarks',
         'environment_adjustment_marks',
@@ -69,8 +71,7 @@ class AttachmentAssessment extends Model
     {
         return $this->belongsTo(Student::class);
     }
-    protected $guarded = [];
-
+    
     public function attachmentStudent()
     {
         // FK is attachment_student_id in attachment_assessments table

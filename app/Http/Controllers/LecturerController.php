@@ -8,6 +8,7 @@ use App\Models\Attachment;
 use App\Models\AttachmentStudent;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\AttachmentAssessment;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -28,6 +29,7 @@ class LecturerController extends Controller
                 ->addColumn('email', fn ($row) => $row->user->email ?? '-')
                 ->addColumn('department', fn ($row) =>  $row->department->name ?? '-')
                 ->addColumn('action', function ($row) {
+                    
                     return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
                 })
                 ->rawColumns(['action'])
@@ -152,10 +154,23 @@ class LecturerController extends Controller
 
                 ->rawColumns(['action'])
 
-                ->addColumn('action', function ($row)
-                 {
+                ->addColumn('action', function ($row){
+               $assessment = AttachmentAssessment::where('attachment_student_id', $row->id)->first();
+
+if ($assessment && $assessment->punctuality_marks !== null) {
+    return '<button type="button" disabled class="bg-green-600 text-white font-semibold px-3 py-1 rounded cursor-not-allowed opacity-70">
+                Already Assessed
+            </button>';
+
+
+}
+
+            
+                 
                      $name = $row->student->reg_no . ' - ' . $row->student->user->name;
+                     
                     return '
+
 
                     <button
                             class="assessBtn bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700"

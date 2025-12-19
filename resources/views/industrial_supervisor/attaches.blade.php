@@ -183,7 +183,7 @@
             </div>
             <div>
                 <label for="punctuality_remarks" class="required block font-medium">Punctuality Remarks</label>
-                <textarea id="punctuality_remarks" name="ppunctuality_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                <textarea id="punctuality_remarks" name="punctuality_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
             </div>
 
             <div>
@@ -195,12 +195,12 @@
                 <textarea id="attendance_remarks" name="attendance_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
             </div>
             <div>
-               <label for="basic_skils_marks" class="required block font-medium">Basic Skills Marks(max4)</label>
-                <input type="number" min="0" max="5" id="basic_skilsn_marks" name="basic_skils_marks" class="w-full border rounded p-2" required>
+               <label for="basic_skills_marks" class="required block font-medium">Basic Skills Marks(max4)</label>
+                <input type="number" min="0" max="5" id="basic_skills_marks" name="basic_skills_marks" class="w-full border rounded p-2" required>
             </div>
             <div>
-              <label for="basic_skils_remarks" class="required block font-medium">Basic Skills Remarks</label>
-             <textarea id="basic_skils_remarks" name="basic_skils_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+              <label for="basic_skills_remarks" class="required block font-medium">Basic Skills Remarks</label>
+             <textarea id="basic_skills_remarks" name="basic_skills_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
             </div>
             <div>
                 <label for="general_office_applications_marks" class="required block font-medium">General Office Applications Marks(max4)</label>
@@ -212,7 +212,7 @@
             </div>
             <div>
                 <label for="technical_applications_marks" class="required block font-medium">Technical Applications Marks(max4)</label>
-                <input type="number" min="0" max="5" id="technical_applications_marks" name="technical_applicationss_marks" class="w-full border rounded p-2" required>
+                <input type="number" min="0" max="5" id="technical_applications_marks" name="technical_applications_marks" class="w-full border rounded p-2" required>
              </div>
             <div>
                 <label for="technical_applications" class="required block font-medium">Technical Applications Remarks</label>
@@ -228,11 +228,11 @@
          </div>
            <div>
                 <label for="scientific_and_technical_knowledge_marks" class="required block font-medium">Scientific And Technical Knowledge Marks(max2)</label>
-                <input type="number" min="0" max="5" id="scientific_and_technical_knowledge_marks" name="scientific_and_technical_knowledgel_marks" class="w-full border rounded p-2" required>
+                <input type="number" min="0" max="5" id="scientific_and_technical_knowledge_marks" name="scientific_and_technical_knowledge_marks" class="w-full border rounded p-2" required>
             </div>
             <div>
                 <label for="scientific_and_technical_knowledge_remarks" class="required block font-medium">Scientific And Technical Knowledge Remarks</label>
-                <textarea id="scientific_and_technical_knowledge_remarks" name="scientific_and_technical_knowledgel_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                <textarea id="scientific_and_technical_knowledge_remarks" name="scientific_and_technical_knowledge_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
             </div>
             <div>
                 <label for="intelligence_marks" class="required block font-medium">Intelligence Marks(max2)</label>

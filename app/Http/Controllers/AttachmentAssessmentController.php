@@ -51,32 +51,33 @@ class AttachmentAssessmentController extends Controller
         return view('attaches.industrial_supervisor', compact('student'));
     }
 
-    // SAVE Industrial Supervisor Assessment
+   
+
   public function storeIndustrial(Request $request)
 {
     $validated = $request->validate([
         'attachment_student_id' => 'required|exists:attachment_students,id',
 
         'punctuality_marks' => 'required|integer|min:0|max:5',
-        'ppunctuality_remarks' => 'required|string',
+        'punctuality_remarks' => 'required|string',
 
         'attendance_marks' => 'required|integer|min:0|max:5',
         'attendance_remarks' => 'required|string',
 
-        'basic_skils_marks' => 'required|integer|min:0|max:5',
-        'basic_skils_remarks' => 'required|string',
+        'basic_skills_marks' => 'required|integer|min:0|max:5',
+        'basic_skills_remarks' => 'required|string',
 
         'general_office_applications_marks' => 'required|integer|min:0|max:5',
         'general_office_applications_remarks' => 'required|string',
 
-        'technical_applicationss_marks' => 'required|integer|min:0|max:5',
+        'technical_applications_marks' => 'required|integer|min:0|max:5',
         'technical_applications_remarks' => 'required|string',
 
         'area_of_specialization_marks' => 'required|integer|min:0|max:5',
         'area_of_specialization_remarks' => 'required|string',
 
-        'scientific_and_technical_knowledgel_marks' => 'required|integer|min:0|max:5',
-        'scientific_and_technical_knowledgel_remarks' => 'required|string',
+        'scientific_and_technical_knowledge_marks' => 'required|integer|min:0|max:5',
+        'scientific_and_technical_knowledge_remarks' => 'required|string',
 
         'intelligence_marks' => 'required|integer|min:0|max:5',
         'intelligence_remarks' => 'required|string',
@@ -103,54 +104,33 @@ class AttachmentAssessmentController extends Controller
         'effective_time_use_remarks' => 'required|string',
     ]);
 
-    AttachmentAssessment::updateOrCreate(
+    // Get industrial supervisor ID from session
+    $supervisorId = $request->session()->get('industrial_supervisor_id');
+
+    if (!$supervisorId) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Industrial Supervisor ID not found in session',
+        ], 400);
+    }
+
+    // Check if this supervisor has already assessed this student
+    $existingAssessment = AttachmentAssessment::where('attachment_student_id', $validated['attachment_student_id'])
+        ->where('industrial_supervisor_id', $supervisorId)
+        ->whereNotNull('punctuality_marks')  // or any key industrial assessment mark column
+        ->first();
+
+    if ($existingAssessment) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'You have already assessed this student.',
+        ], 409);
+    }
+
+    // Save or update assessment
+    $assessment = AttachmentAssessment::updateOrCreate(
         ['attachment_student_id' => $validated['attachment_student_id']],
-        [
-            'punctuality_marks' => $validated['punctuality_marks'],
-            'punctuality_remarks' => $validated['ppunctuality_remarks'],
-
-            'attendance_marks' => $validated['attendance_marks'],
-            'attendance_remarks' => $validated['attendance_remarks'],
-
-            'basic_skills_marks' => $validated['basic_skils_marks'],
-            'basic_skills_remarks' => $validated['basic_skils_remarks'],
-
-            'general_office_applications_marks' => $validated['general_office_applications_marks'],
-            'general_office_applications_remarks' => $validated['general_office_applications_remarks'],
-
-            'technical_applications_marks' => $validated['technical_applicationss_marks'],
-            'technical_applications_remarks' => $validated['technical_applications_remarks'],
-
-            'area_of_specialization_marks' => $validated['area_of_specialization_marks'],
-            'area_of_specialization_remarks' => $validated['area_of_specialization_remarks'],
-
-            'scientific_and_technical_knowledge_marks' => $validated['scientific_and_technical_knowledgel_marks'],
-            'scientific_and_technical_knowledge_remarks' => $validated['scientific_and_technical_knowledgel_remarks'],
-
-            'intelligence_marks' => $validated['intelligence_marks'],
-            'intelligence_remarks' => $validated['intelligence_remarks'],
-
-            'learning_ability_marks' => $validated['learning_ability_marks'],
-            'learning_ability_remarks' => $validated['learning_ability_remarks'],
-
-            'responsibility_acceptance_marks' => $validated['responsibility_acceptance_marks'],
-            'responsibility_acceptance_remarks' => $validated['responsibility_acceptance_remarks'],
-
-            'improvisation_marks' => $validated['improvisation_marks'],
-            'improvisation_remarks' => $validated['improvisation_remarks'],
-
-            'environment_adjustment_marks' => $validated['environment_adjustment_marks'],
-            'environment_adjustment_remarks' => $validated['environment_adjustment_remarks'],
-
-            'dependability_and_reliability_marks' => $validated['dependability_and_reliability_marks'],
-            'dependability_and_reliability_remarks' => $validated['dependability_and_reliability_remarks'],
-
-            'organization_and_planning_marks' => $validated['organization_and_planning_marks'],
-            'organization_and_planning_remarks' => $validated['organization_and_planning_remarks'],
-
-            'effective_time_use_marks' => $validated['effective_time_use_marks'],
-            'effective_time_use_remarks' => $validated['effective_time_use_remarks'],
-        ]
+        array_merge($validated, ['industrial_supervisor_id' => $supervisorId])
     );
 
     return response()->json([
@@ -160,7 +140,6 @@ class AttachmentAssessmentController extends Controller
 }
 
 
- 
 
 
 
@@ -171,63 +150,64 @@ class AttachmentAssessmentController extends Controller
         return view('my.lecturer', compact('student'));
     }
 
-    // SAVE School Supervisor Assessment
-   public function storeSchool(Request $request)
+    public function storeSchool(Request $request)
 {
     $validated = $request->validate([
         'attachment_student_id' => 'required|exists:attachment_students,id',
 
-        'practical_orientation_marks'   => 'required|integer|min:0|max:5',
+        'practical_orientation_marks' => 'required|integer|min:0|max:5',
         'practical_orientation_remarks' => 'required|string',
 
-        'intellectual_activity_Marks'   => 'required|integer|min:0|max:5',
-        'intellectual_activity_Remarks' => 'required|string',
+        'intellectual_activity_marks' => 'required|integer|min:0|max:5',
+        'intellectual_activity_remarks' => 'required|string',
 
-        'independence_marks'   => 'required|integer|min:0|max:5',
+        'independence_marks' => 'required|integer|min:0|max:5',
         'independence_remarks' => 'required|string',
 
-        'communication_marks'   => 'required|integer|min:0|max:5',
+        'communication_marks' => 'required|integer|min:0|max:5',
         'communication_remarks' => 'required|string',
 
         'technology_and_skills_marks' => 'required|integer|min:0|max:5',
         'technology_and_skills_remarks' => 'required|string',
 
-        'innovativeness_marks'   => 'required|integer|min:0|max:5',
+        'innovativeness_marks' => 'required|integer|min:0|max:5',
         'innovativeness_remarks' => 'required|string',
     ]);
 
-    AttachmentAssessment::updateOrCreate(
-        [
-            'attachment_student_id' => $validated['attachment_student_id']
-        ],
-        [
-            'practical_orientation_marks'   => $validated['practical_orientation_marks'],
-            'practical_orientation_remarks' => $validated['practical_orientation_remarks'],
+    $lecturerId = $request->session()->get('attachment_lecturer_id');
 
-            'intellectual_activity_marks'   => $validated['intellectual_activity_Marks'],
-            'intellectual_activity_remarks' => $validated['intellectual_activity_Remarks'],
+    if (!$lecturerId) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Lecturer ID not found in session',
+        ], 400);
+    }
 
-            'independence_marks'   => $validated['independence_marks'],
-            'independence_remarks'   => $validated['independence_remarks'],
-            
+    // Check if already assessed before updating/creating
+    $existingAssessment = AttachmentAssessment::where('attachment_student_id', $validated['attachment_student_id'])
+        ->where('lecturer_id', $lecturerId)
+        ->whereNotNull('practical_orientation_marks')  // check key column for assessment
+        ->first();
 
-            'communication_marks'   => $validated['communication_marks'],
-            'communication_remarks' => $validated['communication_remarks'],
+    if ($existingAssessment) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'You have already assessed this student.',
+        ], 409);
+    }
 
-            'technology_and_skills_marks'   => $validated['technology_and_skills_marks'],
-            'technology_and_skills_remarks' => $validated['technology_and_skills_remarks'],
-
-            'innovativeness_marks'   => $validated['innovativeness_marks'],
-            'innovativeness_remarks' => $validated['innovativeness_remarks'],
-        ]
+    // Only update or create if not assessed
+    $assessment = AttachmentAssessment::updateOrCreate(
+        ['attachment_student_id' => $validated['attachment_student_id']],
+        array_merge($validated, ['lecturer_id' => $lecturerId])
     );
 
     return response()->json([
-        'status'  => 'success',
+        'status' => 'success',
         'message' => 'Assessment saved successfully',
     ]);
 }
-  
+
 public function getLecturerTotalMarksAttribute()
 {
     return $this->practical_orientation_marks

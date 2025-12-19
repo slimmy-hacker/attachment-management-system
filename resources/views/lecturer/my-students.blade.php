@@ -120,12 +120,12 @@
                                     </div>
 
                                     <div>
-                                        <label for="intellectual_activity_Marks" class="required block font-medium">Intellectual Activity Marks(max5)</label>
-                                        <input type="number" min="0" max="5" id="report_marks" name="intellectual_activity_Marks" class="w-full border rounded p-2" required>
+                                        <label for="intellectual_activity_marks" class="required block font-medium">Intellectual Activity Marks(max5)</label>
+                                        <input type="number" min="0" max="5" id="intellectual_marks" name="intellectual_activity_marks" class="w-full border rounded p-2" required>
                                     </div>
                                     <div>
-                                        <label for="intellectual_activity_Remarks" class="required block font-medium">Intellectual Activity Remarks</label>
-                                        <textarea id="intellectual_activity_Remarks" name="intellectual_activity_Remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+                                        <label for="intellectual_activity_remarks" class="required block font-medium">Intellectual Activity Remarks</label>
+                                        <textarea id="intellectual_activity_remarks" name="intellectual_activity_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
                                     </div>
 
                                     <div>
