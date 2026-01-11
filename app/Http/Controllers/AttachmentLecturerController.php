@@ -28,6 +28,7 @@ class AttachmentLecturerController extends Controller
             ->addIndexColumn()
             ->addColumn('name', fn ($row) => $row->lecturer->user->name ?? '-')
             ->addColumn('staff_no', fn ($row) => $row->lecturer->staff_number ?? '-')
+             ->addColumn('job_grade', fn ($row) => $row->job_grade ?? '-')
             ->addColumn('attachment', fn ($row) => $row->attachment->name ?? '-')
             ->addColumn('department', fn ($row) => $row->department->name ?? '-')
             ->addColumn('students', fn ($row) => $row->department->slug ?? 0)
@@ -76,6 +77,7 @@ public function store(Request $request)
     $validated = $request->validate([
         'name'            => 'required|string|max:255',
         'staff_no'        => 'required|string|max:255',
+        'job_grade'        => 'required|string|max:255',
         'attachment'      => 'required|string|max:255',
         'department'      => 'required|string|max:255',
         'students'        => 'required|integer',
@@ -84,6 +86,7 @@ public function store(Request $request)
     $record = AttachmentLecturer::create([
         'name'            => $request->name,
         'staff_no'        => $request->staff_no,
+        'job_grade'        => $request->job_grade,
         'attachment'      => $request->attachment,
         'department'      => $request->department,
         'students'        => $request->students,

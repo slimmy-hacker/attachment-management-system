@@ -64,6 +64,9 @@ public function assignedStudents()
     return $this->hasMany(User::class, 'supervisor_id')
                 ->where('role', 'student');
 }
-
+public function student()
+{
+    return $this->hasOne(Student::class, 'user_id');
+}
 
 }

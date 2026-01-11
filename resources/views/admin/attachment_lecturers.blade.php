@@ -89,6 +89,9 @@
                                     Staff Number
                                 </th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                    Job Grade
+                                </th>
+                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                     Department
                                 </th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
@@ -313,6 +316,10 @@
                     {
                         data: 'staff_no',
                         name: 'staff_no'
+                    },
+                    {
+                        data: 'job_grade',
+                        name: 'job_grade'
                     },
                     {
                         data: 'department',

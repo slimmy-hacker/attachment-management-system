@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Budget extends Model
 {
+  
     protected $fillable = [
-        'staffnumber',
-        'grade',
-        'lecturer_name',
-        'daily_allowance',
-        'transport_town',
-        'totals',
-        'student_list_file'
+        'lecturer_id',
+        'students_count',
+        'days',
+        'transport'
     ];
+    public function lecturer()
+{
+    return $this->belongsTo(Lecturer::class);
+}
+
 }

@@ -47,5 +47,12 @@ class AttachmentStudent extends Model
     {
         return $this->student?->program?->parent;
     }
+   public function weeklyReports()
+    {
+        return $this->hasMany(WeeklyReport::class, 'attachment_student_id');
+    }
+
+
+
 
 }

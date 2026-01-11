@@ -5,6 +5,7 @@ use App\Http\Controllers\AttachmentLecturerController;
 use App\Http\Controllers\AttachmentStudentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\AdministrativeUnitController;
 use Illuminate\Support\Facades\Route;
@@ -34,10 +35,10 @@ Route::post('attachment-schedules-supervisors/upload', [AttachmentLecturerContro
 Route::get('attarchment-schedules-students/index', [AttachmentStudentController::class, 'index'])->name('admin.attachment_student.index');
 
 Route::post('attachment-schedules-students/upload', [AttachmentStudentController::class, 'upload'])->name('admin.attachment_student.upload');
-Route::get('budgets', [AdminController::class, 'budgets'])->name('admin.budgets');
-Route::post('budgets', [AdminController::class, 'storeBudget'])->name('admin.budgets.store');
+Route::get('budgets', [BudgetController::class, 'budgets'])->name('admin.budgets');
+Route::post('budgets', [BudgetController::class, 'storeBudget'])->name('admin.budgets.store');
 
-Route::get('budgets/{id}', [AdminController::class, 'showBudget'])
+Route::get('budgets/{id}', [BudgetController::class, 'showBudget'])
     ->name('admin.budgets.show');
 
 Route::get('students', [StudentController::class, 'index'])

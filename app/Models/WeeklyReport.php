@@ -45,5 +45,9 @@ class WeeklyReport extends Model
     {
         return $this->hasMany(DailyReport::class);
     }
+     public function attachmentStudent()
+    {
+        return $this->belongsTo(AttachmentStudent::class, 'attachment_student_id');
+    }
 
 }

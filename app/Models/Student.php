@@ -30,5 +30,10 @@ class Student extends Model
     }
 
 
+public function attachmentStudent()
+{
+    return $this->hasOne(AttachmentStudent::class, 'student_id');
+}
+
 
 }

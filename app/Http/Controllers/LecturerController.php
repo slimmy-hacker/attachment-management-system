@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\WeeklyReport;
 use App\Imports\LecturersImport;
 use App\Models\Lecturer;
 use App\Models\Attachment;
@@ -28,6 +28,8 @@ class LecturerController extends Controller
                 ->addColumn('name', fn ($row) => $row->user->name ?? '-')
                 ->addColumn('email', fn ($row) => $row->user->email ?? '-')
                 ->addColumn('department', fn ($row) =>  $row->department->name ?? '-')
+                 ->addColumn('job_grade', fn ($row) => $row->job_grade ?? '-')
+
                 ->addColumn('action', function ($row) {
                     
                     return '<button class="btn btn-sm btn-danger delete" data-id="'.$row->id.'">Delete</button>';
@@ -89,13 +91,7 @@ class LecturerController extends Controller
     /**
      * Show reports for a specific student.
      */
-    public function studentReports($id)
-    {
-        $student = Student::with('reports')->findOrFail($id);
-
-        return view('lecturer.student.reports', compact('student'));
-    }
-
+    
     /**
      * Provide feedback for a student.
      */
@@ -196,5 +192,54 @@ if ($assessment && $assessment->punctuality_marks !== null) {
     $attachments = Attachment::all();
 
     return view('lecturer.my-students', compact('attachments'));
+}
+
+ public function weeklyReports()
+{
+    $lecturer = auth()->user();
+
+    if ($lecturer->role !== 'lecturer') {
+        abort(403);
+    }
+
+    // Get attachment_student IDs assigned to this lecturer
+    $attachmentStudentIds = AttachmentStudent::where(
+        'lecturer_id',
+        $lecturer->id
+    )->pluck('id');
+
+    // Fetch weekly reports
+    $weeklyReports = WeeklyReport::whereIn(
+            'attachment_student_id',
+            $attachmentStudentIds
+        )
+        ->orderBy('week_id')
+        ->get();
+
+    return view('lecturer.weekly-reports', [
+        'weeklyReports' => $weeklyReports,
+        'user_role' => 'lecturer',
+    ]);
+}
+
+   public function update(Request $request, WeeklyReport $report)
+{
+    if (auth()->user()->role !== 'lecturer') {
+        abort(403);
+    }
+
+    if ($report->attachmentStudent->lecturer_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $request->validate([
+        'lecturer_comment' => 'required|string',
+    ]);
+
+    $report->update([
+        'lecturer_comment' => $request->lecturer_comment,
+    ]);
+
+    return back()->with('success', 'Lecturer comment submitted successfully.');
 }
 }

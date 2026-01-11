@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Attachment;
+use App\Models\WeeklyReport;
 use App\Models\AttachmentStudent;
 use App\Models\Company;
 use App\Models\IndustrialSupervisor;
@@ -73,7 +74,7 @@ class IndustrialSupervisorController extends Controller
                 ]
             );
 
-            IndustrialSupervisor::create([
+            IndustrialSupervisor::create([ 
                 'user_id' => $user->id,
                 'company_id' => $user_company->id,
                 'staff_number' => Str::upper($validated['staff_number']),
@@ -178,6 +179,40 @@ if ($assessment && $assessment->punctuality_marks !== null) {
         return response()->json($supervisors);
     }
 
+public function weeklyReports()
+{
+    $industrialSupervisor = auth()->user();
+
+    if ($industrialSupervisor->role !== 'industrial_supervisor') {
+        abort(403);
+    }
+
+    $weeklyReports = WeeklyReport::whereHas('attachmentStudent', function ($q) use ($industrialSupervisor) {
+        $q->where('industrial_supervisor_id', $industrialSupervisor->id);
+    })->orderBy('week_id')->get();
+
+    return view('industrial_supervisor.weekly-reports', compact('weeklyReports'))
+           ->with('user_role', 'industrial_supervisor');
+}
+public function update(Request $request, WeeklyReport $report)
+{
+    $request->validate([
+        'industrial_supervisor_comment' => 'required|string',
+        'is_approved' => 'nullable|boolean',
+    ]);
+
+    // Authorization check: the report must belong to the industrial supervisor
+    if ($report->attachmentStudent->industrial_supervisor_id !== auth()->id()) {
+        abort(403);
+    }
+
+    $report->update([
+        'industrial_supervisor_comment' => $request->industrial_supervisor_comment,
+        'is_approved' => $request->has('is_approved'),
+    ]);
+
+    return back()->with('success', 'Comment and approval updated successfully.');
+}
 
 
 

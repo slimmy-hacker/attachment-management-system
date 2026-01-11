@@ -24,7 +24,19 @@ Route::middleware(['ensure.attachment.selected'])->group(function () {
         Route::get('/student/results', [StudentController::class, 'results'])->name('results');
         Route::get('/student/companies', [StudentController::class, 'companies'])->name('companies');
         Route::post('/student/companies', [StudentController::class, 'storeCompany'])->name('companies.store');
+                Route::get('/student/weekly-reports', [StudentController::class, 'weeklyReports']) ->name('weekly-reports');
+           
 
+        Route::post('/student/weekly-reports', [StudentController::class, 'storeWeeklyReport']) ->name('weekly-reports.store');
+           
+
+        Route::get('/student/final-report', [StudentController::class, 'finalReport'])->name('final-report');
+            
+
+        Route::post('/student/final-report', [StudentController::class, 'storeFinalReport'])->name('final-report.store');
+            
+
+         
     });
 
     Route::post('/daily-activities', [DailyReportController::class, 'store'])->name('student.daily_activities.store');
@@ -33,8 +45,8 @@ Route::middleware(['ensure.attachment.selected'])->group(function () {
 // View all logbook entries
     Route::get('/daily-activities', [DailyReportController::class, 'index'])->name('student.daily_activities.index');
 });
-Route::get('reports', [StudentController::class, 'reportForm'])->name('student.reports.form');
-Route::post('reports', [StudentController::class, 'storeReport'])->name('student.reports.store');
-Route::get('final-report', [StudentController::class, 'finalReportForm'])->name('student.finalReport.form');
-Route::post('final-report', [StudentController::class, 'storeFinalReport'])->name('student.finalReport.store');
+
+
+
+
 Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');

@@ -15,4 +15,14 @@ class Lecturer extends Model
     {
         return $this->belongsTo(AdministrativeUnit::class, 'department_id');
     }
+    public function jobGrade()
+{
+    return $this->belongsTo(JobGrade::class);
+}
+
+public function budgets()
+{
+    return $this->hasMany(Budget::class);
+}
+
 }

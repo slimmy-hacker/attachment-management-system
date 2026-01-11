@@ -30,6 +30,7 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
                 'email' => 'required|email|unique:users,email',
                 'phone_number' => 'nullable|unique:users,phone_number',
                 'staff_number' => 'required',
+                'job_grade' => 'required',
                 'department_code' => [
                     'required',
                     Rule::exists('administrative_units', 'code')->where('level', 2),
@@ -75,6 +76,7 @@ class LecturersImport implements ToModel, WithHeadingRow, SkipsOnFailure
                 Lecturer::create([
                         'user_id' => $user->id,
                         'staff_number' => $staff_no,
+                        'job_grade' => trim($row['job_grade']), 
                         'department_id' => $department->id ?? '',
                         'office_location' => $row['office_location'] ?? null,
                         'office_phone' => $row['phone_number'] ?? null,

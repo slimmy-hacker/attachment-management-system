@@ -82,94 +82,9 @@
         </div>
     </div>
 
-    <div id="weekly-activities-modal" tabindex="-1" aria-hidden="true"  data-modal-backdrop="static" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-4/5 max-h-full">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow-sm ">
-                <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
-                    <h3 class="text-lg font-semibold text-gray-">
-                        Weekly Summary Report
-                    </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center close-weekly-report-modals-btn">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
-                <!-- Modal body -->
-                <form id="weekly_activities_form" class="p-4 md:p-5">
-                    @csrf
 
-                    <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                        <div>
-                            <span class="block text-sm font-medium text-gray-700">Student:</span>
-                            <span id="student_name" class="text-base font-semibold text-gray-900">
-                                {{ $attachment_student->student->reg_no .' - '. $attachment_student->student->user->name }}
-                            </span>
-                        </div>
-
-                        <div>
-                            <span class="block text-sm font-medium text-gray-700">Period:</span>
-                            <span id="attachment_period" class="text-base font-semibold text-gray-900"></span>
-                        </div>
-
-                    </div>
-
-                    <div class="grid gap-4 mb-4 grid-cols-2">
-
-                            <input type="hidden" id="weekly_report_id" name="weekly_report_id">
-
-                        <div class="col-span-2">
-                            <label for="weekly_report" class=" @if($user_role == 'student') required @endif block mb-2 text-sm font-medium text-gray-900 "> Weekly Report Summary</label>
-                            <textarea @if($user_role !== 'student') disabled @else required  @endif id="weekly_report" name="weekly_report" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder=""></textarea>
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="industrial_supervisor_comment"
-                                   class="@if($user_role == 'industrial_supervisor') required @endif block mb-2 text-sm font-medium text-gray-900">
-                                Industrial supervisor comment
-                            </label>
-
-                            <input
-                                type="text"
-                                id="industrial_supervisor_comment"
-                                name="industrial_supervisor_comment"
-                                @if($user_role !== 'industrial_supervisor') disabled @else required @endif
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="">
-                        </div>
-
-                        <div class="col-span-2">
-                            <label for="lecturer_comment"
-                                   class="@if($user_role == 'lecturer') required @endif block mb-2 text-sm font-medium text-gray-900">
-                                Lecturer Comment
-                            </label>
-
-                            <input
-                                type="text"
-                                id="lecturer_comment"
-                                name="lecturer_comment"
-
-                                @if($user_role !== 'lecturer') disabled @else required @endif
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-                                placeholder="">
-                        </div>
-
-
-                    </div>
-                    <button type="button" id="weekly_report_btn" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
-                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                       Save
-                    </button>
-                    <button  type="button" class="text-white inline-flex items-center bg-gray-300 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center close-weekly-report-modals-btn ">
-                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                       close
-                    </button>
-                </form>
-            </div>
+            
         </div>
     </div>
 

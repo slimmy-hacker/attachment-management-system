@@ -14,8 +14,8 @@ Route::middleware(['ensure.attachment.selected'])->name('lecturer.')->group(func
 
 
 
-    Route::get('/reports', [LecturerController::class, 'reports'])
-        ->name('reports');
+   // Route::get('/reports', [LecturerController::class, 'reports'])
+     //   ->name('reports');
 
     Route::get('/evaluate', [LecturerController::class, 'evaluate'])
         ->name('evaluate');
@@ -33,8 +33,11 @@ Route::middleware(['ensure.attachment.selected'])->name('lecturer.')->group(func
     Route::post('/assessment', [AttachmentAssessmentController::class, 'storeSchool'])
         ->name('assessment.store');
 
-    Route::post('/weekly-activities-store', [DailyReportController::class, 'storeLecturerWeeklyReport'])
-        ->name('weekly_activities.store');
+    Route::get('/weekly-reports', [LecturerController::class, 'weeklyReports'])
+        ->name('weekly-reports');
+
+    Route::post('/weekly-reports/{report}', [LecturerController::class, 'update'])
+        ->name('weekly-reports.update');
 
 
 

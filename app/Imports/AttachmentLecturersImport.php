@@ -23,6 +23,7 @@ use Importable, SkipsFailures;
     {
         return [
             '*.staff_number'            => ['required'],
+             '*.job_grade'         => ['required'],
             '*.attachment_slug'   => ['required'],
             '*.department_code'   => ['nullable'],
         ];
@@ -34,6 +35,7 @@ use Importable, SkipsFailures;
     {
         try {
             $staff_no  = strtoupper(trim($row['staff_number'] ?? ''));
+              $jobGrade = trim($row['job_grade'] ?? '');
             $slug = strtolower(trim($row['attachment_slug'] ?? ''));
             $department_code = strtolower(trim($row['department_code'] ?? ''));
             $lecturer = Lecturer::where('staff_number', $staff_no)->first();
@@ -74,12 +76,18 @@ use Importable, SkipsFailures;
                 ];
                 return null;
             }
+         
+        if ($jobGrade) {
+            $lecturer->update(['job_grade' => $jobGrade]);
+        }
+
 
 
             AttachmentLecturer::create([
                 'lecturer_id' => $lecturer->id,
                 'attachment_id' => $attachment->id,
                 'department_id' => $department->id ?? $lecturer->department_id,
+                'job_grade'     => $lecturer->job_grade,
             ]);
 
             $this->successCount++;

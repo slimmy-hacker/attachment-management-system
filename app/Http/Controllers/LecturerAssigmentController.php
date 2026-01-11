@@ -9,12 +9,15 @@ use App\Models\AttachmentStudent;
 use App\Models\LecturerAssigment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 use Yajra\DataTables\Facades\DataTables;
 
 class LecturerAssigmentController extends Controller
 {
     public function index(Request $request)
     {
+        
+
         if ($request->ajax()) {
             $data = AttachmentStudent::whereNotNull('company_id')
             ->with([
@@ -65,6 +68,7 @@ class LecturerAssigmentController extends Controller
     }
     function haversineDistance($lat1, $lon1, $lat2, $lon2)
     {
+       
         $earthRadius = 6371; // KM
 
         $dLat = deg2rad($lat2 - $lat1);
@@ -87,7 +91,7 @@ class LecturerAssigmentController extends Controller
         }
 
         $centroids = $students->shuffle()->take($k)->values();
-
+  
         for ($iteration = 0; $iteration < 10; $iteration++) {
 
             // Reset clusters (Collection of Collections)
@@ -132,6 +136,7 @@ class LecturerAssigmentController extends Controller
 
         // Step 4: assign lecturer per cluster
         $result = collect();
+       
 
         foreach ($clusters as $i => $cluster) {
             foreach ($cluster as $student) {
@@ -148,6 +153,7 @@ class LecturerAssigmentController extends Controller
 
     public function generateDraft(Request $request)
     {
+      
         $request->validate([
             'department_id' => 'required|exists:administrative_units,id',
             'attachment_id' => 'required|exists:attachments,id',

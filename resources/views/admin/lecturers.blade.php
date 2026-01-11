@@ -61,9 +61,12 @@
                                         </div>
                                     </th>
 
-                                    <!-- Reg No -->
+                                    
                                     <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                         Staff Number
+                                    </th>
+                                     <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                        Job Grade
                                     </th>
 
                                     <!-- Department -->
@@ -175,6 +178,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
                     {data: 'staff_number', name: 'staff_number'},
+                    {data: 'job_grade', name: 'job_grade'},
                     {data: 'department', name: 'department'},
                     {data: 'office_location', name: 'office_location'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},

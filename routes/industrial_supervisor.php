@@ -26,4 +26,11 @@ Route::middleware(['ensure.attachment.selected'])->group(function () {
     Route::get('/attaches', [IndustrialSupervisorController::class, 'attaches'])->name('industrial_supervisor.attaches');
 
     Route::post('weekly-activities-store', [DailyReportController::class, 'storeIndustrialSupervisorWeeklyReport'])->name('industrial_supervisor.weekly_activities.store');
+    Route::get('/weekly-reports', [IndustrialSupervisorController::class, 'weeklyReports'])
+        ->name('industrial_supervisor.weekly-reports');
+
+    // Update a specific weekly report (comment and approval)
+    Route::put('/weekly-reports/{report}', [IndustrialSupervisorController::class, 'update'])
+        ->name('industrial_supervisor.weekly-reports.update');
 });
+
