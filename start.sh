@@ -1,5 +1,5 @@
 #!/bin/sh
-# Start PHP-FPM in the background
+# Start PHP-FPM in background
 php-fpm -D
-# Start Nginx in the foreground
-nginx -g 'daemon off;'
+# Start Nginx in foreground
+nginx -g "daemon off;"
