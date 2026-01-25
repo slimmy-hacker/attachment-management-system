@@ -23,7 +23,7 @@ COPY . .
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Install Laravel dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --ignore-platform-reqs
 
 # -----------------------------
 # NGINX CONFIG (CRITICAL FIX)
