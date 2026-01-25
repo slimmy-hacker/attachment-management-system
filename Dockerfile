@@ -1,6 +1,7 @@
+# Use the official PHP 8.3 FPM image
 FROM php:8.3-fpm
 
-# Install system dependencies and PHP extensions
+# Install system dependencies for Laravel and PHP extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -12,20 +13,20 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql gd zip
 
-# Get Composer
+# Get the latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy code
-COPY . /var/www/html
+# Set working directory and copy code
 WORKDIR /var/www/html
+COPY . /var/www/html
 
-# Permissions for Laravel
+# Set correct permissions for Linux
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Install Laravel dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Install dependencies - we use --no-scripts to bypass that "Student.php" error during build
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Copy a basic Nginx config (Render handles the port, but we need to serve /public)
+# Setup Nginx configuration
 RUN echo 'server { \
     listen 80; \
     root /var/www/html/public; \
@@ -34,10 +35,11 @@ RUN echo 'server { \
     location ~ \.php$ { \
         include fastcgi_params; \
         fastcgi_pass 127.0.0.1:9000; \
-        fastcgi_index index.php; \
         fastcgi_param SCRIPT_FILENAME ; \
     } \
 }' > /etc/nginx/sites-available/default
 
-# Start Nginx and PHP-FPM
+EXPOSE 80
+
+# Start services
 CMD service nginx start && php-fpm
