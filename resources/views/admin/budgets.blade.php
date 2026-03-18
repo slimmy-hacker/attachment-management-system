@@ -26,8 +26,8 @@
                     <th class="border p-3 text-left w-24">Ref ID</th>
                     <th class="border p-3 text-left">Lecturer Name</th>
                     <th class="border p-3 text-center">Grade</th>
-                    <th class="border p-3 text-left">Visit Locations</th>
-                    <th class="border p-3 text-center">Towns</th>
+                    <th class="border p-3 text-left">Visit Clusters</th>
+                    <th class="border p-3 text-center">Total Students</th>
                     <th class="border p-3 text-right">Daily Rate</th>
                     <th class="border p-3 text-right">Subsistence</th>
                     <th class="border p-3 text-right">Transport</th>
@@ -42,7 +42,7 @@
                             #{{ $lecturer->id }}
                         </td>
                         
-                        {{-- Column 2: Name (The New Column) --}}
+                        {{-- Column 2: Name --}}
                         <td class="border p-3 font-bold text-gray-800">
                             {{ $lecturer->lecturer_name ?? 'N/A' }}
                         </td>
@@ -52,27 +52,56 @@
                             {{ $lecturer->dekut_grade ?? 'No Grade' }}
                         </td>
 
-                        {{-- Column 4: Locations --}}
+                        {{-- Column 4: Clusters with aggregated data --}}
                         <td class="border p-3">
-                            @if(isset($lecturer->assessmentVisits) && count($lecturer->assessmentVisits) > 0)
-                                @foreach($lecturer->assessmentVisits as $visit)
-                                    <div class="flex justify-between text-[11px] mb-1 px-2 py-0.5 bg-gray-50 rounded border border-gray-100">
-                                        <span class="capitalize">{{ $visit->town }}</span>
-                                        <span class="font-bold text-gray-600">({{ $visit->students_count }})</span>
+                            @if(isset($lecturer->clusteredVisits) && count($lecturer->clusteredVisits) > 0)
+                                @foreach($lecturer->clusteredVisits as $clusterData)
+                                    <div class="flex flex-col text-[11px] mb-2 px-2 py-1.5 bg-gray-50 rounded border border-gray-100 {{ $clusterData['cluster'] == 'uncategorized' ? 'border-red-200 bg-red-50' : '' }}">
+                                        <div class="flex justify-between items-center">
+                                            <span class="font-bold {{ $clusterData['cluster'] == 'uncategorized' ? 'text-red-600' : 'text-blue-700' }} capitalize">
+                                                {{ str_replace('_', ' ', $clusterData['cluster']) }}
+                                            </span>
+                                            <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-[10px] font-bold">
+                                                {{ $clusterData['total_students'] }} Student(s)
+                                            </span>
+                                        </div>
+                                        <div class="flex justify-between items-center mt-1 text-[10px]">
+                                            <span class="text-gray-600">
+                                                Towns: {{ implode(', ', array_map('ucfirst', $clusterData['towns'])) }}
+                                            </span>
+                                            <span class="text-gray-500 font-medium">
+                                                Transport: Ksh {{ number_format($clusterData['transport_cost']) }}
+                                            </span>
+                                        </div>
                                     </div>
                                 @endforeach
+                                <div class="text-[10px] text-gray-500 mt-1">
+                                    <span class="font-semibold">{{ $lecturer->unique_cluster_count }} unique cluster(s)</span>
+                                </div>
                             @else
                                 <span class="text-red-400 italic text-[10px]">No assignments found</span>
                             @endif
                         </td>
 
-                        {{-- Other Columns --}}
-                        <td class="border p-3 text-center font-medium">{{ $lecturer->town_count }}</td>
+                        {{-- Column 5: Total Students --}}
+                        <td class="border p-3 text-center font-bold">
+                            @if(isset($lecturer->assessmentVisits))
+                                {{ collect($lecturer->assessmentVisits)->sum('students_count') }}
+                            @else
+                                0
+                            @endif
+                        </td>
+
+                        {{-- Column 6: Daily Rate --}}
                         <td class="border p-3 text-right text-gray-500">{{ number_format($lecturer->daily_rate_used) }}</td>
+                        
+                        {{-- Column 7: Subsistence --}}
                         <td class="border p-3 text-right">{{ number_format($lecturer->total_subsistence) }}</td>
+                        
+                        {{-- Column 8: Transport (now based on unique clusters) --}}
                         <td class="border p-3 text-right">{{ number_format($lecturer->total_transport) }}</td>
                         
-                        {{-- Row Total --}}
+                        {{-- Column 9: Row Total --}}
                         <td class="border p-3 text-right font-bold bg-blue-50 text-blue-900">
                             Ksh {{ number_format(($lecturer->total_subsistence ?? 0) + ($lecturer->total_transport ?? 0)) }}
                         </td>

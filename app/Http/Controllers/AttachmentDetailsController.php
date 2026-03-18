@@ -166,64 +166,73 @@ public function show($id)
 }
  public function import(Request $request)
 {
-      ini_set('max_execution_time', 0);
+       ini_set('max_execution_time', 0);
+
+$request->validate([
+    'file' => 'required|mimes:csv,txt,xlsx,xls'
+]);
+
+try {
+    $dataRows = Excel::toCollection(
+        new class implements WithHeadingRow {
+            public function headingRow(): int { return 1; }
+        },
+        $request->file('file')
+    )->first();
+
+    // Get attachment from the first row (assuming all rows have same attachment)
+    $firstRow = $dataRows->first();
+    $attachmentSlug = trim(data_get($firstRow, 'attachment_slug'));
     
-    $request->validate([
-        'file' => 'required|mimes:csv,txt,xlsx,xls'
-    ]);
-
-    try {
-
+    $attachment = null;
+    
+    if ($attachmentSlug) {
+        // Find by slug if provided
+        $attachment = Attachment::where('slug', $attachmentSlug)->first();
         
-        $attachment = Attachment::where('name', 'LIKE', '%September%')
-            ->where('name', 'LIKE', '%2024%')
-            ->first();
-
         if (!$attachment) {
             return response()->json([
-                'message' => 'Attachment period not found.'
+                'message' => "Attachment with slug '{$attachmentSlug}' not found."
             ], 422);
         }
-
+    } else {
+        // Fallback to most recent attachment
+        $attachment = Attachment::latest()->first();
         
-        $dataRows = Excel::toCollection(
-            new class implements WithHeadingRow {
-                public function headingRow(): int { return 1; }
-            },
-            $request->file('file')
-        )->first();
+        if (!$attachment) {
+            return response()->json([
+                'message' => 'No attachment period found. Please create an attachment period first or provide attachment_slug in the import file.'
+            ], 422);
+        }
+    }
 
-        $processedCount = 0;
+    $processedCount = 0;
 
-         foreach ($dataRows as $row) {
+    foreach ($dataRows as $row) {
+        $regNo = trim(data_get($row, 'reg_no'));
+        if (!$regNo) continue;
 
-            $regNo = trim(data_get($row, 'reg_no'));
-            if (!$regNo) continue;
+        // 1. Prepare student info from Excel
+        $studentName = trim(data_get($row, 'student_name')) 
+                       ?? trim(data_get($row, 'Student Name')) 
+                       ?? 'Student ' . $regNo;
+        $studentEmail = trim(data_get($row, 'student_email')) ?: strtolower($regNo).'@student.com';
+        $studentPhone = trim(data_get($row, 'student_phone')) ?: '07'.str_pad(rand(10000000,99999999), 8, '0', STR_PAD_LEFT);
 
-            // 1. Prepare student info from Excel
-$studentName = trim(data_get($row, 'student_name')) 
-               ?? trim(data_get($row, 'Student Name')) 
-               ?? 'Student ' . $regNo;
-$studentEmail = trim(data_get($row, 'student_email')) ?: strtolower($regNo).'@student.com';
-$studentPhone = trim(data_get($row, 'student_phone')) ?: '07'.str_pad(rand(10000000,99999999), 8, '0', STR_PAD_LEFT);
-
-
-$studentUser = User::updateOrCreate(
-    ['email' => $studentEmail],
-    [
-        'name' => $studentName,
-        'phone_number' => $studentPhone,
-        'role' => 'student',
+        $studentUser = User::updateOrCreate(
+            ['email' => $studentEmail],
+            [
+                'name' => $studentName,
+                'phone_number' => $studentPhone,
+                'role' => 'student',
+                'password' => bcrypt('password'),
+            ]
+        );
         
-        'password' => bcrypt('password'),
-       
-    ]
-);
-$programId = data_get($row, 'program_id'); // get from Excel
-if (!$programId) {
-    $programId = 38; // default program ID if missing
-}
-
+        $programId = data_get($row, 'program_id'); // get from Excel
+        if (!$programId) {
+            $programId = 38; // default program ID if missing
+        }
 
 $student = Student::updateOrCreate(
     ['user_id' => $studentUser->id], // check by user_id

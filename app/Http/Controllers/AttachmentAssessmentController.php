@@ -84,7 +84,8 @@ class AttachmentAssessmentController extends Controller
 
         'responsibility_acceptance_marks' => 'required|integer|min:0|max:5',
         'responsibility_acceptance_remarks' => 'required|string',
-
+          'acceptability_to_colleagues_marks' =>'required|integer|min:0|max:5',
+            'acceptability_to_colleagues_remarks' => 'required|string',
         'improvisation_marks' => 'required|integer|min:0|max:5',
         'improvisation_remarks' => 'required|string',
 
@@ -132,6 +133,8 @@ class AttachmentAssessmentController extends Controller
 
             'responsibility_acceptance_marks' => $validated['responsibility_acceptance_marks'],
             'responsibility_acceptance_remarks' => $validated['responsibility_acceptance_remarks'],
+ 'acceptability_to_colleagues_marks' => $validated['acceptability_to_colleagues_marks'],
+            'acceptability_to_colleagues_remarks' => $validated['acceptability_to_colleagues_remarks'],
 
             'improvisation_marks' => $validated['improvisation_marks'],
             'improvisation_remarks' => $validated['improvisation_remarks'],
@@ -192,16 +195,17 @@ class AttachmentAssessmentController extends Controller
         'innovativeness_marks'   => 'required|integer|min:0|max:5',
         'innovativeness_remarks' => 'required|string',
     ]);
-    $exists = AttachmentAssessment::where('attachment_student_id', $request->attachment_student_id)
-            ->whereNotNull('practical_orientation_marks')
-            ->exists();
+       $existingLecturer = AttachmentAssessment::where('attachment_student_id', $request->attachment_student_id)
+            ->where('practical_orientation_marks', '>', 0)
+            ->first();
 
-        if ($exists) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Assessment already submitted!'
-            ], 422);
-        }
+    if ($existingLecturer) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Lecturer assessment already submitted!'
+        ], 422);
+    }
+    
     
   
     AttachmentAssessment::updateOrCreate(
@@ -285,6 +289,7 @@ public function checkIndustry(Request $request)
                 'Intelligence' => ['marks' => $assessment->intelligence_marks, 'remarks' => $assessment->intelligence_remarks],
                 'Learning Ability' => ['marks' => $assessment->learning_ability_marks, 'remarks' => $assessment->learning_ability_remarks],
                 'Responsibility' => ['marks' => $assessment->responsibility_acceptance_marks, 'remarks' => $assessment->responsibility_acceptance_remarks],
+                'acceptability_to_colleagues' => ['marks' => $assessment->acceptability_to_colleagues_marks, 'remarks' => $assessment->acceptability_to_colleagues_remarks],
                 'Improvisation' => ['marks' => $assessment->improvisation_marks, 'remarks' => $assessment->improvisation_remarks],
                 'Env Adjustment' => ['marks' => $assessment->environment_adjustment_marks, 'remarks' => $assessment->environment_adjustment_remarks],
                 'Reliability' => ['marks' => $assessment->dependability_and_reliability_marks, 'remarks' => $assessment->dependability_and_reliability_remarks],
@@ -319,6 +324,7 @@ public function getIndustrialSupervisorTotalMarksAttribute()
          + $this->intelligence_marks
          + $this->learning_ability_marks
          + $this->responsibility_acceptance_marks
+         + $this->acceptability_to_colleagues_marks
          + $this->improvisation_marks
          + $this->environment_adjustment_marks
          + $this->dependability_and_reliability_marks

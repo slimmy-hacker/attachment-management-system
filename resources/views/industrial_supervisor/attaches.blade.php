@@ -39,7 +39,7 @@
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Reg No</th>
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
-                                <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                               
                                 <th scope="col" class="p-4 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                             </tr>
                         </thead>
@@ -64,44 +64,52 @@
 
                 <div class="p-6">
                     <form id="assessForm" class="hidden">
-                        @csrf
-                        <input type="hidden" id="attachment_student_id" name="attachment_student_id">
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto px-2">
-                            @php
-                            $fields = [
-                                'punctuality' => ['label' => 'Punctuality', 'max' => 2],
-                                'attendance' => ['label' => 'Attendance', 'max' => 2],
-                                'basic_skills' => ['label' => 'Basic Skills', 'max' => 4],
-                                'general_office_applications' => ['label' => 'General Office Apps', 'max' => 4],
-                                'technical_applications' => ['label' => 'Technical Apps', 'max' => 4],
-                                'area_of_specialization' => ['label' => 'Specialization', 'max' => 4],
-                                'scientific_and_technical_knowledge' => ['label' => 'Scientific Knowledge', 'max' => 2],
-                                'intelligence' => ['label' => 'Intelligence', 'max' => 2],
-                                'learning_ability' => ['label' => 'Learning Ability', 'max' => 2],
-                                'responsibility_acceptance' => ['label' => 'Responsibility', 'max' => 2],
-                                'improvisation' => ['label' => 'Improvisation', 'max' => 2],
-                                'environment_adjustment' => ['label' => 'Env Adjustment', 'max' => 2],
-                                'dependability_and_reliability' => ['label' => 'Dependability', 'max' => 2],
-                                'organization_and_planning' => ['label' => 'Org & Planning', 'max' => 2],
-                                'effective_time_use' => ['label' => 'Effective Time Use', 'max' => 2]
-                            ];
-                            @endphp
+                        >
+    @csrf
+    <input type="hidden" id="attachment_student_id" name="attachment_student_id" value="">
 
-                            @foreach($fields as $name => $info)
-                                <div class="p-3 bg-gray-50 rounded border border-gray-200">
-                                    <label class="block font-bold text-xs uppercase text-gray-600 mb-1">{{ $info['label'] }} (Max {{ $info['max'] }})</label>
-                                    <input type="number" min="0" max="{{ $info['max'] }}" name="{{ $name }}_marks" class="w-full border rounded p-2 mb-2 text-sm" required>
-                                    <textarea name="{{ $name }}_remarks" rows="2" class="w-full border rounded p-2 text-sm" placeholder="Remarks..." required></textarea>
-                                </div>
-                            @endforeach
-                        </div>
+    <div class="mb-5 p-4 bg-indigo-50 border border-indigo-100 rounded-2xl flex justify-between items-center">
+        <span class="text-sm font-bold text-indigo-900">Total Calculated Score</span>
+        <span id="totalScoreDisplay" class="text-2xl font-black text-indigo-700">0 / 40</span>
+    </div>
 
-                        <div class="mt-6 flex justify-between items-center border-t pt-4">
-                             <p class="text-xs text-gray-500 italic">Ensure all marks are within the specified limits before submitting.</p>
-                             <button type="submit" class="px-6 py-2 bg-green-600 text-white font-bold rounded hover:bg-green-700 transition">Submit Industry Assessment</button>
-                        </div>
-                    </form>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        @php
+        $fields = [
+            'punctuality' => ['label' => 'Punctuality', 'max' => 2],
+            'attendance' => ['label' => 'Attendance', 'max' => 2],
+            'basic_skills' => ['label' => 'Basic Skills', 'max' => 4],
+            'general_office_applications' => ['label' => 'General Office Apps', 'max' => 4],
+            'technical_applications' => ['label' => 'Technical Apps', 'max' => 4],
+            'area_of_specialization' => ['label' => 'Specialization', 'max' => 4],
+            'scientific_and_technical_knowledge' => ['label' => 'Scientific Knowledge', 'max' => 2],
+            'intelligence' => ['label' => 'Intelligence', 'max' => 2],
+            'learning_ability' => ['label' => 'Learning Ability', 'max' => 2],
+            'responsibility_acceptance' => ['label' => 'Responsibility', 'max' => 2],
+            'acceptability_to_colleagues' => ['label' => 'acceptability_to_colleagues', 'max' => 2],
+            'improvisation' => ['label' => 'Improvisation', 'max' => 2],
+            'environment_adjustment' => ['label' => 'Env Adjustment', 'max' => 2],
+            'dependability_and_reliability' => ['label' => 'Dependability', 'max' => 2],
+            'organization_and_planning' => ['label' => 'Org & Planning', 'max' => 2],
+            'effective_time_use' => ['label' => 'Effective Time Use', 'max' => 2]
+        ];
+        @endphp
+
+        @foreach($fields as $name => $info)
+        <div>
+            <label for="{{ $name }}_marks" class="required block font-medium">{{ $info['label'] }} Marks (max {{ $info['max'] }})</label>
+            <input type="number" min="0" max="{{ $info['max'] }}" id="{{ $name }}_marks" name="{{ $name }}_marks" class="score-input w-full border rounded p-2" required>
+        </div>
+        
+        <div>
+            <label for="{{ $name }}_remarks" class="required block font-medium">{{ $info['label'] }} Remarks</label>
+            <textarea id="{{ $name }}_remarks" name="{{ $name }}_remarks" rows="3" class="w-full border rounded p-2" required></textarea>
+        </div>
+        @endforeach
+    </div>
+
+    <button type="submit" class="mt-6 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit Assessment</button>
+</form>
                 </div>
 
                 <div class="p-4 border-t flex justify-end">
@@ -127,7 +135,7 @@
                 { data: 'name', name: 'name' },
                 { data: 'reg_no', name: 'reg_no' },
                 { data: 'department', name: 'department' },
-                { data: 'status', name: 'status' },
+               // { data: 'status', name: 'status' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ]
         });

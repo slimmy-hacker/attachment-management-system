@@ -41,7 +41,7 @@
         <div class="flex items-center justify-between mb-4">
             <div>
                 <h3 class="text-lg font-medium text-gray-900">Bulk Data Management</h3>
-                <p class="text-sm text-gray-500">Upload CSV to auto-fill student attachment forms for Sept - Dec 2024.</p>
+                <p class="text-sm text-gray-500">Upload CSV to auto-fill student attachment forms</p>
             </div>
             
             <div class="flex space-x-2">

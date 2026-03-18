@@ -62,7 +62,8 @@ class AttachmentAssessment extends Model
         'organization_and_planning_remarks',
         'effective_time_use_marks',
         'effective_time_use_remarks',
-
+'acceptability_to_colleagues_marks' ,
+            'acceptability_to_colleagues_remarks',
         
         'total_marks',
         'overall_remarks',
@@ -112,6 +113,7 @@ class AttachmentAssessment extends Model
             ($this->intelligence_marks ?? 0) +
             ($this->learning_ability_marks ?? 0) +
             ($this->responsibility_acceptance_marks ?? 0) +
+             ( $this->acceptability_to_colleagues_marks ?? 0) +
             ($this->improvisation_marks ?? 0) +
             ($this->environment_adjustment_marks ?? 0) +
             ($this->dependability_and_reliability_marks ?? 0) +

@@ -104,8 +104,17 @@ Route::middleware(['auth', 'portal:admin'])->prefix('admin')->name('admin.')->gr
   //  ->name('daily_activities.index');
 
 });
-
+Route::get('/lecturer-assignment/student-count', [LecturerAssigmentController::class, 'getStudentCountByLecturer'])->name('lecturer-assignment.student-count');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/dashboard/export-pdf', [DashboardController::class, 'exportPDF'])->name('dashboard.exportPDF');
 Route::post('/admin/dashboard/generate-report', [App\Http\Controllers\DashboardController::class, 'generateReport'])->name('dashboard.generate-report');
+// In your web.php file, add these routes:
+
+// For student count per lecturer (your existing route)
+Route::get('/lecturer-assignment/student-count', [LecturerAssigmentController::class, 'getStudentCountByLecturer'])
+    ->name('lecturer-assignment.student-count');
+
+// For filter by date (new route)
+Route::get('/lecturer-assignment/filter-by-date', [LecturerAssigmentController::class, 'filterByDate'])
+    ->name('lecturer-assignment.filter-by-date');

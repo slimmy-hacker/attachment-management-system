@@ -46,5 +46,5 @@
 
         </div>
     </div>
-    @include('attaches')
+    @include('assessment.industrial_supervisor')
 @endsection

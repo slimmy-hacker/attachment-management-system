@@ -100,36 +100,37 @@ public function index(Request $request)
         return view('opportunities.create');
     }
 
-    
     public function store(Request $request)
-    {
-       
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        // Changed from expiry_days to expiry_date
+        'expiry_date' => [
+            'required',
+            'date',
+            'after:today', // Ensures the date is tomorrow or later
+            'before_or_equal:' . now()->addDays(90)->format('Y-m-d')
+        ],
+        'link' => 'required|url'
+    ]);
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'required|string|max:255',
-            'expiry_days' => 'required|integer|min:1|max:90', 
-           'link' => 'required|url'
-             
-        ]);
+    Opportunity::create([
+        'company_id' => Auth::id(),
+        'title' => $request->title,
+        'description' => $request->description,
+        'location' => $request->location,
+        // Save the date directly from the request
+        'expiry_date' => $request->expiry_date, 
+        'link' => $request->link,
+    ]);
 
-        Opportunity::create([
-            'company_id' => Auth::id(),
-            'title' => $request->title,
-            'description' => $request->description,
-            'location' => $request->location,
-            'expiry_date' => Carbon::now()->addDays((int) $request->expiry_days),
-            'link' => $request->link,
-        ]);
-        return response()->json([
-    'success' => true
-]);
-
-
-        return redirect()->route('opportunities.my')->with('success', 'Opportunity posted successfully!');
-    }
-
+    return response()->json([
+        'success' => true,
+        'message' => 'Opportunity posted successfully!'
+    ]);
+}
    
     public function destroy(Opportunity $opportunity)
     {

@@ -67,31 +67,54 @@
         <div class="text-center mb-8">
             <div class="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <i class="fas fa-bullhorn text-2xl"></i>
-            </div>
+            </div> 
             <h2 class="text-2xl font-black text-gray-900">New Advertisement</h2>
             <p class="text-gray-500 text-sm">Define the role and find your next intern.</p>
         </div>
+<form id="postForm" class="space-y-5">
+    @csrf
+    
+    <div>
+        <label for="title" class="block mb-2 text-sm font-bold text-gray-700">Job Title</label>
+        <input type="text" id="title" name="title" placeholder="e.g. Graphic Design Intern" 
+            class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required>
+    </div>
 
-        <form id="postForm" class="space-y-5">
-            @csrf
-            <div>
-                <input type="text" name="title" placeholder="Job Title (e.g. Graphic Design Intern)" class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <input type="text" name="location" placeholder="City / Town" class="bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required>
-                <input type="number" name="expiry_days" placeholder="Deadline (Days)" class="bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required>
-            </div>
-            <div>
-                <textarea name="description" rows="4" placeholder="Briefly describe the responsibilities..." class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required></textarea>
-            </div>
-            <div>
-    <input type="url" name="link" placeholder="Application URL (https://example.com/apply)" 
-        class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required>
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label for="location" class="block mb-2 text-sm font-bold text-gray-700">Location</label>
+            <input type="text" id="location" name="location" placeholder="City / Town" 
+                class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required>
+        </div>
+        <div>
+    <label for="expiry_date" class="block mb-2 text-sm font-bold text-gray-700">Expiry Date</label>
+    <input type="date" 
+           id="expiry_date" 
+           name="expiry_date" 
+           min="{{ now()->addDay()->format('Y-m-d') }}" 
+           max="{{ now()->addDays(90)->format('Y-m-d') }}"
+           class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold text-gray-600" 
+           required>
+    <p class="text-xs text-gray-400 mt-1 italic">* Must be at least 24 hours from now.</p>
 </div>
-            <button type="submit" id="saveBtn" class="w-full bg-gray-900 text-white font-black py-5 rounded-2xl shadow-xl hover:bg-black transition-all">
-                LAUNCH POSTING
-            </button>
-        </form>
+    </div>
+
+    <div>
+        <label for="description" class="block mb-2 text-sm font-bold text-gray-700">Job Description</label>
+        <textarea id="description" name="description" rows="4" placeholder="Briefly describe the responsibilities..." 
+            class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required></textarea>
+    </div>
+
+    <div>
+        <label for="link" class="block mb-2 text-sm font-bold text-gray-700">Application Link</label>
+        <input type="url" id="link" name="link" placeholder="https://example.com/apply" 
+            class="w-full bg-gray-50 border-none rounded-2xl p-4 focus:ring-2 focus:ring-indigo-500 font-semibold" required>
+    </div>
+
+    <button type="submit" id="saveBtn" class="w-full bg-gray-900 text-white font-black py-5 rounded-2xl shadow-xl hover:bg-black transition-all">
+        LAUNCH POSTING
+    </button>
+</form>
     </div>
 </div>
 
