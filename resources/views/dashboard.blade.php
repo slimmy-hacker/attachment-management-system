@@ -489,7 +489,7 @@
         // ==================== ACTIVITY TRENDS CHART ====================
         const activityCtx = document.getElementById('activityLineChart');
         if (activityCtx) {
-            const activityData = @json($monthlyTrends);
+            const activityData = JSON.parse('@json($monthlyTrends)');
             
             console.log('Activity Data:', activityData);
             

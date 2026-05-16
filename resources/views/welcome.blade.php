@@ -85,7 +85,7 @@
 </section>
 
 <footer>
-    &copy; 2025 Dedan Kimathi University of Technology. All rights reserved.
+    &copy; 2026 Dedan Kimathi University of Technology. All rights reserved.
 </footer>
 
 </body>
