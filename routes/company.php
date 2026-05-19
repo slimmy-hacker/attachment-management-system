@@ -43,7 +43,7 @@ Route::get('/documents', [CompanyController::class, 'documents'])->name('documen
 
 
 Route::get('/opportunities', [OpportunityController::class, 'index'])->name('company.opportunities.index');
-    Route::get('/opportunities/create', [OpportunityController::class, 'create'])->name('opportunities.create');
+    
     Route::post('/opportunities', [OpportunityController::class, 'store'])->name('opportunities.store');
     Route::get('/my-opportunities', [OpportunityController::class, 'myOpportunities'])->name('opportunities.my');
     Route::delete('/opportunities/{opportunity}', [OpportunityController::class, 'destroy'])->name('opportunities.destroy');
